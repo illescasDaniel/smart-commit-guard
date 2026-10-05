@@ -36,6 +36,11 @@ update `.secret-guard.toml` if a previously allowlisted finding comes back.
 - `baseline create` and `scan --baseline FILE`: adopt the tool on an existing repo and fail on new findings only.
 - Fingerprint v2 and `allowlist migrate`.
 - `install-hook --chain`: keep an existing hook as `pre-commit.local` and run it first.
+- Base64 decoding: a token that decodes to a known secret shape (Kubernetes `Secret`, encoded key) is found and marked `(base64-encoded)`. Sequential and repeated values are placeholders. `gitleaks:allow` and `pragma: allowlist secret` work as inline markers when `allow_inline = true`.
+- `[model] name / block_at / warn_at` in `.secret-guard.toml` (environment wins; never `base_url`).
+- Push ranges: an all-zero `before` scans the whole branch; a missing base revision explains `fetch-depth: 0`.
+- `doctor` checks that the hook can find the tool and which version it finds, and warns about a stale shared hook; the shared hook's `uvx` fallback is pinned to the minor range.
+- The release workflow creates the GitHub release with the CHANGELOG notes (`scripts/release_notes.py`).
 - `scripts/pin_actions.py` pins GitHub Actions to commit SHAs (`--check` for CI).
 - `.pre-commit-hooks.yaml` for the pre-commit framework and a composite GitHub Action (`action.yml`).
 - Eval cases record the stage that decides them, and a unit test checks it without a model (`tests/unit/test_eval_cases.py`).

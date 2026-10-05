@@ -220,3 +220,38 @@ def test_given_a_hex_value_with_a_secret_looking_name_when_scanning_then_it_is_s
 def test_given_rules_only_when_scanning_then_candidates_are_not_extracted_but_rule_hits_are():
 	assert scan_line('DB_PASS = "Winter2026!Admin"', rules_only=True) == []
 	assert [h.rule for h in scan_line(f'k = "{AWS_KEY}"', rules_only=True)] == ["AWS access key"]
+
+
+# --- base64-encoded secrets, sequential strings (ideas from gitleaks and detect-secrets)
+
+
+def b64(text):
+	import base64
+
+	return base64.b64encode(text.encode()).decode()
+
+
+def test_given_a_base64_encoded_token_when_scanning_then_the_rule_is_found_and_marked_encoded():
+	line = "  token: " + b64(GITHUB)
+	(hit,) = scan_line(line)
+	assert hit.kind == "rule" and hit.rule == "GitHub token (base64-encoded)" and hit.high_confidence and hit.value in line
+
+
+def test_given_a_kubernetes_secret_with_an_encoded_private_key_when_scanning_then_it_is_found():
+	assert [h.rule for h in scan_line("  tls.key: " + b64(PRIVATE_KEY + "\nMIIEvQ"))] == ["private key (base64-encoded)"]
+
+
+def test_given_a_doubly_encoded_token_when_scanning_then_it_is_still_found():
+	assert [h.rule for h in scan_line("x: " + b64(b64(GITHUB)))] == ["GitHub token (base64-encoded)"]
+
+
+@pytest.mark.parametrize("line", ["integrity: sha512-" + b64("\x00\x01binary\xfe")[:30], 'x = "' + b64("just some harmless words in a row") + '"',
+								  'h = "' + "A" * 40 + '"'])
+def test_given_base64_that_is_not_a_secret_when_scanning_then_nothing_is_found(line):
+	assert [h for h in scan_line(line) if h.kind == "rule"] == []
+
+
+@pytest.mark.parametrize("line", ['API_KEY = "abcdefghijklmnop"', 'TOKEN = "1234567890123456"', 'secret = "0123456789abcdef"',
+								  'password = "aaaaaaaa"', 'token = "ZYXWVUTSRQ"'])
+def test_given_a_sequential_or_repeated_value_when_scanning_then_it_is_a_placeholder(line):
+	assert scan_line(line) == []

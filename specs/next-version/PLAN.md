@@ -72,9 +72,15 @@ These were deliberately left out because they cannot be validated without a mode
 **TODO(local):** run `python scripts/pin_actions.py` with network access and commit the result (SHAs were not resolved in the
 cloud session because it may only read this repository); then add `--check` to CI.
 
+### Done in the third pass
+3.1 push-event ranges (all-zero `before`, `fetch-depth` hint), 3.2 repo-level `[model]` name and thresholds, 3.3 pinned `uvx`
+range and the extra `doctor` checks (tool lookup and version, stale shared hook), release workflow creates the GitHub release with
+notes. Ideas taken from similar tools (base64 decoding, sequential-value filter, other tools' inline markers) are in
+`RESEARCH.md`, which also lists what was deliberately not adopted and the next candidates.
+
 ### Still not done
-3.1 push-event range handling (docs only), repo-level model thresholds in `.secret-guard.toml` (best done after the recalibration),
-3.3 the pinned `uvx` range in the shared hook and the extra `doctor` checks, a GitHub release with notes in the release workflow.
+Everything left is in the TODO(local) list above, plus the candidates at the end of `RESEARCH.md` (commit-message scanning,
+`pre-push` hook, global template-dir install, per-rule stopwords, severity levels, BPE-based randomness test).
 
 ---
 

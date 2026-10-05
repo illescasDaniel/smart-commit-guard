@@ -89,7 +89,7 @@ the exact value `1` counts, only for `scan --staged` (the commit hook). It is no
 bypassed commit still has to pass CI; a false positive that must pass CI gets an allowlist entry in `.secret-guard.toml`.
 Optional `.secret-guard.toml` in the repo root (found from any directory; `--files` paths are normalised to repo-relative
 POSIX paths first): extra skip globs, allowlisted fingerprints (hash of the masked finding, so the allowlist itself holds no
-secret), and `[model] hosted_scope`. `skip` and `allowlist` must be lists of strings; unknown keys are an error. Hosted URLs
+secret), and `[model]` (`hosted_scope`, `name`, `block_at`, `warn_at`; the environment wins; never `base_url`). `skip` and `allowlist` must be lists of strings; unknown keys are an error. Hosted URLs
 come only from the environment, never from this committed file.
 
 ### Model protocol
@@ -135,6 +135,11 @@ Answers are read from `answers[<key>].noul`. A missing or non-noul answer is a f
 - **Given** `skip = "tests/*"` in `.secret-guard.toml`, **then** exit 2 naming the key.
 - **Given** two secrets on one line, **then** neither appears in any output; **and given** a placeholder before a real secret on the
   same line, **then** the real one is still judged.
+- **Given** a base64 token that decodes to a GitHub token or a private key, **then** it blocks as that rule, marked encoded; **and given** base64 of a hash or plain words, **then** nothing is found.
+- **Given** a sequential or repeated value (`abcdefgh`, `123456789`, `aaaaaaaa`), **then** it is a placeholder.
+- **Given** `# gitleaks:allow` or `# pragma: allowlist secret` with `allow_inline = true`, **then** the line is ignored.
+- **Given** a push range whose base is all zeros, **then** the whole branch is scanned; **and given** a missing base revision, **then** exit 2 with a `fetch-depth: 0` hint.
+- **Given** `doctor` and a hook that cannot find the tool, **then** it fails; **given** a stale shared hook, **then** it warns.
 - **Given** a candidate at column 350 of a long line, **then** the model payload contains it.
 - **Given** `HTTP_PROXY` set and a loopback model, **then** the call bypasses the proxy; **and given** a redirect, **then** it is not followed.
 - **Given** `SKIP_SECRET_GUARD=1` and a staged secret, **when** scanning staged, **then** exit 0, a `SKIPPED` notice, no model call;

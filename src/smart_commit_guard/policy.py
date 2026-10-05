@@ -24,7 +24,9 @@ MAX_CALLS = 30   # one candidate per request (see decider.MAX_BATCH), so this is
 WINDOW_CHARS = 300   # what the model sees of a long line: about this many characters centred on the candidate
 
 FILE_PREVIEW = "<contents hidden>"
-PRAGMA = "smart-commit-guard: allow"   # honoured only when the repo file sets `allow_inline = true`
+# Honoured only when the repo file sets `allow_inline = true`. The other tools' spellings are accepted too, so adopting this
+# tool does not mean rewriting every existing marker.
+PRAGMAS = ("smart-commit-guard: allow", "gitleaks:allow", "pragma: allowlist secret")
 _KEY_BEFORE = re.compile(r"[A-Za-z0-9_.-]{1,80}[\"']?\s*[:=]\s*[\"']?$")
 
 
@@ -98,7 +100,7 @@ def scan(lines: Sequence[AddedLine], decider: Decider | None, *, block_at: float
 		if not _allowed(path, FILE_PREVIEW, allowlist, allow_paths):
 			result.findings.append(Finding(path, number, "block", why, FILE_PREVIEW))
 	for line in lines:
-		if inline_allow and PRAGMA in line.text:   # a visible, reviewable opt-out for this one line
+		if inline_allow and any(p in line.text for p in PRAGMAS):   # a visible, reviewable opt-out for this one line
 			continue
 		hits = line_hits(line.path, line.text)
 		if not hits:

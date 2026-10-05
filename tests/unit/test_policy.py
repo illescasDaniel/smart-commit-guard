@@ -1,3 +1,4 @@
+import pytest
 from conftest import AWS_KEY, FakeDecider
 
 from smart_commit_guard.decider import MAX_BATCH
@@ -279,3 +280,9 @@ def test_given_the_inline_pragma_when_it_is_not_enabled_then_it_changes_nothing(
 def test_given_the_inline_pragma_when_a_file_name_is_sensitive_then_the_file_still_blocks():
 	line = AddedLine("id_rsa", 1, "abc  # smart-commit-guard: allow")
 	assert scan([line], FakeDecider(), inline_allow=True).exit_code == 1
+
+
+@pytest.mark.parametrize("marker", ["# gitleaks:allow", "# pragma: allowlist secret", "// smart-commit-guard: allow"])
+def test_given_another_tools_inline_marker_when_inline_allow_is_on_then_the_line_is_ignored(marker):
+	line = AddedLine("src/db.py", 4, f'DB_PASS = "Winter2026!Admin"  {marker}')
+	assert scan([line], FakeDecider(lambda p, t: 0.99), inline_allow=True).findings == []

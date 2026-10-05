@@ -12,9 +12,9 @@ CONFIG_NAME = ".secret-guard.toml"
 HOSTED_SCOPES = ("all", "ci")   # where a hosted model may be used: everywhere, or only in CI-style scans (not the commit hook)
 _TOP_LEVEL_KEYS = {"skip": "a list of glob strings", "allowlist": "a list of fingerprint strings",
 				   "allow": "a list of tables, for example [[allow]] fingerprint = \"...\" reason = \"...\"",
-				   "allow_inline": "true or false", "model": "a table, for example [model] hosted_scope = \"ci\""}
+				   "allow_inline": "true or false", "model": "a table, for example [model] hosted_scope = \"ci\" or name = \"...\", block_at = 0.6"}
 _ALLOW_KEYS = {"fingerprint", "path", "reason"}
-_MODEL_KEYS = {"hosted_scope"}
+_MODEL_KEYS = {"hosted_scope", "name", "block_at", "warn_at"}   # never base_url: a pull request must not choose where data goes
 
 
 class ConfigError(Exception):
@@ -56,6 +56,9 @@ class RepoSettings:
 	allowlist: frozenset[str] = frozenset()
 	hosted_scope: str | None = None
 	allow: tuple[AllowEntry, ...] = ()
+	model_name: str | None = None   # `[model]` name / block_at / warn_at: thresholds are per model, so they live with the repo's choice
+	block_at: float | None = None
+	warn_at: float | None = None
 	allow_inline: bool = False   # honour `# smart-commit-guard: allow` on a line; off by default because it is easy to abuse
 
 	@property
@@ -111,7 +114,17 @@ class RepoSettings:
 			if not isinstance(scope, str):
 				raise ConfigError(f"{source}: [model] hosted_scope must be one of {', '.join(HOSTED_SCOPES)}")
 			scope = _scope(scope, f"{source}: [model] hosted_scope")
-		return cls(tuple(lists["skip"]), frozenset(lists["allowlist"]), scope, tuple(allow), inline)
+		name = model.get("name")
+		if name is not None and (not isinstance(name, str) or not name.strip()):
+			raise ConfigError(f"{source}: [model] name must be a non-empty string")
+		numbers: dict[str, float | None] = {}
+		for key in ("block_at", "warn_at"):
+			v = model.get(key)
+			if v is not None and (isinstance(v, bool) or not isinstance(v, (int, float)) or not 0 <= v <= 1):
+				raise ConfigError(f"{source}: [model] {key} must be a number between 0 and 1")
+			numbers[key] = None if v is None else float(v)
+		return cls(tuple(lists["skip"]), frozenset(lists["allowlist"]), scope, tuple(allow), name, numbers["block_at"],
+				   numbers["warn_at"], inline)
 
 	@classmethod
 	def load(cls, root: Path) -> RepoSettings:
@@ -153,14 +166,14 @@ class Config:
 		budget = _float(env, "SECRET_GUARD_BUDGET", 0.0) or None
 		c = cls(
 			base_url=env.get("SECRET_GUARD_BASE_URL") or d.base_url,
-			model=env.get("SECRET_GUARD_MODEL") or d.model,
+			model=env.get("SECRET_GUARD_MODEL") or (repo.model_name if repo else None) or d.model,
 			api_key=env.get("SECRET_GUARD_API_KEY") or None,
 			timeout=_float(env, "SECRET_GUARD_TIMEOUT", d.timeout),
 			allow_hosted=env.get("SECRET_GUARD_ALLOW_HOSTED") == "1",
 			hosted_scope=scope,
 			budget=budget,
-			block_at=_float(env, "SECRET_GUARD_BLOCK_AT", d.block_at),
-			warn_at=_float(env, "SECRET_GUARD_WARN_AT", d.warn_at),
+			block_at=_float(env, "SECRET_GUARD_BLOCK_AT", repo.block_at if repo and repo.block_at is not None else d.block_at),
+			warn_at=_float(env, "SECRET_GUARD_WARN_AT", repo.warn_at if repo and repo.warn_at is not None else d.warn_at),
 		)
 		if c.timeout <= 0:
 			raise ConfigError("SECRET_GUARD_TIMEOUT must be greater than 0")

@@ -34,9 +34,9 @@ uvx smart-commit-guard install-hook --shared
 git add .githooks .gitattributes && git commit -m "Add the smart-commit-guard pre-commit hook"
 ```
 
-The shared hook finds `smart-commit-guard` on `PATH`, then in the repo's `.venv`, then falls back to `uvx`. To pin the
-`uvx` fallback to a release range, edit the `uvx` line in `.githooks/pre-commit` to
-`uvx --from 'smart-commit-guard>=0.2,<0.3' smart-commit-guard scan --staged`.
+The shared hook finds `smart-commit-guard` on `PATH`, then in the repo's `.venv`, then falls back to `uvx`, pinned to the
+minor range of the version that installed it (`uvx --from 'smart-commit-guard>=0.2,<0.3' ...`), so a hook never jumps to a
+release that changes behaviour. `doctor` warns when the committed hook differs from the current template.
 
 Already have a pre-commit hook (husky, lefthook, a custom one)? `install-hook --chain` (also with `--shared`) keeps it as
 `pre-commit.local` next to the new hook and runs it first; if it fails, the commit stops before the scan.
@@ -105,6 +105,17 @@ In the workflow, run the scan without `--no-model` and give it the endpoint and 
 
 `scan --files` and `--all` count as CI too, even when run locally.
 
+#### Push events
+
+To scan what a push added instead of the whole tree, use the range from the event. For a new branch GitHub sends an all-zero
+`before`; that is handled (the whole branch is scanned):
+
+```yaml
+      - run: uvx --from 'smart-commit-guard>=0.2,<0.3' smart-commit-guard scan --no-model --diff "${{ github.event.before }}...${{ github.sha }}"
+```
+
+Check out with `fetch-depth: 0`. After a force-push the old `before` commit can be gone; scan the branch against its base then.
+
 ## How it works
 
 1. Only **added lines** are scanned. Binaries and `.env.example` are skipped. Lockfiles and generated files (`.min.js`,
@@ -128,6 +139,9 @@ In the workflow, run the scan without `--no-model` and give it the endpoint and 
 6. The **policy lives in code**, not in the model: the model's probability `p` blocks at `p >= 0.5` and warns at
    `p >= 0.4` (configurable).
 7. If the model is unreachable: rule hits still block; model-only candidates warn and allow.
+
+A base64 token that decodes to a known secret shape (a Kubernetes `Secret`, an encoded key) is reported as that rule, marked
+`(base64-encoded)`.
 
 Findings never print the secret, only a shape-preserving mask such as `sk_live_A9a9A9a9...`. Every secret on a line is
 masked, and so is any other long random-looking token.
@@ -195,13 +209,19 @@ fingerprint = "v2:3f9a1c0b7d52e864"
 reason = "Fixture: a fake password used by the login tests"
 path = "tests/*"
 
-# Optional: honour `# smart-commit-guard: allow` at the end of a line. Off by default: it is easy to abuse (but, unlike
+# Optional: honour `# smart-commit-guard: allow` at the end of a line (`# gitleaks:allow` and `# pragma: allowlist secret`
+# are accepted too, so existing markers keep working). Off by default: it is easy to abuse (but, unlike
 # SKIP_SECRET_GUARD, it is visible in review).
 allow_inline = true
 
 # Optional: where a hosted model may be used (see "Hosted model in CI only"). It can only narrow, never widen.
+# `name`, `block_at` and `warn_at` set the model and thresholds for the repo (thresholds are per model); the environment
+# variables win. There is deliberately no `base_url`: a pull request must not be able to choose where data goes.
 [model]
 hosted_scope = "ci"
+# name = "jevk5:4b"
+# block_at = 0.5
+# warn_at = 0.4
 ```
 
 `skip` and `allowlist` must be lists of strings and unknown keys are an error (exit 2), so a typo cannot silently disable
@@ -306,7 +326,8 @@ Run the built-in check first:
 smart-commit-guard doctor
 ```
 
-It verifies that the hook exists at the effective path, is executable and runs `scan --staged`, that a synthetic
+It verifies that the hook exists at the effective path, is executable and runs `scan --staged`, that the hook can actually find
+the tool (and which version it finds), that a shared hook is not stale, that a synthetic
 secret is blocked by the rules, and that the model answers (a missing model is a warning, not a failure).
 
 Then prove it through real git, in a throwaway repo:

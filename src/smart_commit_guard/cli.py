@@ -5,9 +5,11 @@ import argparse
 import fnmatch
 import json
 import os
+import re
 import shlex
 import shutil
 import stat
+import subprocess
 import sys
 import traceback
 from collections.abc import Mapping, Sequence
@@ -55,7 +57,7 @@ if command -v smart-commit-guard >/dev/null 2>&1; then
 elif [ -x "$root/.venv/bin/smart-commit-guard" ]; then
 	exec "$root/.venv/bin/smart-commit-guard" scan --staged
 elif command -v uvx >/dev/null 2>&1; then
-	exec uvx smart-commit-guard scan --staged
+	exec uvx @UVX@smart-commit-guard scan --staged
 fi
 """ + _MISSING
 # `install-hook --chain`: the hook that was already there is kept as `pre-commit.local` and runs first.
@@ -161,7 +163,14 @@ def _input(args: argparse.Namespace, root: Path) -> tuple[list[AddedLine], list[
 		if ".." not in args.diff:
 			raise ToolError(f"--diff takes a revision range such as origin/main...HEAD, got {args.diff!r} "
 							"(a single revision would compare it with the working tree)")
-		return parse_added_lines(git.diff_text(args.diff)), git.changed_paths(args.diff)
+		rev = git.normalize_range(args.diff)
+		try:
+			return parse_added_lines(git.diff_text(rev)), git.changed_paths(rev)
+		except GitError as e:
+			if any(t in str(e) for t in ("bad revision", "unknown revision", "Invalid revision")):
+				raise ToolError(f"{e}. In CI check out with fetch-depth: 0 (a shallow clone lacks the base), and after a force-push "
+								"the old `before` commit may be gone: scan the branch against its base instead.") from e
+			raise
 	return parse_added_lines(git.diff_text("--cached")), git.changed_paths("--cached")
 
 
@@ -274,6 +283,17 @@ def _executable() -> str:
 	return shutil.which("smart-commit-guard") or "smart-commit-guard"
 
 
+def _uvx_spec() -> str:
+	"""`--from 'smart-commit-guard>=0.2,<0.3' `: the uvx fallback follows the installing version's minor range, so a hook never
+	silently jumps to a release that changes behaviour. Empty when the version is unknown (a checkout)."""
+	m = re.match(r"(\d+)\.(\d+)", __version__)
+	return f"--from 'smart-commit-guard>={m[1]}.{m[2]},<{m[1]}.{int(m[2]) + 1}' " if m else ""
+
+
+def _shared_hook() -> str:
+	return SHARED_HOOK.replace("@UVX@", _uvx_spec())
+
+
 def _write_hook(hook: Path, text: str, force: bool, chain: bool = False) -> None:
 	"""Write a hook. With `chain`, a hook that is already there (not ours) is kept as `pre-commit.local` and called first."""
 	local = hook.with_name(LOCAL_HOOK)
@@ -304,7 +324,7 @@ def _install_hook(force: bool, shared: bool, chain: bool = False) -> int:
 		current = ""
 	if current not in ("", SHARED_DIR) and not force:
 		raise ToolError(f"core.hooksPath is already set to {current!r}; use --force to replace it")
-	_write_hook(top / SHARED_DIR / "pre-commit", SHARED_HOOK, force, chain)
+	_write_hook(top / SHARED_DIR / "pre-commit", _shared_hook(), force, chain)
 	git.run("config", "core.hooksPath", SHARED_DIR)
 	attrs = top / ".gitattributes"
 	existing = attrs.read_text(encoding="utf-8", errors="replace") if attrs.exists() else ""
@@ -313,6 +333,29 @@ def _install_hook(force: bool, shared: bool, chain: bool = False) -> int:
 	print(f"set core.hooksPath={SHARED_DIR}. Commit {SHARED_DIR}/ and .gitattributes; each clone then runs "
 		  f"`git config core.hooksPath {SHARED_DIR}` once (or `smart-commit-guard install-hook --shared`).")
 	return 0
+
+
+def _hook_tool(hook_text: str, root: Path) -> tuple[str, str] | None:
+	"""(description, executable or '') the hook would run, resolved the way the hook resolves it; None if it cannot find any."""
+	if m := re.search(r"^exe=(.+)$", hook_text, re.MULTILINE):   # per-clone hook: the absolute path baked in at install time
+		exe = shlex.split(m[1])[0] if m[1].strip() else ""
+		found = exe if Path(exe).is_file() else shutil.which(exe)
+		return (f"{found}", found) if found else None
+	for candidate in (shutil.which("smart-commit-guard"), root / ".venv" / "bin" / "smart-commit-guard",
+					  root / ".venv" / "Scripts" / "smart-commit-guard.exe"):
+		if candidate and Path(candidate).is_file():
+			return str(candidate), str(candidate)
+	if shutil.which("uvx"):
+		return "uvx (downloads and caches the release)", ""
+	return None
+
+
+def _tool_version(exe: str) -> str:
+	try:
+		r = subprocess.run([exe, "--version"], capture_output=True, text=True, timeout=15, check=False)
+	except (OSError, subprocess.SubprocessError):
+		return "unknown version"
+	return r.stdout.strip() or "unknown version"
 
 
 def _doctor(env: Mapping[str, str], decider: Decider | None) -> int:
@@ -336,6 +379,24 @@ def _doctor(env: Mapping[str, str], decider: Decider | None) -> int:
 			say("FAIL", "pre-commit hook", f"{hook} is not executable (chmod +x)")
 		else:
 			say("ok", "pre-commit hook", str(hook))
+			root = git.repo_root() or Path.cwd()
+			tool = _hook_tool(text, root)
+			if tool is None:
+				say("FAIL", "hook tool", "the hook cannot find smart-commit-guard (not on PATH, no .venv, no uvx): every commit "
+										"would be blocked with an install message")
+			else:
+				where, exe = tool
+				say("ok", "hook tool", f"{where}" + (f" ({_tool_version(exe)})" if exe else ""))
+			try:
+				hooks_path = git.run("config", "core.hooksPath").strip()
+			except GitError:
+				hooks_path = ""
+			if hooks_path == SHARED_DIR:
+				chained = hook.with_name(LOCAL_HOOK).exists()
+				expected = _shared_hook().replace("@CHAIN@", CHAIN_BLOCK if chained else "")
+				if text.replace("\r\n", "\n") != expected:
+					say("WARN", "shared hook", f"{hook} differs from the template of smart-commit-guard {__version__}: it may be "
+											   "stale (run `smart-commit-guard install-hook --shared --force`, then commit it)")
 	probe = AddedLine("doctor.py", 1, 'KEY = "' + "AKIA" + 'IOSFODNN7EXAMPLE"')   # assembled so this file never trips the scanner
 	if scan([probe], None).exit_code == 1:
 		say("ok", "rules", "a synthetic AWS key is blocked")

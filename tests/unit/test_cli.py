@@ -8,6 +8,17 @@ from conftest import AWS_KEY, FakeDecider
 from smart_commit_guard.cli import main
 
 
+@pytest.fixture(autouse=True)
+def tool_on_path(request, monkeypatch):
+	"""Doctor checks that the hook can find the tool; in the test environment it may not be on PATH."""
+	if "doctor" in request.node.name and "cannot_find" not in request.node.name:
+		from smart_commit_guard import cli
+
+		real = cli.shutil.which
+		monkeypatch.setattr(cli.shutil, "which", lambda name, *a, **k: real(name, *a, **k) or ("/fake/smart-commit-guard" if name == "smart-commit-guard" else None))
+		monkeypatch.setattr(cli, "_tool_version", lambda exe: "9.9.9")
+
+
 def write(tmp_path, name, text):
 	p = tmp_path / name
 	p.write_text(text)
@@ -435,3 +446,72 @@ def test_given_chain_and_shared_when_a_hook_exists_there_then_it_is_chained(tmp_
 	monkeypatch.chdir(tmp_path)
 	assert main(["install-hook", "--shared", "--chain"], env={}) == 0
 	assert "echo husky" in (shared / "pre-commit.local").read_text() and "pre-commit.local" in (shared / "pre-commit").read_text()
+
+
+# --- doctor: the hook can find the tool, and a stale shared hook is noticed; model settings in the repo file; push ranges
+
+
+def test_given_a_hook_that_cannot_find_the_tool_when_running_doctor_then_it_fails(tmp_path, monkeypatch, capsys):
+	from smart_commit_guard import cli
+
+	git(tmp_path, "init", "-q")
+	monkeypatch.chdir(tmp_path)
+	main(["install-hook", "--shared"], env={})
+	monkeypatch.setattr(cli.shutil, "which", lambda *a, **k: None)
+	assert main(["doctor"], env={}, decider=FakeDecider()) == 1
+	assert "cannot find smart-commit-guard" in capsys.readouterr().out
+
+
+def test_given_a_healthy_hook_when_running_doctor_then_it_reports_the_tool_and_its_version(tmp_path, monkeypatch, capsys):
+	git(tmp_path, "init", "-q")
+	monkeypatch.chdir(tmp_path)
+	main(["install-hook", "--shared"], env={})
+	assert main(["doctor"], env={}, decider=FakeDecider()) == 0
+	out = capsys.readouterr().out
+	assert "hook tool" in out and "9.9.9" in out and "shared hook" not in out
+
+
+def test_given_a_stale_shared_hook_when_running_doctor_then_it_warns_but_does_not_fail(tmp_path, monkeypatch, capsys):
+	git(tmp_path, "init", "-q")
+	monkeypatch.chdir(tmp_path)
+	main(["install-hook", "--shared"], env={})
+	hook = tmp_path / ".githooks" / "pre-commit"
+	hook.write_text(hook.read_text().replace("exec uvx", "exec uvx --old"))
+	assert main(["doctor"], env={}, decider=FakeDecider()) == 0
+	assert "WARN" in capsys.readouterr().out
+
+
+def test_given_the_shared_hook_when_installing_then_the_uvx_fallback_is_pinned_to_the_minor_range(tmp_path, monkeypatch):
+	from smart_commit_guard import cli
+
+	git(tmp_path, "init", "-q")
+	monkeypatch.chdir(tmp_path)
+	monkeypatch.setattr(cli, "__version__", "0.2.3")
+	main(["install-hook", "--shared"], env={})
+	assert "uvx --from 'smart-commit-guard>=0.2,<0.3' smart-commit-guard scan --staged" in (tmp_path / ".githooks" / "pre-commit").read_text()
+	monkeypatch.setattr(cli, "__version__", "unknown")
+	main(["install-hook", "--shared", "--force"], env={})
+	assert "exec uvx smart-commit-guard scan --staged" in (tmp_path / ".githooks" / "pre-commit").read_text()
+
+
+def test_given_model_settings_in_the_repo_file_when_scanning_then_they_apply_unless_the_environment_overrides(tmp_path, monkeypatch):
+	staged_repo(tmp_path, monkeypatch)
+	(tmp_path / ".secret-guard.toml").write_text('[model]\nblock_at = 0.9\nwarn_at = 0.8\nname = "other:1b"\n')
+	d = FakeDecider(lambda p, t: 0.7)
+	assert main(["scan", "--staged"], env={}, decider=d) == 0   # 0.7 is below the repo's block and warn thresholds
+	assert main(["scan", "--staged"], env={"SECRET_GUARD_BLOCK_AT": "0.5", "SECRET_GUARD_WARN_AT": "0.4"}, decider=d) == 1
+
+
+def test_given_a_push_event_on_a_new_branch_when_scanning_the_range_then_the_whole_branch_is_scanned(tmp_path, monkeypatch):
+	staged_repo(tmp_path, monkeypatch, f'KEY = "{AWS_KEY}"\n', "app.py")
+	git(tmp_path, "commit", "-q", "-m", "x")
+	zeros = "0" * 40
+	assert main(["scan", "--diff", f"{zeros}..HEAD", "--no-model"], env={}) == 1
+	assert main(["scan", "--diff", f"{zeros}...HEAD", "--no-model"], env={}) == 1
+
+
+def test_given_a_missing_base_revision_when_scanning_a_diff_then_the_message_mentions_fetch_depth(tmp_path, monkeypatch, capsys):
+	staged_repo(tmp_path, monkeypatch, "x = 1\n", "a.py")
+	git(tmp_path, "commit", "-q", "-m", "x")
+	assert main(["scan", "--diff", "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef..HEAD", "--no-model"], env={}) == 2
+	assert "fetch-depth: 0" in capsys.readouterr().err

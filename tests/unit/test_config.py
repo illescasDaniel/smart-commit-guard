@@ -114,3 +114,23 @@ def test_given_a_malformed_allow_entry_when_parsing_then_the_error_names_the_pro
 
 def test_given_allow_inline_when_parsing_then_it_defaults_to_off():
 	assert RepoSettings.parse("").allow_inline is False and RepoSettings.parse("allow_inline = true").allow_inline is True
+
+
+def test_given_model_settings_in_the_repo_file_when_loading_then_they_apply_and_the_environment_wins():
+	repo = RepoSettings.parse('[model]\nname = "m:1b"\nblock_at = 0.7\nwarn_at = 0.6\n')
+	c = Config.from_env({}, repo)
+	assert (c.model, c.block_at, c.warn_at) == ("m:1b", 0.7, 0.6)
+	c = Config.from_env({"SECRET_GUARD_MODEL": "env:2b", "SECRET_GUARD_BLOCK_AT": "0.9"}, repo)
+	assert (c.model, c.block_at, c.warn_at) == ("env:2b", 0.9, 0.6)
+
+
+@pytest.mark.parametrize("text", ['[model]\nblock_at = 2', '[model]\nwarn_at = "low"', '[model]\nname = ""', '[model]\nblock_at = true',
+								  '[model]\nbase_url = "https://x.example"'])
+def test_given_invalid_repo_model_settings_when_parsing_then_exit_2_material(text):
+	with pytest.raises(ConfigError):
+		RepoSettings.parse(text)
+
+
+def test_given_repo_thresholds_in_the_wrong_order_when_loading_then_the_usual_check_still_fires():
+	with pytest.raises(ConfigError, match="thresholds"):
+		Config.from_env({}, RepoSettings.parse("[model]\nblock_at = 0.3\nwarn_at = 0.6\n"))

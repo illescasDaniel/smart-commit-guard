@@ -1,6 +1,8 @@
 """Deterministic layer: known secret shapes (a rule table) and candidate extraction."""
 from __future__ import annotations
 
+import base64
+import binascii
 import math
 import re
 from collections import Counter
@@ -92,9 +94,19 @@ _PLACEHOLDER = re.compile(r"(?i)(?:^|[-_. ])(?:your|my|example|sample|dummy|fake
 						  r"redacted|todo|none|null|secret|password|passwd|token|key)(?:$|[-_. 0-9]|here)|^x{4,}$|^\*+$|\.\.\.|^[-_.x*]+$")
 
 
+_RUNS = ("0123456789" * 3, "abcdefghijklmnopqrstuvwxyz" * 2, "0123456789abcdefghijklmnopqrstuvwxyz")   # digits and letters wrap
+_REPEATED = re.compile(r"(.)\1{5,}")
+
+
+def _is_sequential(v: str) -> bool:
+	"""`abcdefghijklmnop`, `1234567890`, `0123456789abcdef`, `aaaaaaaa`: typed by a person, not generated."""
+	low = v.lower()
+	return len(low) >= 6 and (bool(_REPEATED.fullmatch(low)) or any(low in run or low[::-1] in run for run in _RUNS))
+
+
 def _is_placeholder(v: str) -> bool:
-	"""Obvious dummy values (`your-api-key-here`, `changeme`, `xxxxxxxx`, `test-token-123`) never need a model."""
-	return bool(_PLACEHOLDER.search(v))
+	"""Obvious dummy values (`your-api-key-here`, `changeme`, `xxxxxxxx`, `test-token-123`, `abcdef123456`) never need a model."""
+	return bool(_PLACEHOLDER.search(v)) or _is_sequential(v)
 
 
 def has_digit_and_letter(v: str) -> bool:
@@ -124,15 +136,43 @@ def _is_hash_or_id(v: str, line: str) -> bool:
 	return bool(_UUID.fullmatch(v)) or (bool(_HEX_DIGEST.fullmatch(v)) and bool(_HASH_CONTEXT.search(line)))
 
 
+_BASE64 = re.compile(r"(?<![A-Za-z0-9+/=_-])[A-Za-z0-9+/]{24,}={0,2}(?![A-Za-z0-9+/=_-])")
+ENCODED = "(base64-encoded)"
+MAX_DECODE_DEPTH = 2   # doubly encoded secrets exist; deeper than that is not worth the time
+
+
+def _decode_text(token: str) -> str | None:
+	"""The text a base64 token decodes to, or None when it is not (mostly printable) UTF-8: hashes and binary blobs are skipped."""
+	try:
+		raw = base64.b64decode(token + "=" * (-len(token) % 4), validate=True)
+		text = raw.decode("utf-8")
+	except (binascii.Error, UnicodeDecodeError, ValueError):
+		return None
+	if not text or sum(c.isprintable() or c in "\n\r\t" for c in text) < 0.95 * len(text):
+		return None
+	return text
+
+
+def _decoded_rule_hits(token: str, depth: int) -> list[LineHit]:
+	text = _decode_text(token)
+	if text is None:
+		return []
+	hits = [h for h in scan_line(text, rules_only=True, _depth=depth + 1) if h.kind == "rule"]
+	if not hits and depth + 1 < MAX_DECODE_DEPTH:
+		hits = [h for m in _BASE64.finditer(text) for h in _decoded_rule_hits(m.group(), depth + 1)]
+	return hits
+
+
 def _overlaps(a: tuple[int, int], b: tuple[int, int]) -> bool:
 	return a[0] < b[1] and b[0] < a[1]
 
 
-def scan_line(text: str, *, rules_only: bool = False) -> list[LineHit]:
+def scan_line(text: str, *, rules_only: bool = False, _depth: int = 0) -> list[LineHit]:
 	"""Every hit on the line, ordered by position. A rule hit is a high-confidence known secret shape (private keys, AWS
 	keys, token prefixes, URLs with a password); a candidate is a secret-looking name assigned a literal, or a long
 	high-entropy literal. Hits never overlap, and a placeholder value hides only itself, not the rest of the line.
-	With `rules_only`, candidates are not extracted at all."""
+	A base64 token that decodes to text containing a known secret shape is reported as that rule, "(base64-encoded)", so a
+	Kubernetes `Secret` or an encoded private key does not hide it. With `rules_only`, candidates are not extracted at all."""
 	hits: list[LineHit] = []
 	taken: list[tuple[int, int]] = []   # spans already explained: hits and placeholders
 
@@ -155,6 +195,11 @@ def scan_line(text: str, *, rules_only: bool = False) -> list[LineHit]:
 					add("candidate", None, False, span)
 				continue
 			add("rule", rule.name, True, span)
+	if _depth < MAX_DECODE_DEPTH:
+		for m in _BASE64.finditer(text):
+			if free(m.span()) and (found := _decoded_rule_hits(m.group(), _depth)):
+				name = found[0].rule or "secret"
+				add("rule", name if name.endswith(ENCODED) else f"{name} {ENCODED}", True, m.span())
 	if rules_only:
 		return sorted(hits, key=lambda h: h.start)
 

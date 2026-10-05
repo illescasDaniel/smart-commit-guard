@@ -22,6 +22,21 @@ class GitError(Exception):
 	pass
 
 
+def _describe(args: tuple[str, ...]) -> str:
+	"""The command for an error message: without the pinned `-c` options and the long binary pathspec."""
+	shown, skip_next = [], False
+	for a in args:
+		if a == "--":
+			break
+		if skip_next:
+			skip_next = False
+		elif a == "-c":
+			skip_next = True
+		elif not a.startswith("--no-") and a not in ("--text", "-U0"):
+			shown.append(a)
+	return " ".join(shown)
+
+
 def run(*args: str, cwd: str | Path | None = None) -> str:
 	"""stdout of `git <args>`, decoded as UTF-8 (never the locale code page). Raises GitError."""
 	try:
@@ -29,8 +44,20 @@ def run(*args: str, cwd: str | Path | None = None) -> str:
 	except OSError as e:
 		raise GitError(f"cannot run git: {e}") from e
 	if r.returncode != 0:
-		raise GitError(f"git {' '.join(args)} failed: {r.stderr.decode('utf-8', 'replace').strip() or 'not a git repository?'}")
+		raise GitError(f"git {_describe(args)} failed: {r.stderr.decode('utf-8', 'replace').strip() or 'not a git repository?'}")
 	return r.stdout.decode("utf-8", "replace")
+
+
+EMPTY_TREE = "4b825dc642cb6eb9a060e54bf8d69288fbee4904"
+_RANGE = re.compile(r"^(?P<left>[^.]*?)(?P<dots>\.\.\.?)(?P<right>.*)$")
+
+
+def normalize_range(revision_range: str) -> str:
+	"""A push event's `before` is all zeros when a branch is new: compare against the empty tree, so the whole branch is scanned."""
+	m = _RANGE.match(revision_range)
+	if m and m["left"] and set(m["left"]) == {"0"}:
+		return f"{EMPTY_TREE}..{m['right']}"   # the empty tree has no merge base, so `...` becomes `..`
+	return revision_range
 
 
 def diff_text(*revision_args: str) -> str:
