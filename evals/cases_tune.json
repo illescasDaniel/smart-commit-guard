@@ -2,331 +2,433 @@
 	{
 		"path": "src/db.py",
 		"text": "DB_PASS = \"Winter2026!Admin\"",
-		"label": "real"
+		"label": "real",
+		"stage": "model"
 	},
 	{
 		"path": "config/prod.yaml",
 		"text": "  password: \"Tr0ub4dor&3xK9\"",
-		"label": "real"
+		"label": "real",
+		"stage": "model"
 	},
 	{
 		"path": "config/prod.yaml",
 		"text": "  api_key: 'k8Zp2QwL9xVb4NmT7rYc1HsD'",
-		"label": "real"
+		"label": "real",
+		"stage": "model"
 	},
 	{
 		"path": ".env",
 		"text": "DATABASE_PASSWORD=Pr0d-Hq7!zLm2",
-		"label": "real"
+		"label": "real",
+		"stage": "name-block"
 	},
 	{
 		"path": ".env",
 		"text": "STRIPE_SECRET_KEY=sk_live_51Hq7zLm2Pr0dKx9Wv3Tn",
-		"label": "real"
+		"label": "real",
+		"stage": "name-block"
 	},
 	{
 		"path": ".env",
 		"text": "JWT_SECRET=d8f3a91c7e5b4026a1f9c3e87b2d5a10",
-		"label": "real"
+		"label": "real",
+		"stage": "name-block"
 	},
 	{
 		"path": "src/auth.js",
 		"text": "const apiKey = \"AIzaSyD4mQ8vL2pXz7Kc9RtNb3WfHjE6YaUs1Go\";",
-		"label": "real"
+		"label": "real",
+		"stage": "rule-block"
 	},
 	{
 		"path": "src/mail.py",
 		"text": "client = Client(token=\"xoxp-9182736450-5647382910-abcdefghijkl\")",
-		"label": "real"
+		"label": "real",
+		"stage": "rule-block"
 	},
 	{
 		"path": "deploy/main.tf",
 		"text": "  secret_key = \"w8Jx2kQp9ZrT5vLm3NcB7yHd4FgS6aUe\"",
-		"label": "real"
+		"label": "real",
+		"stage": "model"
 	},
 	{
 		"path": "src/main/Config.java",
 		"text": "private static final String PASSWORD = \"S3cr3t!Pa55w0rd\";",
-		"label": "real"
+		"label": "real",
+		"stage": "model"
 	},
 	{
 		"path": "src/store.py",
 		"text": "MONGO = \"mongodb+srv://app:Zx9!qR7mLp2@cluster0.ab1cd.mongodb.net/prod\"",
-		"label": "real"
+		"label": "real",
+		"stage": "rule-block"
 	},
 	{
 		"path": "infra/aws.ini",
 		"text": "aws_secret_access_key = \"wJalrXUtnFEMI/K7MDENG/bPxRfiCYzxk3Ntq9Lm\"",
-		"label": "real"
+		"label": "real",
+		"stage": "model"
 	},
 	{
 		"path": "keys/id.pem",
 		"text": "-----BEGIN RSA PRIVATE KEY-----",
-		"label": "real"
+		"label": "real",
+		"stage": "rule-block"
 	},
 	{
 		"path": "scripts/deploy.sh",
 		"text": "export GITHUB_TOKEN=\"ghp_Qm7Lx2Vb9NcT4KdW8zYr1HsE6hJf3A\"",
-		"label": "real"
+		"label": "real",
+		"stage": "rule-block"
 	},
 	{
 		"path": "src/settings.py",
 		"text": "SECRET_KEY = 'django-insecure-9x#k2m@p7q!v4n$z8l&w3r%t6y'",
-		"label": "real"
+		"label": "real",
+		"stage": "model"
 	},
 	{
 		"path": "app/config.rb",
 		"text": "config.secret_token = \"7c4a8d09ca3762af61e59520943dc26494f8941b\"",
-		"label": "real"
+		"label": "real",
+		"stage": "model"
 	},
 	{
 		"path": "src/payments.ts",
 		"text": "const webhookSecret = 'whsec_Zq8Lm2Pr0dKx9Wv3TnHq7zLm2Pr0d';",
-		"label": "real"
+		"label": "real",
+		"stage": "rule-block"
 	},
 	{
 		"path": "docker-compose.yml",
 		"text": "      POSTGRES_PASSWORD: Zk4!mQ9xLp27vRt",
-		"label": "real"
+		"label": "real",
+		"stage": "model"
 	},
 	{
 		"path": "src/smtp.py",
 		"text": "SMTP_PASSWORD = \"mail-Pr0d#2026-Zq\"",
-		"label": "real"
+		"label": "real",
+		"stage": "model"
 	},
 	{
 		"path": "notes.txt",
 		"text": "the admin password is Hq7!zLm2Pr0dKx9",
-		"label": "real"
+		"label": "real",
+		"stage": "model"
 	},
 	{
 		"path": "src/cfg.go",
 		"text": "var dbPassword = \"Hq7zLm2Pr0dKx9Wv\"",
-		"label": "real"
+		"label": "real",
+		"stage": "model"
 	},
 	{
 		"path": "helm/values.yaml",
 		"text": "  adminToken: \"glpat-Hq7zLm2Pr0dKx9Wv3Tn\"",
-		"label": "real"
+		"label": "real",
+		"stage": "rule-block"
 	},
 	{
 		"path": "scripts/curl.sh",
 		"text": "curl -H \"Authorization: Bearer 9f8e7d6c5b4a39281706f5e4d3c2b1a0\" https://api.internal/x",
-		"label": "real"
+		"label": "real",
+		"stage": "model"
 	},
 	{
 		"path": "src/slack.py",
 		"text": "WEBHOOK = \"https://hooks\u002eslack.com/services/A1/B2/Zq8Lm2Pr0dKx9Wv3TnHq7zLm\"",
-		"label": "real"
+		"label": "real",
+		"stage": "rule-block"
 	},
 	{
 		"path": "src/db.rb",
 		"text": "url = \"postgres://svc:Hq7zLm2Pr0d@prod-db.internal:5432/app\"",
-		"label": "real"
+		"label": "real",
+		"stage": "rule-block"
 	},
 	{
 		"path": "README.md",
 		"text": "API_KEY = \"your-api-key-here\"",
-		"label": "ok"
+		"label": "ok",
+		"stage": "no-hit"
 	},
 	{
 		"path": "README.md",
 		"text": "export OPENAI_API_KEY=\"sk-...\"",
-		"label": "ok"
+		"label": "ok",
+		"stage": "no-hit"
 	},
 	{
 		"path": ".env.sample",
 		"text": "API_TOKEN=<your token>",
-		"label": "ok"
+		"label": "ok",
+		"stage": "no-hit"
 	},
 	{
 		"path": "src/config.py",
 		"text": "password = os.environ[\"DB_PASSWORD\"]",
-		"label": "ok"
+		"label": "ok",
+		"stage": "no-hit"
 	},
 	{
 		"path": "config/app.yaml",
 		"text": "  password: ${DB_PASSWORD}",
-		"label": "ok"
+		"label": "ok",
+		"stage": "no-hit"
 	},
 	{
 		"path": "config/app.yaml",
 		"text": "  api_key: ${{ secrets.API_KEY }}",
-		"label": "ok"
+		"label": "ok",
+		"stage": "no-hit"
 	},
 	{
 		"path": "tests/test_auth.py",
 		"text": "TOKEN = \"test-token-123\"",
-		"label": "ok"
+		"label": "ok",
+		"stage": "no-hit"
 	},
 	{
 		"path": "tests/test_auth.py",
 		"text": "password = \"hunter2\"",
-		"label": "ok"
+		"label": "ok",
+		"stage": "model"
 	},
 	{
 		"path": "tests/test_login.py",
 		"text": "client.post(\"/login\", json={\"password\": \"wrong-password\"})",
-		"label": "ok"
+		"label": "ok",
+		"stage": "no-hit"
 	},
 	{
 		"path": "tests/conftest.py",
 		"text": "API_KEY = \"dummy\"",
-		"label": "ok"
+		"label": "ok",
+		"stage": "no-hit"
 	},
 	{
 		"path": "src/pricing.js",
 		"text": "const stripePublishableKey = 'pk_test_TYooMQauvdEDq54NiTphI7jx';",
-		"label": "ok"
+		"label": "ok",
+		"stage": "model"
 	},
 	{
 		"path": "src/crypto.py",
 		"text": "sha256 = \"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\"",
-		"label": "ok"
+		"label": "ok",
+		"stage": "no-hit"
 	},
 	{
 		"path": "src/ids.py",
 		"text": "DEFAULT_ID = \"550e8400-e29b-41d4-a716-446655440000\"",
-		"label": "ok"
+		"label": "ok",
+		"stage": "no-hit"
 	},
 	{
 		"path": "src/vcs.py",
 		"text": "PINNED = \"9fceb02d0ae598e95dc970b74767f19372d61af8\"",
-		"label": "ok"
+		"label": "ok",
+		"stage": "model"
 	},
 	{
 		"path": "src/aws.py",
 		"text": "secret_name = \"prod/db-password\"",
-		"label": "ok"
+		"label": "ok",
+		"stage": "no-hit"
 	},
 	{
 		"path": "src/tok.py",
 		"text": "tokenizer = \"gpt2-large-uncased-v2\"",
-		"label": "ok"
+		"label": "ok",
+		"stage": "model"
 	},
 	{
 		"path": "src/limits.py",
 		"text": "max_tokens = \"4096\"",
-		"label": "ok"
+		"label": "ok",
+		"stage": "model"
 	},
 	{
 		"path": "src/forms.py",
 		"text": "password_field = \"password\"",
-		"label": "ok"
+		"label": "ok",
+		"stage": "no-hit"
 	},
 	{
 		"path": "src/forms.py",
 		"text": "PASSWORD_MIN_LENGTH = \"12\"",
-		"label": "ok"
+		"label": "ok",
+		"stage": "no-hit"
 	},
 	{
 		"path": "web/i18n/en.json",
 		"text": "\"forgot_password\": \"Forgot your password?\"",
-		"label": "ok"
+		"label": "ok",
+		"stage": "no-hit"
 	},
 	{
 		"path": "web/i18n/en.json",
 		"text": "\"token_expired\": \"Your session token has expired\"",
-		"label": "ok"
+		"label": "ok",
+		"stage": "no-hit"
 	},
 	{
 		"path": "docs/setup.md",
 		"text": "Set `API_KEY=xxxxxxxxxxxxxxxx` in your environment.",
-		"label": "ok"
+		"label": "ok",
+		"stage": "no-hit"
 	},
 	{
 		"path": "docs/setup.md",
 		"text": "DATABASE_URL=postgresql://user:password@localhost:5432/mydb",
-		"label": "ok"
+		"label": "ok",
+		"stage": "no-hit"
 	},
 	{
 		"path": "src/oauth.py",
 		"text": "AUTH_URL = \"https://accounts.example.com/oauth/authorize\"",
-		"label": "ok"
+		"label": "ok",
+		"stage": "no-hit"
 	},
 	{
 		"path": "src/oauth.py",
 		"text": "CLIENT_ID = \"1234567890-abcdefghijklmnop.apps.googleusercontent.com\"",
-		"label": "ok"
+		"label": "ok",
+		"stage": "no-hit"
 	},
 	{
 		"path": "src/theme.css",
 		"text": "  --token-color: #3b82f6;",
-		"label": "ok"
+		"label": "ok",
+		"stage": "model"
 	},
 	{
 		"path": "src/secrets_manager.py",
 		"text": "def get_secret(name): return vault.read(name)",
-		"label": "ok"
+		"label": "ok",
+		"stage": "no-hit"
 	},
 	{
 		"path": "src/cfg.py",
 		"text": "api_key = settings.api_key",
-		"label": "ok"
+		"label": "ok",
+		"stage": "no-hit"
 	},
 	{
 		"path": "src/cfg.py",
 		"text": "token = request.headers.get('Authorization')",
-		"label": "ok"
+		"label": "ok",
+		"stage": "no-hit"
 	},
 	{
 		"path": "web/src/api.ts",
 		"text": "const authToken = localStorage.getItem('token');",
-		"label": "ok"
+		"label": "ok",
+		"stage": "no-hit"
 	},
 	{
 		"path": "src/mask.py",
 		"text": "MASKED = \"********\"",
-		"label": "ok"
+		"label": "ok",
+		"stage": "no-hit"
 	},
 	{
 		"path": "src/mask.py",
 		"text": "password = \"<redacted>\"",
-		"label": "ok"
+		"label": "ok",
+		"stage": "no-hit"
 	},
 	{
 		"path": "src/demo.py",
 		"text": "DEMO_PASSWORD = \"changeme\"",
-		"label": "ok"
+		"label": "ok",
+		"stage": "no-hit"
 	},
 	{
 		"path": "docker-compose.override.yml",
 		"text": "      POSTGRES_PASSWORD: example",
-		"label": "ok"
+		"label": "ok",
+		"stage": "no-hit"
 	},
 	{
 		"path": "src/ui.py",
 		"text": "label = \"Enter your API key\"",
-		"label": "ok"
+		"label": "ok",
+		"stage": "no-hit"
 	},
 	{
 		"path": "src/blob.py",
 		"text": "cache_key = \"user:profile:v2:b7c9a1d4e8f2a3b5c6d7e8f9\"",
-		"label": "ok"
+		"label": "ok",
+		"stage": "no-hit"
 	},
 	{
 		"path": "web/src/e.ts",
 		"text": "const nonce = \"Zq8Lm2Pr0dKx9Wv3TnHq7zLm2\"; // per-request CSP nonce, public",
-		"label": "ok"
+		"label": "ok",
+		"stage": "model"
 	},
 	{
 		"path": "src/a.py",
 		"text": "x = compute(1, 2)",
-		"label": "ok"
+		"label": "ok",
+		"stage": "no-hit"
 	},
 	{
 		"path": "src/a.py",
 		"text": "def login(user, pw): ...",
-		"label": "ok"
+		"label": "ok",
+		"stage": "no-hit"
 	},
 	{
 		"path": "src/a.py",
 		"text": "# TODO: rotate credentials quarterly",
-		"label": "ok"
+		"label": "ok",
+		"stage": "no-hit"
 	},
 	{
 		"path": "src/a.py",
 		"text": "return jsonify({'ok': True})",
-		"label": "ok"
+		"label": "ok",
+		"stage": "no-hit"
+	},
+	{
+		"path": "config/app.json",
+		"text": "{\"password\": \"changeme\", \"token\": \"q8Zr2LmW9vXp4TnK7\"}",
+		"label": "real",
+		"stage": "model"
+	},
+	{
+		"path": "src/aws.py",
+		"text": "x = \"wJalrXUtnFEMI/K7MDENG/bPxRfiCYzxk3Ntq9Lm\"",
+		"label": "real",
+		"stage": "model"
+	},
+	{
+		"path": "keys/signing.asc",
+		"text": "-----BEGIN PGP PRIVATE KEY BLOCK-----",
+		"label": "real",
+		"stage": "rule-block"
+	},
+	{
+		"path": "deploy/.npmrc",
+		"text": "//registry.npmjs.org/:_authToken=Zq8Lm2Pr0dKx9Wv3TnHq7zLm",
+		"label": "real",
+		"stage": "model"
+	},
+	{
+		"path": "requirements/deps.py",
+		"text": "name = \"sk-learn-contrib-projects\"",
+		"label": "ok",
+		"stage": "no-hit"
+	},
+	{
+		"path": "tests/test_jwt.py",
+		"text": "TOKEN = \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.dBjftJeZ4CVPmB92K27uhbUJU1p1r\"",
+		"label": "ok",
+		"stage": "model"
 	}
 ]

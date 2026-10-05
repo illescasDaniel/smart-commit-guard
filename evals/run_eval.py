@@ -13,11 +13,10 @@ import statistics
 import sys
 import time
 
+from smart_commit_guard import __version__
 from smart_commit_guard.config import Config
-from smart_commit_guard.decider import Decider, HttpDecider
-from smart_commit_guard.policy import scan
-from smart_commit_guard.rules import scan_line
-from smart_commit_guard.skip import is_example_path
+from smart_commit_guard.decider import QUESTION_VERSION, Decider, HttpDecider
+from smart_commit_guard.policy import scan, stage
 from smart_commit_guard.types import AddedLine
 
 
@@ -48,13 +47,6 @@ def outcome(line: AddedLine, decider: Decider, block_at: float, warn_at: float) 
 	return "block" if r.exit_code else "warn" if r.findings else "pass"
 
 
-def stage(c: dict) -> str:
-	hit = scan_line(c["text"])
-	if hit is None:
-		return "no-hit"
-	return "rule-block" if hit.high_confidence and not is_example_path(c["path"]) else "model"
-
-
 def metrics(cases, lines, decider, block_at, warn_at):
 	out = [outcome(l, decider, block_at, warn_at) for l in lines]
 	real = [o for c, o in zip(cases, out) if c["label"] == "real"]
@@ -68,14 +60,17 @@ def metrics(cases, lines, decider, block_at, warn_at):
 def main(paths: list[str]) -> None:
 	cfg = Config.from_env(os.environ | {"SECRET_GUARD_MODEL": os.environ.get("SECRET_GUARD_MODEL", "jevk5:4b")})
 	rec = Recording(HttpDecider(cfg.base_url, cfg.model, 60.0, cfg.api_key))
-	report = {}
+	report: dict = {"_meta": {"model": cfg.model, "base_url": cfg.base_url, "question_version": QUESTION_VERSION,
+							  "tool_version": __version__}}   # so runs can be compared
 	for path in paths:
 		with open(path) as f:
 			cases = json.load(f)
 		lines = [AddedLine(c["path"], i + 1, c["text"]) for i, c in enumerate(cases)]
-		scan(lines, rec, block_at=0.5, warn_at=0.5)          # one live pass fills the cache (<= 5 batches of 30)
+		stages = [stage(c["path"], c["text"]) for c in cases]
+		for line, st in zip(lines, stages):   # one live call per candidate fills the cache (scan() itself caps calls per run)
+			if st == "model" and (line.path, line.text) not in rec.cache:
+				rec.judge([(line.path, line.text)])
 		cached = Cached(rec.cache)
-		stages = [stage(c) for c in cases]
 		print(f"\n== {path}: {len(cases)} cases, {sum(c['label'] == 'real' for c in cases)} real")
 		print("stages:", {s: stages.count(s) for s in set(stages)})
 		missed_by_rules = [c for c, s in zip(cases, stages) if s == "no-hit" and c["label"] == "real"]

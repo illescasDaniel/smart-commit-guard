@@ -1,15 +1,26 @@
-"""Environment configuration."""
+"""Configuration: SECRET_GUARD_* environment variables and the repo's `.secret-guard.toml`."""
 from __future__ import annotations
 
+import tomllib
 from collections.abc import Mapping
 from dataclasses import dataclass
+from pathlib import Path
 from urllib.parse import urlparse
 
 _LOOPBACK = {"localhost", "127.0.0.1", "::1"}
+CONFIG_NAME = ".secret-guard.toml"
+HOSTED_SCOPES = ("all", "ci")   # where a hosted model may be used: everywhere, or only in CI-style scans (not the commit hook)
+_TOP_LEVEL_KEYS = {"skip": "a list of glob strings", "allowlist": "a list of fingerprint strings",
+				   "model": "a table, for example [model] hosted_scope = \"ci\""}
+_MODEL_KEYS = {"hosted_scope"}
 
 
 class ConfigError(Exception):
 	pass
+
+
+def is_loopback_host(host: str) -> bool:
+	return host in _LOOPBACK
 
 
 def _float(env: Mapping[str, str], key: str, default: float) -> float:
@@ -22,6 +33,59 @@ def _float(env: Mapping[str, str], key: str, default: float) -> float:
 		raise ConfigError(f"{key} must be a number, got {raw!r}") from e
 
 
+def _scope(value: str, source: str) -> str:
+	if value not in HOSTED_SCOPES:
+		raise ConfigError(f"{source} must be one of {', '.join(HOSTED_SCOPES)}, got {value!r}")
+	return value
+
+
+@dataclass(frozen=True)
+class RepoSettings:
+	"""What `.secret-guard.toml` may say. It is part of the diff it guards, so it can only narrow where data goes."""
+	skip: tuple[str, ...] = ()
+	allowlist: frozenset[str] = frozenset()
+	hosted_scope: str | None = None
+
+	@classmethod
+	def parse(cls, text: str, source: str = CONFIG_NAME) -> RepoSettings:
+		try:
+			data = tomllib.loads(text)
+		except tomllib.TOMLDecodeError as e:
+			raise ConfigError(f"cannot parse {source}: {e}") from e
+		for key in data:
+			if key not in _TOP_LEVEL_KEYS:
+				raise ConfigError(f"{source}: unknown key {key!r} (allowed: {', '.join(_TOP_LEVEL_KEYS)})")
+		lists: dict[str, list[str]] = {}
+		for key in ("skip", "allowlist"):
+			value = data.get(key, [])
+			if not isinstance(value, list) or not all(isinstance(v, str) for v in value):
+				raise ConfigError(f"{source}: {key!r} must be {_TOP_LEVEL_KEYS[key]}, for example {key} = [\"...\"]")
+			lists[key] = value
+		model = data.get("model", {})
+		if not isinstance(model, dict):
+			raise ConfigError(f"{source}: 'model' must be a table, for example [model] hosted_scope = \"ci\"")
+		for key in model:
+			if key not in _MODEL_KEYS:
+				raise ConfigError(f"{source}: unknown key {key!r} in [model] (allowed: {', '.join(sorted(_MODEL_KEYS))})")
+		scope = model.get("hosted_scope")
+		if scope is not None:
+			if not isinstance(scope, str):
+				raise ConfigError(f"{source}: [model] hosted_scope must be one of {', '.join(HOSTED_SCOPES)}")
+			scope = _scope(scope, f"{source}: [model] hosted_scope")
+		return cls(tuple(lists["skip"]), frozenset(lists["allowlist"]), scope)
+
+	@classmethod
+	def load(cls, root: Path) -> RepoSettings:
+		path = root / CONFIG_NAME
+		if not path.is_file():
+			return cls()
+		try:
+			text = path.read_text(encoding="utf-8", errors="replace")
+		except OSError as e:
+			raise ConfigError(f"cannot read {path}: {e}") from e
+		return cls.parse(text)
+
+
 @dataclass(frozen=True)
 class Config:
 	base_url: str = "http://localhost:11435"
@@ -29,30 +93,47 @@ class Config:
 	api_key: str | None = None
 	timeout: float = 10.0
 	allow_hosted: bool = False
+	hosted_scope: str = "all"
+	budget: float | None = None   # total seconds of model time per scan; None: the caller's default for the scan mode
 	block_at: float = 0.5   # calibrated for jevk5:4b (evals/); rerun the eval before using another model
 	warn_at: float = 0.4
 
 	@property
 	def is_hosted(self) -> bool:
 		"""False only for localhost, 127.0.0.1 and [::1]."""
-		return (urlparse(self.base_url).hostname or "") not in _LOOPBACK
+		return not is_loopback_host(urlparse(self.base_url).hostname or "")
 
 	@classmethod
-	def from_env(cls, env: Mapping[str, str]) -> Config:
-		"""Reads SECRET_GUARD_*. Raises ConfigError for a hosted base URL without SECRET_GUARD_ALLOW_HOSTED=1."""
+	def from_env(cls, env: Mapping[str, str], repo: RepoSettings | None = None) -> Config:
+		"""Reads SECRET_GUARD_*. Raises ConfigError for a hosted base URL without SECRET_GUARD_ALLOW_HOSTED=1, or one that
+		is not https. The repo file can only narrow the hosted scope: the most restrictive of file and environment wins."""
 		d = cls()
+		scope = _scope(env.get("SECRET_GUARD_HOSTED_SCOPE") or d.hosted_scope, "SECRET_GUARD_HOSTED_SCOPE")
+		if repo and repo.hosted_scope == "ci":
+			scope = "ci"
+		budget = _float(env, "SECRET_GUARD_BUDGET", 0.0) or None
 		c = cls(
 			base_url=env.get("SECRET_GUARD_BASE_URL") or d.base_url,
 			model=env.get("SECRET_GUARD_MODEL") or d.model,
 			api_key=env.get("SECRET_GUARD_API_KEY") or None,
 			timeout=_float(env, "SECRET_GUARD_TIMEOUT", d.timeout),
 			allow_hosted=env.get("SECRET_GUARD_ALLOW_HOSTED") == "1",
+			hosted_scope=scope,
+			budget=budget,
 			block_at=_float(env, "SECRET_GUARD_BLOCK_AT", d.block_at),
 			warn_at=_float(env, "SECRET_GUARD_WARN_AT", d.warn_at),
 		)
-		if c.is_hosted and not c.allow_hosted:
-			raise ConfigError(f"{c.base_url} is not a local server; set SECRET_GUARD_ALLOW_HOSTED=1 to send masked "
-							  "snippets to it")
+		if c.timeout <= 0:
+			raise ConfigError("SECRET_GUARD_TIMEOUT must be greater than 0")
+		if budget is not None and budget < 0:
+			raise ConfigError("SECRET_GUARD_BUDGET must be greater than 0")
+		if c.is_hosted:
+			if not c.allow_hosted:
+				raise ConfigError(f"{c.base_url} is not a local server; set SECRET_GUARD_ALLOW_HOSTED=1 to send candidate "
+								  "lines (which may contain real secrets) to it")
+			if urlparse(c.base_url).scheme != "https" and env.get("SECRET_GUARD_ALLOW_INSECURE") != "1":
+				raise ConfigError(f"{c.base_url} is not https: the candidate lines and the API key would travel in clear text; "
+								  "use an https URL (or SECRET_GUARD_ALLOW_INSECURE=1 on a network you fully control)")
 		if not 0 <= c.warn_at <= c.block_at <= 1:
 			raise ConfigError("thresholds must satisfy 0 <= SECRET_GUARD_WARN_AT <= SECRET_GUARD_BLOCK_AT <= 1")
 		return c

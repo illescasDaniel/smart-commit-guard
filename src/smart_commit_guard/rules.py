@@ -1,40 +1,89 @@
-"""Deterministic layer: known secret shapes and candidate extraction."""
+"""Deterministic layer: known secret shapes (a rule table) and candidate extraction."""
 from __future__ import annotations
 
 import math
 import re
 from collections import Counter
+from dataclasses import dataclass
+from typing import Literal
 
 from .types import LineHit
 
 _NO_REF = r"(?![\$\{<%])"   # a value that starts like ${VAR}, <placeholder> or %VAR% is a reference, not a secret
 
-_RULES: list[tuple[str, re.Pattern[str], int]] = [   # (name, pattern, group holding the secret)
-	("private key", re.compile(r"-----BEGIN [A-Z ]*PRIVATE KEY-----"), 0),
-	("AWS access key", re.compile(r"\b(?:AKIA|ASIA)[0-9A-Z]{16}\b"), 0),
-	("API token", re.compile(r"\b(?:sk-[A-Za-z0-9_-]{16,}|sk_(?:live|test)_[A-Za-z0-9]{10,}|gh[pousr]_[A-Za-z0-9]{20,}"
-							 r"|xox[abprs]-[A-Za-z0-9-]{10,}|AIza[0-9A-Za-z_-]{30,}|glpat-[A-Za-z0-9_-]{15,})"), 0),
-	("webhook URL", re.compile(r"https://(?:hooks\.slack\.com/services/[A-Za-z0-9/]{20,}"
-							   r"|(?:discord|discordapp)\.com/api/webhooks/\d+/[A-Za-z0-9_-]{20,})"), 0),
-	("connection string with password", re.compile(r"\b[a-z][a-z0-9+.-]*://[^\s:/@'\"]+:" + _NO_REF + r"([^\s@/'\"]+)@([^\s/:'\"]*)"), 1),
-]
+
+@dataclass(frozen=True)
+class Rule:
+	"""A known secret shape. The match (or `group`) is the secret; `prefixes` stay visible when it is masked."""
+	name: str
+	pattern: re.Pattern[str]
+	group: int = 0
+	prefixes: tuple[str, ...] = ()
+
+
+def _rule(name: str, pattern: str, group: int = 0, prefixes: tuple[str, ...] = ()) -> Rule:
+	return Rule(name, re.compile(pattern), group, prefixes)
+
+
+_ALNUM = r"[A-Za-z0-9]"
+_URLSAFE = r"[A-Za-z0-9_-]"
+# Order matters: when two rules match the same text the first one names it (Anthropic before the generic `sk-` rule).
+RULES: tuple[Rule, ...] = (
+	_rule("private key", r"-----BEGIN (?:[A-Z0-9]+ )*PRIVATE KEY(?: BLOCK)?-----"),
+	_rule("AWS access key", r"\b(?:AKIA|ASIA)[0-9A-Z]{16}\b", prefixes=("AKIA", "ASIA")),
+	_rule("GitHub token", rf"\bgh[pousr]_{_ALNUM}{{20,}}", prefixes=("ghp_", "gho_", "ghu_", "ghs_", "ghr_")),
+	_rule("GitHub fine-grained token", r"\bgithub_pat_[A-Za-z0-9_]{60,}", prefixes=("github_pat_",)),
+	_rule("Anthropic API key", rf"\bsk-ant-{_URLSAFE}{{20,}}", prefixes=("sk-ant-",)),
+	# a real key mixes letters and digits; this keeps package names such as `sk-learn-contrib-projects` out
+	_rule("API token", rf"\bsk-(?=[A-Za-z0-9_-]*\d)(?=[A-Za-z0-9_-]*[A-Za-z]){_URLSAFE}{{16,}}", prefixes=("sk-",)),
+	_rule("Stripe key", rf"\b[sr]k_(?:live|test)_{_ALNUM}{{10,}}", prefixes=("sk_live_", "sk_test_", "rk_live_", "rk_test_")),
+	_rule("Stripe webhook secret", rf"\bwhsec_{_ALNUM}{{20,}}", prefixes=("whsec_",)),
+	_rule("Slack token", r"\b(?:xox[abeprs]-[A-Za-z0-9-]{10,}|xapp-[A-Za-z0-9-]{10,})",
+		  prefixes=("xoxb-", "xoxa-", "xoxe-", "xoxp-", "xoxr-", "xoxs-", "xapp-")),
+	_rule("Google API key", r"\bAIza[0-9A-Za-z_-]{30,}", prefixes=("AIza",)),
+	_rule("Google OAuth client secret", rf"\bGOCSPX-{_URLSAFE}{{20,}}", prefixes=("GOCSPX-",)),
+	_rule("GitLab token", rf"\bgl(?:pat|ptt|dt|rt)-{_URLSAFE}{{15,}}", prefixes=("glpat-", "glptt-", "gldt-", "glrt-")),
+	_rule("SendGrid API key", rf"\bSG\.{_URLSAFE}{{22}}\.{_URLSAFE}{{43}}", prefixes=("SG.",)),
+	_rule("PyPI token", rf"\bpypi-AgEI{_URLSAFE}{{50,}}", prefixes=("pypi-",)),
+	_rule("npm token", rf"\bnpm_{_ALNUM}{{36}}\b", prefixes=("npm_",)),
+	_rule("Shopify token", r"\bshp(?:at|ss|ca|pa)_[a-f0-9]{32}\b", prefixes=("shpat_", "shpss_", "shpca_", "shppa_")),
+	_rule("DigitalOcean token", r"\bdop_v1_[a-f0-9]{64}", prefixes=("dop_v1_",)),
+	_rule("Doppler token", rf"\bdp\.pt\.{_ALNUM}{{40,}}", prefixes=("dp.pt.",)),
+	_rule("Hugging Face token", rf"\bhf_{_ALNUM}{{30,}}", prefixes=("hf_",)),
+	_rule("Telegram bot token", rf"\b\d{{8,10}}:AA{_URLSAFE}{{33}}\b"),
+	_rule("Azure storage key", r"AccountKey=([A-Za-z0-9+/=]{80,})", group=1),
+	_rule("webhook URL", r"https://(?:hooks\.slack\.com/services/[A-Za-z0-9/]{20,}"
+						 r"|(?:discord|discordapp)\.com/api/webhooks/\d+/[A-Za-z0-9_-]{20,})"),
+	_rule("connection string with password", r"\b[a-z][a-z0-9+.-]*://[^\s:/@'\"]+:" + _NO_REF + r"([^\s@/'\"]+)@([^\s/:'\"]*)", group=1),
+)
+CONNECTION_STRING = "connection string with password"
+KNOWN_PREFIXES: tuple[str, ...] = tuple(sorted({p for r in RULES for p in r.prefixes}, key=lambda p: (-len(p), p)))
+
 _PLACEHOLDER_PASSWORDS = {"pass", "password", "passwd", "secret", "changeme", "example", "xxx", "xxxx", "postgres", "admin"}
 _LOCAL_HOSTS = {"localhost", "127.0.0.1", "host", "hostname", "example.com", "db", "database"}
 
 _NAME = r"[A-Za-z0-9_.-]*(?:pass(?:word|wd|phrase)?|secret|token|api[_-]?key|apikey|credential|private[_-]?key)[A-Za-z0-9_.-]*"
-_QUOTED_ASSIGNMENT = re.compile(rf"(?i)\b{_NAME}[\"']?\s*[:=]\s*[\"']" + _NO_REF + r"([^\"']{4,})[\"']")
-_BARE_ASSIGNMENT = re.compile(r"^\s*(?:export\s+)?[A-Z0-9_]*(?:PASS|SECRET|TOKEN|KEY|CREDENTIAL|AUTH)[A-Z0-9_]*\s*=\s*"
-							  + _NO_REF + r"([A-Za-z0-9+/_\-!@#%^&*]{6,})\s*$")
-_NAME_WORD = r"[A-Za-z0-9_.-]*(?:pass(?:word|wd|phrase)?|secret|token|api[_-]?key|apikey|credential|private[_-]?key)[A-Za-z0-9_.-]*"
-_UNQUOTED = re.compile(rf"(?i)^[\s-]*{_NAME_WORD}\s*[:=]\s*" + _NO_REF + r"([^\s\"'$<{(\[]{6,})\s*$")   # YAML/compose/.env values
+# (pattern, group holding the value). Candidates: they look suspicious but need the model (or a human) to decide.
+_CANDIDATES: tuple[tuple[re.Pattern[str], int], ...] = (
+	(re.compile(rf"(?i)\b{_NAME}[\"']?\s*[:=]\s*[\"']" + _NO_REF + r"([^\"']{4,})[\"']"), 1),
+	(re.compile(r"^\s*(?:export\s+)?[A-Z0-9_]*(?:PASS|SECRET|TOKEN|KEY|CREDENTIAL|AUTH)[A-Z0-9_]*\s*=\s*"
+				+ _NO_REF + r"([A-Za-z0-9+/_\-!@#%^&*]{6,})\s*$"), 1),
+	(re.compile(r"(?i)\bBearer\s+" + _NO_REF + r"([A-Za-z0-9._~+/=-]{20,})"), 1),
+	(re.compile(r"(?i)\b(?:pwd|password)=" + _NO_REF + r"([^;\"'\s]{4,})"), 1),
+	(re.compile(r"\b(?:mysql|mysqldump|psql|mongo|redis-cli)\b[^\n]*?\s-p" + _NO_REF + r"([^\s'\"]{4,})"), 1),
+	# `.npmrc` / `.yarnrc.yml` registry credentials, quoted or not
+	(re.compile(r"(?<![A-Za-z0-9])(?:_authToken|_auth|_password|npmAuthToken)[\"']?\s*[:=]\s*[\"']?" + _NO_REF + r"([^\s\"'()]{8,})(?![^\s\"'()]|\()"), 1),
+)
 _PROSE = re.compile(r"(?i)\bpass(?:word|phrase)\s+is\s+" + _NO_REF + r"([^\s\"']{6,})")
-_BEARER = re.compile(r"(?i)\bBearer\s+" + _NO_REF + r"([A-Za-z0-9._~+/=-]{20,})")
-_KV_PASSWORD = re.compile(r"(?i)\b(?:pwd|password)=" + _NO_REF + r"([^;\"'\s]{4,})")
-_CLI_PASSWORD = re.compile(r"\b(?:mysql|mysqldump|psql|mongo|redis-cli)\b[^\n]*?\s-p" + _NO_REF + r"([^\s'\"]{4,})")
+_UNQUOTED = re.compile(rf"(?i)^[\s-]*{_NAME}\s*[:=]\s*" + _NO_REF + r"([^\s\"'$<{(\[]{6,})\s*$")   # YAML/compose/.env values
+_JWT = re.compile(r"\beyJ[A-Za-z0-9_-]{8,}\.eyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}")   # common in tests, so model-judged
 _LITERAL = re.compile(r"[\"']([A-Za-z0-9+/_=-]{24,})[\"']")
+_UUID = re.compile(r"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}")
+_HEX_DIGEST = re.compile(r"[0-9a-fA-F]{32,}")
+_HASH_CONTEXT = re.compile(r"(?i)(?<![a-z])(?:sha\d*|md5|hash(?:es)?|digest|checksum|commit|rev|integrity|etag)(?![a-z])")
 
 
-def _entropy(s: str) -> float:
+def entropy(s: str) -> float:
 	n = len(s)
 	return -sum(c / n * math.log2(c / n) for c in Counter(s).values())
 
@@ -48,36 +97,91 @@ def _is_placeholder(v: str) -> bool:
 	return bool(_PLACEHOLDER.search(v))
 
 
-def _has_digit_and_letter(v: str) -> bool:
+def has_digit_and_letter(v: str) -> bool:
 	return any(c.isdigit() for c in v) and any(c.isalpha() for c in v)
 
 
+_PATH_SEGMENT = re.compile(r"[A-Z]?[a-z0-9._-]+")
+
+
 def _looks_like_path_or_identifier(v: str) -> bool:
-	"""Filesystem paths (`/storage/emulated/0/Download`) and snake_case names are long and varied but not secrets."""
-	return v.count("/") >= 2 or bool(re.fullmatch(r"_*[a-z][a-z0-9]*(?:_[a-z0-9]+)+_*", v))
+	"""Filesystem paths and snake_case names are long and varied but not secrets. A value with 2+ slashes is a path only
+	when it starts like one or every segment is a plain word: a base64 secret (`wJalr.../K7MDENG/bPx...`) is neither."""
+	if v.startswith(("/", "./", "../", "~/")):
+		return v.count("/") >= 2
+	if v.count("/") >= 2 and all(_PATH_SEGMENT.fullmatch(seg) for seg in v.split("/")):
+		return True
+	return bool(re.fullmatch(r"_*[a-z][a-z0-9]*(?:_[a-z0-9]+)+_*", v))
 
 
 def _is_placeholder_url(m: re.Match[str]) -> bool:
 	return m.group(1).lower() in _PLACEHOLDER_PASSWORDS or m.group(2).lower() in _LOCAL_HOSTS
 
 
-def scan_line(text: str) -> LineHit | None:
-	"""A rule hit (high confidence for private keys, AWS keys, token prefixes, URLs with a password), a candidate
-	(secret-looking name assigned a literal, or a long high-entropy literal), or None."""
-	for name, rx, group in _RULES:
-		if m := rx.search(text):
-			if name == "connection string with password" and _is_placeholder_url(m):
-				return None if _is_placeholder(m.group(group)) else LineHit("candidate", None, False, m.group(group))
-			return LineHit("rule", name, True, m.group(group))
-	for rx in (_QUOTED_ASSIGNMENT, _BARE_ASSIGNMENT, _BEARER, _KV_PASSWORD, _CLI_PASSWORD, _PROSE):
-		if (m := rx.search(text)) and not (rx is _PROSE and m.group(1).isalpha()):   # "password is required" is prose
-			return None if _is_placeholder(m.group(1)) else LineHit("candidate", None, False, m.group(1))
-	if (m := _UNQUOTED.search(text)) and _has_digit_and_letter(m.group(1)) and not m.group(1).startswith("http"):
-		return None if _is_placeholder(m.group(1)) else LineHit("candidate", None, False, m.group(1))
+def _is_hash_or_id(v: str, line: str) -> bool:
+	"""UUIDs, and long hex strings on a line about hashes (git SHAs, sha256 sums). A secret-like name still wins: that
+	case is caught by the assignment patterns before the generic literal check runs."""
+	return bool(_UUID.fullmatch(v)) or (bool(_HEX_DIGEST.fullmatch(v)) and bool(_HASH_CONTEXT.search(line)))
+
+
+def _overlaps(a: tuple[int, int], b: tuple[int, int]) -> bool:
+	return a[0] < b[1] and b[0] < a[1]
+
+
+def scan_line(text: str, *, rules_only: bool = False) -> list[LineHit]:
+	"""Every hit on the line, ordered by position. A rule hit is a high-confidence known secret shape (private keys, AWS
+	keys, token prefixes, URLs with a password); a candidate is a secret-looking name assigned a literal, or a long
+	high-entropy literal. Hits never overlap, and a placeholder value hides only itself, not the rest of the line.
+	With `rules_only`, candidates are not extracted at all."""
+	hits: list[LineHit] = []
+	taken: list[tuple[int, int]] = []   # spans already explained: hits and placeholders
+
+	def free(span: tuple[int, int]) -> bool:
+		return not any(_overlaps(span, t) for t in taken)
+
+	def add(kind: Literal["rule", "candidate"], rule: str | None, high: bool, span: tuple[int, int]) -> None:
+		taken.append(span)
+		hits.append(LineHit(kind, rule, high, text[span[0]:span[1]], span[0], span[1]))
+
+	for rule in RULES:
+		for m in rule.pattern.finditer(text):
+			span = m.span(rule.group)
+			if not free(span):
+				continue
+			if rule.name == CONNECTION_STRING and _is_placeholder_url(m):
+				if _is_placeholder(m.group(rule.group)):
+					taken.append(span)
+				else:
+					add("candidate", None, False, span)
+				continue
+			add("rule", rule.name, True, span)
+	if rules_only:
+		return sorted(hits, key=lambda h: h.start)
+
+	def candidate(span: tuple[int, int]) -> None:
+		value = text[span[0]:span[1]]
+		if _is_placeholder(value):
+			taken.append(span)
+		else:
+			add("candidate", None, False, span)
+
+	for rx, group in _CANDIDATES:
+		for m in rx.finditer(text):
+			if free(m.span(group)):
+				candidate(m.span(group))
+	for m in _PROSE.finditer(text):
+		if free(m.span(1)) and not m.group(1).isalpha():   # "password is required" is prose
+			candidate(m.span(1))
+	for m in _UNQUOTED.finditer(text):
+		if free(m.span(1)) and has_digit_and_letter(m.group(1)) and not m.group(1).startswith("http"):
+			candidate(m.span(1))
+	for m in _JWT.finditer(text):
+		if free(m.span()):
+			add("candidate", None, False, m.span())
 	for m in _LITERAL.finditer(text):
 		v = m.group(1)
-		if _looks_like_path_or_identifier(v):
+		if not free(m.span(1)) or _looks_like_path_or_identifier(v) or _is_hash_or_id(v, text):
 			continue
-		if any(c.isdigit() for c in v) and any(c.isalpha() for c in v) and _entropy(v) >= 3.5:
-			return LineHit("candidate", None, False, v)
-	return None
+		if has_digit_and_letter(v) and entropy(v) >= 3.5:
+			add("candidate", None, False, m.span(1))
+	return sorted(hits, key=lambda h: h.start)

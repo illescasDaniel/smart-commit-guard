@@ -208,3 +208,118 @@ def test_given_files_mode_with_a_sensitive_name_when_scanning_then_it_blocks(tmp
 	d.mkdir()
 	(d / "id_rsa").write_text("not really a key\n")
 	assert main(["scan", "--files", str(d / "id_rsa")], env={}, decider=FakeDecider()) == 1
+
+
+# --- 0.6 / 0.6.1: hosted backends, and a hosted model used in CI only
+
+HOSTED = {"SECRET_GUARD_BASE_URL": "https://llm.example.com", "SECRET_GUARD_ALLOW_HOSTED": "1"}
+CANDIDATE = 'DB_PASS = "Winter2026!Admin"\n'
+
+
+def staged_repo(tmp_path, monkeypatch, text=CANDIDATE, name="db.py"):
+	git(tmp_path, "init", "-q")
+	git(tmp_path, "config", "user.name", "t")
+	git(tmp_path, "config", "user.email", "t@example.com")
+	(tmp_path / name).write_text(text)
+	git(tmp_path, "add", name)
+	monkeypatch.chdir(tmp_path)
+
+
+def test_given_a_hosted_backend_when_scanning_then_the_unmasked_candidate_line_is_sent(tmp_path):
+	d = FakeDecider(lambda p, t: 0.1)
+	assert main(["scan", "--files", write(tmp_path, "db.py", CANDIDATE)], env=HOSTED, decider=d) == 0
+	assert d.seen_text == CANDIDATE.strip()
+
+
+def test_given_hosted_scope_ci_when_scanning_staged_then_the_model_is_not_called_a_candidate_only_warns_and_the_note_says_why(tmp_path, monkeypatch, capsys):
+	staged_repo(tmp_path, monkeypatch)
+	d = FakeDecider(lambda p, t: 1.0)
+	assert main(["scan", "--staged"], env={**HOSTED, "SECRET_GUARD_HOSTED_SCOPE": "ci"}, decider=d) == 0
+	out = capsys.readouterr()
+	assert d.batches == [] and "WARN" in out.out
+	assert "hosted model not used for commits (SECRET_GUARD_HOSTED_SCOPE=ci)" in out.err and "CI will judge them" in out.err
+
+
+def test_given_hosted_scope_ci_when_scanning_staged_then_json_says_the_model_was_skipped(tmp_path, monkeypatch, capsys):
+	staged_repo(tmp_path, monkeypatch)
+	main(["scan", "--staged", "--json"], env={**HOSTED, "SECRET_GUARD_HOSTED_SCOPE": "ci"}, decider=FakeDecider())
+	data = json.loads(capsys.readouterr().out)
+	assert data["model_skipped"] == "hosted_scope" and data["model_unavailable"] is False
+
+
+def test_given_hosted_scope_ci_when_a_rule_hit_is_staged_then_it_still_blocks(tmp_path, monkeypatch):
+	staged_repo(tmp_path, monkeypatch, f'KEY = "{AWS_KEY}"\n', "app.py")
+	assert main(["scan", "--staged"], env={**HOSTED, "SECRET_GUARD_HOSTED_SCOPE": "ci"}, decider=FakeDecider()) == 1
+
+
+def test_given_hosted_scope_ci_when_scanning_files_then_the_hosted_model_judges_the_unmasked_line(tmp_path):
+	d = FakeDecider(lambda p, t: 0.95)
+	env = {**HOSTED, "SECRET_GUARD_HOSTED_SCOPE": "ci"}
+	assert main(["scan", "--files", write(tmp_path, "db.py", CANDIDATE)], env=env, decider=d) == 1
+	assert d.seen_text == CANDIDATE.strip()
+
+
+def test_given_hosted_scope_ci_when_the_range_adds_a_candidate_then_the_hosted_model_judges_it(tmp_path, monkeypatch):
+	git(tmp_path, "init", "-q")
+	git(tmp_path, "config", "user.name", "t")
+	git(tmp_path, "config", "user.email", "t@example.com")
+	git(tmp_path, "commit", "-q", "--allow-empty", "-m", "base")
+	(tmp_path / "db.py").write_text(CANDIDATE)
+	git(tmp_path, "add", "db.py")
+	git(tmp_path, "commit", "-q", "-m", "add")
+	monkeypatch.chdir(tmp_path)
+	d = FakeDecider(lambda p, t: 0.95)
+	assert main(["scan", "--diff", "HEAD~1..HEAD"], env={**HOSTED, "SECRET_GUARD_HOSTED_SCOPE": "ci"}, decider=d) == 1
+	assert d.seen_text == CANDIDATE.strip()
+
+
+def test_given_hosted_scope_ci_and_a_loopback_url_when_scanning_staged_then_the_model_is_still_used(tmp_path, monkeypatch):
+	staged_repo(tmp_path, monkeypatch)
+	d = FakeDecider(lambda p, t: 0.1)
+	assert main(["scan", "--staged"], env={"SECRET_GUARD_HOSTED_SCOPE": "ci"}, decider=d) == 0
+	assert d.batches
+
+
+def test_given_repo_scope_ci_and_env_scope_all_when_scanning_staged_then_the_repo_narrowing_wins(tmp_path, monkeypatch):
+	staged_repo(tmp_path, monkeypatch)
+	(tmp_path / ".secret-guard.toml").write_text('[model]\nhosted_scope = "ci"\n')
+	d = FakeDecider(lambda p, t: 1.0)
+	assert main(["scan", "--staged"], env={**HOSTED, "SECRET_GUARD_HOSTED_SCOPE": "all"}, decider=d) == 0
+	assert d.batches == []
+
+
+def test_given_a_bad_scope_when_scanning_then_exit_2_names_the_allowed_values(tmp_path, capsys):
+	f = write(tmp_path, "a.py", "x = 1\n")
+	assert main(["scan", "--files", f], env={"SECRET_GUARD_HOSTED_SCOPE": "never"}, decider=FakeDecider()) == 2
+	assert "all, ci" in capsys.readouterr().err
+
+
+def test_given_a_hosted_http_url_when_scanning_then_exit_2_and_nothing_is_sent(tmp_path):
+	d = FakeDecider()
+	env = {"SECRET_GUARD_BASE_URL": "http://llm.example.com", "SECRET_GUARD_ALLOW_HOSTED": "1"}
+	assert main(["scan", "--files", write(tmp_path, "db.py", CANDIDATE)], env=env, decider=d) == 2 and d.batches == []
+
+
+def test_given_a_hosted_url_when_running_doctor_then_it_warns_that_candidate_lines_are_sent_unmasked(tmp_path, monkeypatch, capsys):
+	git(tmp_path, "init", "-q")
+	monkeypatch.chdir(tmp_path)
+	main(["install-hook", "--shared"], env={})
+	assert main(["doctor"], env=HOSTED, decider=FakeDecider()) == 0
+	out = capsys.readouterr().out
+	assert "WARN" in out and "llm.example.com" in out and "unmasked" in out
+
+
+def test_given_hosted_scope_ci_when_running_doctor_then_it_says_commits_fall_back_to_rules_and_does_not_call_the_model(tmp_path, monkeypatch, capsys):
+	git(tmp_path, "init", "-q")
+	monkeypatch.chdir(tmp_path)
+	main(["install-hook", "--shared"], env={})
+	d = FakeDecider()
+	main(["doctor"], env={**HOSTED, "SECRET_GUARD_HOSTED_SCOPE": "ci"}, decider=d)
+	assert "used in CI only; commits fall back to rules" in capsys.readouterr().out and d.batches == []
+
+
+def test_given_doctor_when_run_then_it_prints_the_version(tmp_path, monkeypatch, capsys):
+	git(tmp_path, "init", "-q")
+	monkeypatch.chdir(tmp_path)
+	main(["doctor"], env={}, decider=FakeDecider())
+	assert "version" in capsys.readouterr().out
