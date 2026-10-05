@@ -32,11 +32,13 @@ secret-guard scan --diff origin/main...HEAD
 1. Only **added lines** are scanned. Lockfiles, binaries, minified files and `.env.example` are skipped.
 2. **High-confidence rules** (private keys, AWS keys, `sk-`/`ghp_`/`xox`/`AIza`/`glpat-` tokens, chat webhook URLs,
    connection strings with a password) **block immediately**, with no model call, outside test/doc/example paths.
-3. **Candidates** (`password = "..."`, `Bearer` tokens, `-pSECRET` CLI flags, unquoted YAML values, high-entropy
+3. A staged **environment file** (`.env`, `.env.local`, `prod.env`; not `.env.example`/`.sample`/`.template`) blocks as a whole,
+   with no model call, as long as it has any non-comment line. Add it to `.gitignore`, or allowlist it if intentional.
+4. **Candidates** (`password = "..."`, `Bearer` tokens, `-pSECRET` CLI flags, unquoted YAML values, high-entropy
    literals) go to the model, one per request. Obvious placeholders (`changeme`, `your-...`, `xxxx`) are dropped first.
-4. The **policy lives in code**, not in the model: the model's probability `p` blocks at `p >= 0.5` and warns at
+5. The **policy lives in code**, not in the model: the model's probability `p` blocks at `p >= 0.5` and warns at
    `p >= 0.4` (configurable).
-5. If the model is unreachable: rule hits still block; model-only candidates warn and allow.
+6. If the model is unreachable: rule hits still block; model-only candidates warn and allow.
 
 Findings never print the secret, only a shape-preserving mask such as `sk_live_A9a9A9a9...`.
 

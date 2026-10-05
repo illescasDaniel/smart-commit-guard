@@ -91,3 +91,23 @@ def test_given_no_candidates_when_scanning_then_the_model_is_never_called():
 	d = FakeDecider()
 	scan([AddedLine("src/a.py", 1, "x = 1")], d)
 	assert d.batches == []
+
+
+def test_given_an_env_file_with_any_value_when_scanning_then_it_blocks_once_without_the_model_or_printing_contents():
+	d = FakeDecider()
+	r = scan([AddedLine(".env", 1, "# local"), AddedLine(".env", 2, "A=b"), AddedLine(".env", 3, "C=d")], d)
+	assert r.exit_code == 1 and d.batches == [] and len(r.findings) == 1
+	assert r.findings[0].number == 2 and "A=b" not in r.findings[0].preview
+
+
+def test_given_an_empty_or_comment_only_env_file_when_scanning_then_it_passes():
+	assert scan([AddedLine(".env", 1, "# nothing"), AddedLine(".env", 2, "")], FakeDecider()).exit_code == 0
+
+
+def test_given_an_allowlisted_env_file_when_scanning_then_it_passes():
+	fp = fingerprint(".env", "<contents hidden>")
+	assert scan([AddedLine(".env", 1, "A=b")], FakeDecider(), allowlist={fp}).exit_code == 0
+
+
+def test_given_an_env_example_when_scanning_then_it_is_still_skipped():
+	assert scan([AddedLine(".env.example", 1, "A=b")], FakeDecider()).exit_code == 0

@@ -7,10 +7,14 @@ from collections.abc import Set as AbstractSet
 from .decider import MAX_BATCH, Decider, DeciderUnavailable
 from .redact import fingerprint, mask_in_line
 from .rules import scan_line
-from .skip import is_example_path, is_skipped
+from .skip import is_env_file, is_example_path, is_skipped
 from .types import AddedLine, Finding, LineHit, ScanResult
 
 MAX_CALLS = 30   # one candidate per request (see decider.MAX_BATCH), so this is also the candidates judged per scan
+
+
+ENV_REASON = "environment file should not be committed (add it to .gitignore, commit a .env.example instead)"
+ENV_PREVIEW = "<contents hidden>"
 
 
 def _label(hit: LineHit) -> str:
@@ -22,8 +26,15 @@ def scan(lines: Sequence[AddedLine], decider: Decider | None, *, block_at: float
 	"""decider=None means rules only. With hosted=True the decider only ever receives masked text."""
 	result = ScanResult()
 	pending: list[tuple[AddedLine, LineHit, str]] = []   # (line, hit, masked line); the model decides these
+	env_flagged: set[str] = set()
 	for line in lines:
 		if is_skipped(line.path):
+			continue
+		if is_env_file(line.path):   # the file itself is the finding: one block per file, no model, contents never printed
+			if line.path not in env_flagged and line.text.strip() and not line.text.lstrip().startswith("#"):
+				env_flagged.add(line.path)
+				if fingerprint(line.path, ENV_PREVIEW) not in allowlist:
+					result.findings.append(Finding(line.path, line.number, "block", ENV_REASON, ENV_PREVIEW))
 			continue
 		hit = scan_line(line.text)
 		if hit is None:

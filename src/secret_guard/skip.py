@@ -9,6 +9,7 @@ _BINARY_SUFFIXES = {".png", ".jpg", ".jpeg", ".gif", ".webp", ".ico", ".pdf", ".
 					".woff2", ".ttf", ".otf", ".mp3", ".mp4", ".mov", ".avif", ".heic", ".so", ".dll", ".exe", ".pyc"}
 _GENERATED_SUFFIXES = (".min.js", ".min.css", ".map")
 _EXAMPLE_DIRS = {"test", "tests", "fixtures", "fixture", "docs", "doc", "examples", "example", "samples", "sample"}
+_ENV_TEMPLATE_MARKERS = ("example", "sample", "template", "dist", "defaults")
 _EXAMPLE_NAME_MARKERS = (".example", ".sample", "-example", "_example")
 
 
@@ -21,6 +22,13 @@ def is_skipped(path: str) -> bool:
 	name = PurePosixPath(path).name.lower()
 	return (name in _LOCKFILES or name == ".env.example" or name.endswith(_GENERATED_SUFFIXES)
 			or PurePosixPath(name).suffix in _BINARY_SUFFIXES)
+
+
+def is_env_file(path: str) -> bool:
+	"""`.env`, `.env.local`, `prod.env`...: files that hold real environment secrets and should not be committed."""
+	name = PurePosixPath(path).name.lower()
+	return ((name == ".env" or name.startswith(".env.") or name.endswith(".env"))
+			and not any(m in name for m in _ENV_TEMPLATE_MARKERS))
 
 
 def is_example_path(path: str) -> bool:
