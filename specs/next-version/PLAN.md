@@ -83,34 +83,57 @@ Tests: a `post` stub cannot cover this, so add a test that builds the real opene
 with entries (or start a throwaway `http.server` on 127.0.0.1 with `HTTP_PROXY` pointing at a dead port and assert the call
 still succeeds).
 
-### 0.6 Hosted mode can never block a model-judged candidate [by reading, to measure]
-With `SECRET_GUARD_ALLOW_HOSTED=1`, `_judge` sends `masked` text (for example `password = "Aaaaa9999!Aaaa"`). The question's
-own `false` criterion says *"a masked value (runs of A/a/9/*)"* is not a credential. So in hosted mode the model is told
-that every input is a non-secret. Expected effect: every candidate scores low and passes. Rule hits still block.
+### 0.6 Hosted mode: send the real line, drop masking for the model [by reading; decided]
+Problem: with `SECRET_GUARD_ALLOW_HOSTED=1`, `_judge` sends `masked` text (for example `password = "Aaaaa9999!Aaaa"`). The
+question's own `false` criterion says *"a masked value (runs of A/a/9/*)"* is not a credential. So in hosted mode the model
+is told that every input is a non-secret, and a masked value carries too little signal to judge anyway. Expected effect:
+every model-judged candidate scores low and passes. Rule hits still block.
 
-To try (eval in the other environment, see 3.3):
-1. Measure first: run the eval with `hosted=True` and confirm the recall drop.
-2. Options, in order of preference:
-   - a. For hosted calls, send a *feature description* instead of the masked line: variable name, file path, value length,
-     character classes, entropy, "looks like a known prefix", "contains dictionary words: yes/no", and the line with the
-     value replaced by `<VALUE>`. Use a separate question that does not mention masks.
-   - b. Keep the masked line but use a hosted-specific question without the mask criterion, and say in the instructions
-     that the value is masked on purpose.
-   - c. If neither reaches the recall target, document that hosted mode is rules plus warn-only and make `doctor` say so.
-3. Each option needs its own calibrated thresholds (`SECRET_GUARD_BLOCK_AT` per mode), stored in the eval output.
+**Decision:** the model always receives the same unmasked candidate line, local or hosted. Masking stays for everything a
+human or log sees (terminal, `--json`, SARIF, skips log, allowlist fingerprints). Choosing a hosted backend means trusting
+it with the candidate lines. The hosted opt-in stays, and it is now an explicit consent to that.
+
+Changes:
+- `policy.py`: remove the `hosted` parameter from `scan()` and `_judge()`; always send `line.text` (or the centred window from
+  0.9). `cli.py`: stop computing and passing `hosted`. `evals/run_eval.py` needs no change.
+- `config.py`: keep `SECRET_GUARD_ALLOW_HOSTED=1` as the gate for non-loopback URLs. Reword the refusal: "...is not a local
+  server; set SECRET_GUARD_ALLOW_HOSTED=1 to send candidate lines (which may contain real secrets) to it". Require `https://`
+  for hosted URLs (see 2.3); this matters more now that raw values are sent.
+- Only candidate lines are sent, never whole files or the full diff, and rule hits outside example paths still never reach
+  the model. Keep both properties and say so in the docs. Lines that rules already block never leave the machine.
+- `doctor` with a hosted URL: print a `WARN` that candidate lines are sent unmasked to `<host>`.
+- Optional, for teams that want it: `SECRET_GUARD_HOSTED_SCOPE=ci` refuses a hosted URL for `scan --staged` (hook) and allows
+  it for `--diff`/`--files`. Low priority; only if someone asks.
+- Keep the question's "a masked value (runs of A/a/9/*)" criterion: it now only covers values that are masked in the
+  source itself (docs showing `****` or `AAAA9999`), which is still correct.
+
+Tests and docs to update in the same change:
+- `tests/unit/test_policy.py::test_given_hosted_when_scanning_then_the_model_only_sees_masked_values`: replace it with a test
+  that the decider receives the original line in every mode.
+- `tests/unit/test_config.py` and `test_cli.py` hosted tests: keep them (refusal without opt-in; nothing sent). Add one for
+  the new message and one for `http://` being refused for a hosted URL.
+- `SPEC.md`: rewrite the "Trust boundary" bullets ("only redacted snippets are sent" goes) and the BDD line "the request
+  body contains the masked value and not the original" (it becomes "the request body contains only the candidate line, not
+  other lines or files").
+- `README.md` "Privacy" section and the `SECRET_GUARD_ALLOW_HOSTED` row: say plainly that a hosted backend receives the
+  unmasked candidate lines, so only use one you would trust with the secrets themselves (for example a self-hosted server on
+  your own network).
+
+To measure in the model environment: run the eval against a hosted endpoint with the change and confirm the scores match
+the local run for the same model (they should, since the input is now identical). If a different hosted model is used, it
+needs its own thresholds (4.3, "Other models").
 
 ### 0.7 A second secret on the same line is printed in clear [confirmed]
 `scan_line` returns only the first hit, and the preview masks only that value. Repro:
-`creds = ("AKIA...", "wJalr.../K7MDENG/...")` prints the AWS **secret** key in full in the terminal and CI logs (and sends
-it to a hosted model unmasked).
+`creds = ("AKIA...", "wJalr.../K7MDENG/...")` prints the AWS **secret** key in full in the terminal and CI logs.
 
 Fix:
 - `scan_line` returns **all** hits on the line (`finditer` over every rule and candidate regex), deduplicated by span.
-- The preview and the hosted payload mask every hit value **and** any other token of 16 or more characters with entropy
-  above 3.0 (defence in depth: the preview is shown in CI logs).
+- The preview masks every hit value **and** any other token of 16 or more characters with entropy above 3.0 (defence in
+  depth: the preview is shown in CI logs). The model payload is unmasked (see 0.6).
 - Severity of the line is the most severe hit; the finding lists the rule names.
 - Property test (Hypothesis, dev dependency only): for random lines with 1 to 3 injected secrets, no injected secret
-  (beyond its known prefix) appears in `preview`, in `--json` output, or in the hosted payload.
+  (beyond its known prefix) appears in `preview`, in `--json` output or in the skips log.
 
 ### 0.8 A placeholder earlier on a line hides a real secret later on it [confirmed]
 `{"password": "changeme", "token": "q8Zr2LmW9vXp4TnK7"}` returns `None`: the first `_QUOTED_ASSIGNMENT` match is a
@@ -198,7 +221,8 @@ on Windows (backslashes) **[to test on Windows]**.
 
 ### 2.3 Config validation gaps [confirmed]
 `SECRET_GUARD_TIMEOUT=0` is accepted and fails with a confusing `Operation now in progress`. Require `timeout > 0`. For a
-hosted URL require `https://` (a Bearer token over plain HTTP is sent in clear) unless `SECRET_GUARD_ALLOW_INSECURE=1`.
+hosted URL require `https://` (over plain HTTP, the Bearer token and the unmasked candidate lines from 0.6 travel in clear)
+unless `SECRET_GUARD_ALLOW_INSECURE=1`.
 
 ### 2.4 Merge commits [to measure]
 During a merge, `git diff --cached` contains every line brought in from the other branch. That can surface old findings
@@ -276,7 +300,7 @@ Add `tests/unit/test_eval_cases.py`: for every case in `evals/cases_*.json`, ass
 ### 4.3 Experiments to run
 | Experiment | Question | Decide by |
 |---|---|---|
-| Hosted mode (0.6) | recall with masked input today; recall with options a/b | recall >= 0.95 at fp <= 0.05 |
+| Hosted mode (0.6) | with unmasked input, does a hosted endpoint score the same as local for the same model? | identical p values (within noise) |
 | Centred window (0.9) | does centring change scores for short lines? (it should not) | no regression on current sets |
 | Context lines | send ±1 to 2 surrounding added lines | better precision on test fixtures, no recall loss |
 | Question wording | with vs without `criteria`; mention the file path explicitly | calibration (ECE) and recall |
@@ -310,5 +334,6 @@ Also store the model name, question version and tool version in `evals/last_run.
 3. Proxy and redirect hardening (0.5).
 4. All-hits-per-line, full masking, centred window (0.7, 0.8, 0.9) with the property test.
 5. Rule additions and FP fixes (1.1 to 1.5), each with unit tests and eval cases; then the rules-only eval gate (4.1).
-6. In the model environment: hosted-mode experiment and the rest of 4.3; recalibrate thresholds; update the spec's eval section.
-7. Features (3.x) as time allows; `--all`, SARIF/annotations and `.pre-commit-hooks.yaml` first.
+6. Hosted mode sends unmasked candidate lines (0.6), with the spec, README and test updates listed there.
+7. In the model environment: the 4.3 experiments; recalibrate thresholds; update the spec's eval section.
+8. Features (3.x) as time allows; `--all`, SARIF/annotations and `.pre-commit-hooks.yaml` first.
