@@ -5,6 +5,8 @@ import argparse
 import fnmatch
 import json
 import os
+import shlex
+import shutil
 import stat
 import subprocess
 import sys
@@ -19,7 +21,15 @@ from .policy import scan
 from .redact import fingerprint
 from .types import AddedLine, ScanResult
 
-HOOK = "#!/bin/sh\n# installed by secret-guard\nexec secret-guard scan --staged\n"
+SKIP_ENV = "SKIP_SECRET_GUARD"
+HOOK = """#!/bin/sh
+# installed by secret-guard
+if [ "$SKIP_SECRET_GUARD" = "1" ]; then
+	echo "secret-guard: SKIPPED (SKIP_SECRET_GUARD=1): this commit was not scanned." >&2
+	exit 0
+fi
+exec {exe} scan --staged
+"""
 
 
 class ToolError(Exception):
@@ -73,8 +83,8 @@ def _report(result: ScanResult, as_json: bool) -> None:
 	if result.model_unavailable:
 		print("note: the decision model was unavailable; only rule hits were enforced", file=sys.stderr)
 	if result.exit_code:
-		print("secret-guard: commit blocked. Move secrets to environment variables, or allowlist a false positive "
-			  "in .secret-guard.toml.", file=sys.stderr)
+		print("secret-guard: commit blocked. Move secrets to environment variables. For a false positive, allowlist it "
+			  f"in .secret-guard.toml or, for this commit only, run it with {SKIP_ENV}=1.", file=sys.stderr)
 
 
 def _clip(s: str, n: int = 160) -> str:
@@ -82,6 +92,10 @@ def _clip(s: str, n: int = 160) -> str:
 
 
 def _scan(args: argparse.Namespace, env: Mapping[str, str], decider: Decider | None) -> int:
+	if args.staged and env.get(SKIP_ENV) == "1":   # only the local commit hook; CI (`--diff`) cannot be skipped this way
+		print(f"secret-guard: SKIPPED ({SKIP_ENV}=1): this commit was not scanned. Only use this for a false positive.",
+			  file=sys.stderr)
+		return 0
 	if args.files:
 		lines = _file_lines(args.files)
 	elif args.diff:
@@ -102,12 +116,20 @@ def _scan(args: argparse.Namespace, env: Mapping[str, str], decider: Decider | N
 	return result.exit_code
 
 
+def _executable() -> str:
+	"""Absolute path of this tool, so the hook works when `secret-guard` is not on git's PATH (venv, uv run)."""
+	me = Path(sys.argv[0])
+	if me.name == "secret-guard" and me.exists():
+		return str(me.resolve())
+	return shutil.which("secret-guard") or "secret-guard"
+
+
 def _install_hook(force: bool) -> int:
 	hook = Path(_git("rev-parse", "--git-path", "hooks/pre-commit").strip())
 	if hook.exists() and not force:
 		raise ToolError(f"{hook} already exists; use --force to overwrite it")
 	hook.parent.mkdir(parents=True, exist_ok=True)
-	hook.write_text(HOOK)
+	hook.write_text(HOOK.format(exe=shlex.quote(_executable())))
 	hook.chmod(hook.stat().st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
 	print(f"installed {hook}")
 	return 0

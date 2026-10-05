@@ -74,4 +74,29 @@ def test_given_install_hook_when_a_hook_exists_then_it_is_not_overwritten_withou
 	hook.write_text("#!/bin/sh\necho mine\n")
 	monkeypatch.chdir(tmp_path)
 	assert main(["install-hook"], env={}) == 2 and "mine" in hook.read_text()
-	assert main(["install-hook", "--force"], env={}) == 0 and "secret-guard scan --staged" in hook.read_text()
+	assert main(["install-hook", "--force"], env={}) == 0 and "scan --staged" in hook.read_text() and "SKIP_SECRET_GUARD" in hook.read_text()
+
+
+def test_given_skip_secret_guard_when_scanning_staged_then_it_allows_the_commit_and_says_it_was_skipped(tmp_path, monkeypatch, capsys):
+	git(tmp_path, "init", "-q")
+	(tmp_path / "app.py").write_text(f'KEY = "{AWS_KEY}"\n')
+	git(tmp_path, "add", "app.py")
+	monkeypatch.chdir(tmp_path)
+	d = FakeDecider()
+	assert main(["scan", "--staged"], env={"SKIP_SECRET_GUARD": "1"}, decider=d) == 0
+	err = capsys.readouterr().err
+	assert "SKIPPED" in err and "SKIP_SECRET_GUARD" in err and d.batches == []
+
+
+def test_given_skip_secret_guard_with_any_other_value_when_scanning_staged_then_it_still_blocks(tmp_path, monkeypatch):
+	git(tmp_path, "init", "-q")
+	(tmp_path / "app.py").write_text(f'KEY = "{AWS_KEY}"\n')
+	git(tmp_path, "add", "app.py")
+	monkeypatch.chdir(tmp_path)
+	for value in ("0", "", "true", "yes"):
+		assert main(["scan", "--staged"], env={"SKIP_SECRET_GUARD": value}, decider=FakeDecider()) == 1
+
+
+def test_given_skip_secret_guard_when_scanning_files_or_a_diff_range_then_it_is_ignored_so_ci_still_gates(tmp_path):
+	f = write(tmp_path, "app.py", f'KEY = "{AWS_KEY}"\n')
+	assert main(["scan", "--files", f], env={"SKIP_SECRET_GUARD": "1"}, decider=FakeDecider()) == 1

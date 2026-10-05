@@ -1,7 +1,7 @@
 # Spec: secret-scan (secret-guard CLI)
 
-Status: **Approved**, with two later amendments pending re-approval: one candidate per model request, and
-calibrated default thresholds (see the Eval results section).
+Status: **Approved** (including the one-candidate-per-request and calibrated-threshold amendments, 2026-10-05, and the
+`SKIP_SECRET_GUARD` bypass).
 
 ## Goal
 Stop real secrets (API keys, passwords, private keys, tokens, connection strings with passwords) from being committed.
@@ -31,6 +31,8 @@ placeholder, mock or env reference). The tool is a CLI for a git pre-commit hook
 | Rule hit in test/fixture/doc/example path | Ask the model; block only at p >= block threshold |
 | No rule hit but secret-looking name or high-entropy literal | Ask the model; block at p >= block threshold, warn between warn and block thresholds |
 | Model unreachable, times out or returns a malformed or incomplete answer | Rule hits still **block**; model-only candidates **warn and allow** (never treat a missing answer as a pass for a rule hit) |
+| `SKIP_SECRET_GUARD=1` and `scan --staged` | Nothing is scanned (no model call); prints a loud `SKIPPED` notice on stderr; exit 0 |
+| `SKIP_SECRET_GUARD=1` with `--diff` or `--files` | Ignored: CI and explicit scans cannot be skipped this way |
 | Not a git repo, or git fails | Exit 2 with a message |
 | Binary file, lockfile, generated file, `.env.example` | Skipped |
 
@@ -51,6 +53,10 @@ password) block without the model. Credential-assignment (`password = "..."`) an
 ### Configuration
 Env vars: `SECRET_GUARD_BASE_URL`, `SECRET_GUARD_MODEL`, `SECRET_GUARD_API_KEY` (only if the server wants one),
 `SECRET_GUARD_TIMEOUT`, `SECRET_GUARD_ALLOW_HOSTED`, `SECRET_GUARD_BLOCK_AT`, `SECRET_GUARD_WARN_AT`.
+
+**Bypass:** `SKIP_SECRET_GUARD=1 git commit -m "..."` is an explicit acknowledgement that a block is a false positive. Only
+the exact value `1` counts, only for `scan --staged` (the commit hook). It is not honored for `--diff` (CI), so a
+bypassed commit still has to pass CI; a false positive that must pass CI gets an allowlist entry in `.secret-guard.toml`.
 Optional `.secret-guard.toml` in the repo root: extra skip globs, allowlisted fingerprints (hash of the masked finding, so
 the allowlist itself holds no secret).
 
@@ -76,6 +82,9 @@ Answers are read from `answers[<key>].noul`. A missing or non-noul answer is a f
 - **Given** a hosted base URL and no `SECRET_GUARD_ALLOW_HOSTED`, **then** exit 2 and nothing is sent.
 - **Given** a hosted backend with opt-in, **then** the request body contains the masked value and not the original.
 - **Given** a changed `package-lock.json`, **then** it is skipped.
+- **Given** `SKIP_SECRET_GUARD=1` and a staged secret, **when** scanning staged, **then** exit 0, a `SKIPPED` notice, no model call;
+  **and given** any other value (`0`, empty, `true`) **then** it still blocks; **and given** `--files`/`--diff` **then** the
+  variable is ignored.
 - **Given** an allowlisted fingerprint, **then** that finding is not reported.
 - **Given** a removed line (`-`) containing a secret, **then** it is ignored (only added lines are scanned).
 
