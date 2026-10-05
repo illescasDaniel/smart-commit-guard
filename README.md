@@ -1,7 +1,7 @@
-# secret-guard
+# smart-commit-guard
 
-[![CI](https://github.com/illescasDaniel/secret-guard/actions/workflows/ci.yml/badge.svg)](https://github.com/illescasDaniel/secret-guard/actions/workflows/ci.yml)
-[![PyPI](https://img.shields.io/pypi/v/secret-guard.svg)](https://pypi.org/project/secret-guard/)
+[![CI](https://github.com/illescasDaniel/smart-commit-guard/actions/workflows/ci.yml/badge.svg)](https://github.com/illescasDaniel/smart-commit-guard/actions/workflows/ci.yml)
+[![PyPI](https://img.shields.io/pypi/v/smart-commit-guard.svg)](https://pypi.org/project/smart-commit-guard/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 ![Python 3.12+](https://img.shields.io/badge/python-3.12%2B-blue)
 
@@ -14,14 +14,14 @@ pre-commit hook and as a CI step. Zero runtime dependencies, Python 3.12+.
 ## Install
 
 ```bash
-uv tool install secret-guard      # or: pipx install secret-guard
+uv tool install smart-commit-guard      # or: pipx install smart-commit-guard
 ```
 
 ## Quickstart
 
 ```bash
-secret-guard install-hook          # this clone only: writes .git/hooks/pre-commit
-secret-guard doctor                # checks the hook, the rules and the model
+smart-commit-guard install-hook          # this clone only: writes .git/hooks/pre-commit
+smart-commit-guard doctor                # checks the hook, the rules and the model
 ```
 
 To share the hook with everyone who clones the repo, see [Sharing the hook](#sharing-the-hook-with-your-team).
@@ -29,7 +29,7 @@ To share the hook with everyone who clones the repo, see [Sharing the hook](#sha
 Add a CI step too: it catches `git commit --no-verify` and cannot be bypassed with `SKIP_SECRET_GUARD`.
 
 ```bash
-secret-guard scan --diff origin/main...HEAD
+smart-commit-guard scan --diff origin/main...HEAD
 ```
 
 ## How it works
@@ -60,13 +60,13 @@ Exit codes: `0` allowed (warnings may print), `1` blocked, `2` tool error.
 
 | Command | Purpose |
 |---|---|
-| `secret-guard scan --staged` | the staged diff (what the hook runs) |
-| `secret-guard scan --diff RANGE` | a revision range, for CI (`origin/main...HEAD`) |
-| `secret-guard scan --files PATH...` | whole files |
+| `smart-commit-guard scan --staged` | the staged diff (what the hook runs) |
+| `smart-commit-guard scan --diff RANGE` | a revision range, for CI (`origin/main...HEAD`) |
+| `smart-commit-guard scan --files PATH...` | whole files |
 | `--json`, `--no-model` | machine-readable output; rules only (no model call) |
-| `secret-guard install-hook [--force]` | per-clone hook in the effective hooks directory |
-| `secret-guard install-hook --shared` | committable `.githooks/pre-commit` plus `core.hooksPath` |
-| `secret-guard doctor` | verify the hook, the rules and the model |
+| `smart-commit-guard install-hook [--force]` | per-clone hook in the effective hooks directory |
+| `smart-commit-guard install-hook --shared` | committable `.githooks/pre-commit` plus `core.hooksPath` |
+| `smart-commit-guard doctor` | verify the hook, the rules and the model |
 
 ## Environment variables
 
@@ -112,7 +112,7 @@ An explicit acknowledgement that a block is a false positive. Details:
   commit still has to pass CI. Use an allowlist entry for a false positive that must pass CI.
 - Nothing is scanned and the model is not called. A loud `SKIPPED` notice is printed.
 - Every bypass is **logged** (see below).
-- Do not `export` it in your shell profile; `secret-guard doctor` warns if it is set.
+- Do not `export` it in your shell profile; `smart-commit-guard doctor` warns if it is set.
 
 ### The skips log
 
@@ -134,20 +134,20 @@ The authoritative backstop is CI.
 Git does not version `.git/hooks/`, so a plain `install-hook` only protects your own clone. To share it:
 
 ```bash
-secret-guard install-hook --shared
-git add .githooks .gitattributes && git commit -m "Add the secret-guard pre-commit hook"
+smart-commit-guard install-hook --shared
+git add .githooks .gitattributes && git commit -m "Add the smart-commit-guard pre-commit hook"
 ```
 
-This writes `.githooks/pre-commit` (no machine-specific paths: it finds `secret-guard` on `PATH`, then in the repo's
+This writes `.githooks/pre-commit` (no machine-specific paths: it finds `smart-commit-guard` on `PATH`, then in the repo's
 `.venv`, then through `uvx`), sets `core.hooksPath` to `.githooks`, and adds `/.githooks/* text eol=lf` to
 `.gitattributes` so the script keeps LF endings on Windows. `core.hooksPath` is local git config, so **each clone
 runs once**:
 
 ```bash
-git config core.hooksPath .githooks     # or: secret-guard install-hook --shared
+git config core.hooksPath .githooks     # or: smart-commit-guard install-hook --shared
 ```
 
-Put that line in your setup docs or bootstrap task. A teammate without `secret-guard` installed is blocked with a
+Put that line in your setup docs or bootstrap task. A teammate without `smart-commit-guard` installed is blocked with a
 message telling them how to install it (the gate fails closed rather than silently not running).
 
 `core.hooksPath` replaces `.git/hooks/` for the clone. If you already use other hooks, call them from
@@ -158,7 +158,7 @@ message telling them how to install it (the gate fails closed rather than silent
 Run the built-in check first:
 
 ```bash
-secret-guard doctor
+smart-commit-guard doctor
 ```
 
 It verifies that the hook exists at the effective path, is executable and runs `scan --staged`, that a synthetic
@@ -167,7 +167,7 @@ secret is blocked by the rules, and that the model answers (a missing model is a
 Then prove it through real git, in a throwaway repo:
 
 ```bash
-cd "$(mktemp -d)" && git init -q && secret-guard install-hook
+cd "$(mktemp -d)" && git init -q && smart-commit-guard install-hook
 K=A1b2C3d4E5f6G7h8I9j0K1l2; echo "KEY = "sk_live_$K"" > cfg.py && git add cfg.py
 git commit -m test                         # blocked, exit 1
 SKIP_SECRET_GUARD=1 git commit -m test     # allowed, prints SKIPPED

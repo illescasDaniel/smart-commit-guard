@@ -1,6 +1,6 @@
 import pytest
 
-from secret_guard.skip import (
+from smart_commit_guard.skip import (
 	is_env_file,
 	is_example_path,
 	is_skipped,

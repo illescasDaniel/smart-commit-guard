@@ -13,12 +13,12 @@ import statistics
 import sys
 import time
 
-from secret_guard.config import Config
-from secret_guard.decider import Decider, HttpDecider
-from secret_guard.policy import scan
-from secret_guard.rules import scan_line
-from secret_guard.skip import is_example_path
-from secret_guard.types import AddedLine
+from smart_commit_guard.config import Config
+from smart_commit_guard.decider import Decider, HttpDecider
+from smart_commit_guard.policy import scan
+from smart_commit_guard.rules import scan_line
+from smart_commit_guard.skip import is_example_path
+from smart_commit_guard.types import AddedLine
 
 
 class Recording:

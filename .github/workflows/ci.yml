@@ -14,7 +14,7 @@ jobs:
       - run: uv run ruff check .
       - run: uv run ty check
       - name: Scan this repo with its own rules (no model in CI)
-        run: uv run secret-guard scan --no-model --files $(git ls-files)
+        run: uv run smart-commit-guard scan --no-model --files $(git ls-files)
 
   test:
     name: tests (${{ matrix.os }}, py${{ matrix.python }})
@@ -44,7 +44,7 @@ jobs:
           uv pip install --python "$RUNNER_TEMP/venv/bin/python" dist/*.whl
           cd "$RUNNER_TEMP"
           printf 'x = 1\n' > ok.py
-          "$RUNNER_TEMP/venv/bin/secret-guard" --help > /dev/null
-          "$RUNNER_TEMP/venv/bin/secret-guard" scan --no-model --files ok.py
+          "$RUNNER_TEMP/venv/bin/smart-commit-guard" --help > /dev/null
+          "$RUNNER_TEMP/venv/bin/smart-commit-guard" scan --no-model --files ok.py
           printf 'KEY=1\n' > .env
-          if "$RUNNER_TEMP/venv/bin/secret-guard" scan --no-model --files .env; then echo "expected a block"; exit 1; fi
+          if "$RUNNER_TEMP/venv/bin/smart-commit-guard" scan --no-model --files .env; then echo "expected a block"; exit 1; fi

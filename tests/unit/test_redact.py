@@ -1,4 +1,4 @@
-from secret_guard.redact import fingerprint, mask
+from smart_commit_guard.redact import fingerprint, mask
 
 
 def test_given_a_secret_when_masking_then_content_is_gone_but_shape_and_known_prefix_remain():

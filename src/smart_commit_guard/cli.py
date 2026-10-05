@@ -1,4 +1,4 @@
-"""Command line: `secret-guard scan --staged | --diff <range> | --files ...`."""
+"""Command line: `smart-commit-guard scan --staged | --diff <range> | --files ...`."""
 from __future__ import annotations
 
 import argparse
@@ -26,15 +26,15 @@ SKIP_ENV = "SKIP_SECRET_GUARD"
 LOG_NAME = "secret-guard-skips.log"
 # Tail shared by both hooks: reached only when the tool cannot be found.
 _MISSING = """if [ "$SKIP_SECRET_GUARD" = "1" ]; then
-	echo "secret-guard: SKIPPED (SKIP_SECRET_GUARD=1) and the tool is unavailable: this commit was not scanned or logged." >&2
+	echo "smart-commit-guard: SKIPPED (SKIP_SECRET_GUARD=1) and the tool is unavailable: this commit was not scanned or logged." >&2
 	exit 0
 fi
-echo "secret-guard: not installed (try: uv tool install secret-guard); commit blocked. CI is the backstop, so install it." >&2
+echo "smart-commit-guard: not installed (try: uv tool install smart-commit-guard); commit blocked. CI is the backstop, so install it." >&2
 exit 1
 """
 # Per-clone hook: absolute path of the tool that ran `install-hook`.
 HOOK = """#!/bin/sh
-# installed by secret-guard
+# installed by smart-commit-guard
 exe={exe}
 if [ -x "$exe" ] || command -v "$exe" >/dev/null 2>&1; then
 	exec "$exe" scan --staged
@@ -42,14 +42,14 @@ fi
 """ + _MISSING
 # Shared hook (committed to the repo): no machine-specific paths, so it resolves the tool at run time.
 SHARED_HOOK = """#!/bin/sh
-# managed by secret-guard (install-hook --shared). Commit this file so every clone gets the same gate.
+# managed by smart-commit-guard (install-hook --shared). Commit this file so every clone gets the same gate.
 root=$(git rev-parse --show-toplevel)
-if command -v secret-guard >/dev/null 2>&1; then
-	exec secret-guard scan --staged
-elif [ -x "$root/.venv/bin/secret-guard" ]; then
-	exec "$root/.venv/bin/secret-guard" scan --staged
+if command -v smart-commit-guard >/dev/null 2>&1; then
+	exec smart-commit-guard scan --staged
+elif [ -x "$root/.venv/bin/smart-commit-guard" ]; then
+	exec "$root/.venv/bin/smart-commit-guard" scan --staged
 elif command -v uvx >/dev/null 2>&1; then
-	exec uvx secret-guard scan --staged
+	exec uvx smart-commit-guard scan --staged
 fi
 """ + _MISSING
 SHARED_DIR = ".githooks"
@@ -113,7 +113,7 @@ def _report(result: ScanResult, as_json: bool) -> None:
 	if result.model_unavailable:
 		print("note: the decision model was unavailable; only rule hits were enforced", file=sys.stderr)
 	if result.exit_code:
-		print("secret-guard: commit blocked. Move secrets to environment variables. For a false positive, allowlist it "
+		print("smart-commit-guard: commit blocked. Move secrets to environment variables. For a false positive, allowlist it "
 			  f"in .secret-guard.toml or, for this commit only, run it with {SKIP_ENV}=1.", file=sys.stderr)
 
 
@@ -138,12 +138,12 @@ def _log_skip() -> None:
 		with log.open("a") as fh:
 			fh.write("\n".join(entry) + "\n")
 	except (ToolError, OSError) as e:
-		print(f"secret-guard: could not write the skips log: {e}", file=sys.stderr)
+		print(f"smart-commit-guard: could not write the skips log: {e}", file=sys.stderr)
 
 
 def _scan(args: argparse.Namespace, env: Mapping[str, str], decider: Decider | None) -> int:
 	if args.staged and env.get(SKIP_ENV) == "1":   # only the local commit hook; CI (`--diff`) cannot be skipped this way
-		print(f"secret-guard: SKIPPED ({SKIP_ENV}=1): this commit was not scanned. Only use this for a false positive.",
+		print(f"smart-commit-guard: SKIPPED ({SKIP_ENV}=1): this commit was not scanned. Only use this for a false positive.",
 			  file=sys.stderr)
 		_log_skip()
 		return 0
@@ -171,11 +171,11 @@ def _scan(args: argparse.Namespace, env: Mapping[str, str], decider: Decider | N
 
 
 def _executable() -> str:
-	"""Absolute path of this tool, so the hook works when `secret-guard` is not on git's PATH (venv, uv run)."""
+	"""Absolute path of this tool, so the hook works when `smart-commit-guard` is not on git's PATH (venv, uv run)."""
 	me = Path(sys.argv[0])
-	if me.name == "secret-guard" and me.exists():
+	if me.name == "smart-commit-guard" and me.exists():
 		return str(me.resolve())
-	return shutil.which("secret-guard") or "secret-guard"
+	return shutil.which("smart-commit-guard") or "smart-commit-guard"
 
 
 def _write_hook(hook: Path, text: str, force: bool) -> None:
@@ -202,7 +202,7 @@ def _install_hook(force: bool, shared: bool) -> int:
 	if GITATTRIBUTES_LINE not in existing.splitlines():
 		attrs.write_text(existing + ("" if existing.endswith("\n") or not existing else "\n") + GITATTRIBUTES_LINE + "\n")
 	print(f"set core.hooksPath={SHARED_DIR}. Commit {SHARED_DIR}/ and .gitattributes; each clone then runs "
-		  f"`git config core.hooksPath {SHARED_DIR}` once (or `secret-guard install-hook --shared`).")
+		  f"`git config core.hooksPath {SHARED_DIR}` once (or `smart-commit-guard install-hook --shared`).")
 	return 0
 
 
@@ -217,11 +217,11 @@ def _doctor(env: Mapping[str, str], decider: Decider | None) -> int:
 
 	hook = Path(_git("rev-parse", "--git-path", "hooks/pre-commit").strip())
 	if not hook.is_file():
-		report("FAIL", "pre-commit hook", f"{hook} not found; run `secret-guard install-hook` (or `install-hook --shared`)")
+		report("FAIL", "pre-commit hook", f"{hook} not found; run `smart-commit-guard install-hook` (or `install-hook --shared`)")
 	else:
 		text = hook.read_text(errors="ignore")
 		if "scan --staged" not in text:
-			report("FAIL", "pre-commit hook", f"{hook} exists but does not run `secret-guard scan --staged`")
+			report("FAIL", "pre-commit hook", f"{hook} exists but does not run `smart-commit-guard scan --staged`")
 		elif not os.access(hook, os.X_OK):
 			report("FAIL", "pre-commit hook", f"{hook} is not executable (chmod +x)")
 		else:
@@ -246,7 +246,7 @@ def _doctor(env: Mapping[str, str], decider: Decider | None) -> int:
 
 def main(argv: Sequence[str] | None = None, env: Mapping[str, str] | None = None, decider: Decider | None = None) -> int:
 	"""Exit codes: 0 allowed, 1 blocked, 2 tool error."""
-	parser = argparse.ArgumentParser(prog="secret-guard")
+	parser = argparse.ArgumentParser(prog="smart-commit-guard")
 	sub = parser.add_subparsers(dest="command", required=True)
 	sc = sub.add_parser("scan", help="scan added lines for secrets")
 	src = sc.add_mutually_exclusive_group(required=True)
@@ -270,5 +270,5 @@ def main(argv: Sequence[str] | None = None, env: Mapping[str, str] | None = None
 			return _scan(args, env, decider)
 		return _install_hook(args.force, args.shared) if args.command == "install-hook" else _doctor(env, decider)
 	except (ToolError, ConfigError) as e:
-		print(f"secret-guard: {e}", file=sys.stderr)
+		print(f"smart-commit-guard: {e}", file=sys.stderr)
 		return 2

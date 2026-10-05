@@ -1,9 +1,9 @@
 from conftest import AWS_KEY, FakeDecider
 
-from secret_guard.decider import MAX_BATCH
-from secret_guard.policy import MAX_CALLS, scan
-from secret_guard.redact import fingerprint, mask
-from secret_guard.types import AddedLine
+from smart_commit_guard.decider import MAX_BATCH
+from smart_commit_guard.policy import MAX_CALLS, scan
+from smart_commit_guard.redact import fingerprint, mask
+from smart_commit_guard.types import AddedLine
 
 AWS = AddedLine("src/app.py", 1, f'AWS_KEY = "{AWS_KEY}"')
 PASS = AddedLine("src/db.py", 4, 'DB_PASS = "Winter2026!Admin"')

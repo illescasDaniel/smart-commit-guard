@@ -1,7 +1,7 @@
 import pytest
 from conftest import AWS_KEY
 
-from secret_guard.rules import scan_line
+from smart_commit_guard.rules import scan_line
 
 PRIVATE_KEY = "-----BEGIN " + "RSA PRIVATE KEY-----"
 GITHUB = "ghp_" + "a1B2c3D4e5F6g7H8i9J0k1L2m3N4"

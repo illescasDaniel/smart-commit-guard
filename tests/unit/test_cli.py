@@ -4,7 +4,7 @@ import sys
 
 from conftest import AWS_KEY, FakeDecider
 
-from secret_guard.cli import main
+from smart_commit_guard.cli import main
 
 
 def write(tmp_path, name, text):
@@ -78,7 +78,7 @@ def test_given_install_hook_when_a_hook_exists_then_it_is_not_overwritten_withou
 	assert main(["install-hook", "--force"], env={}) == 0 and "scan --staged" in hook.read_text() and "SKIP_SECRET_GUARD" in hook.read_text()
 
 
-def test_given_skip_secret_guard_when_scanning_staged_then_it_allows_the_commit_and_says_it_was_skipped(tmp_path, monkeypatch, capsys):
+def test_given_skip_smart_commit_guard_when_scanning_staged_then_it_allows_the_commit_and_says_it_was_skipped(tmp_path, monkeypatch, capsys):
 	git(tmp_path, "init", "-q")
 	(tmp_path / "app.py").write_text(f'KEY = "{AWS_KEY}"\n')
 	git(tmp_path, "add", "app.py")
@@ -89,7 +89,7 @@ def test_given_skip_secret_guard_when_scanning_staged_then_it_allows_the_commit_
 	assert "SKIPPED" in err and "SKIP_SECRET_GUARD" in err and d.batches == []
 
 
-def test_given_skip_secret_guard_with_any_other_value_when_scanning_staged_then_it_still_blocks(tmp_path, monkeypatch):
+def test_given_skip_smart_commit_guard_with_any_other_value_when_scanning_staged_then_it_still_blocks(tmp_path, monkeypatch):
 	git(tmp_path, "init", "-q")
 	(tmp_path / "app.py").write_text(f'KEY = "{AWS_KEY}"\n')
 	git(tmp_path, "add", "app.py")
@@ -98,7 +98,7 @@ def test_given_skip_secret_guard_with_any_other_value_when_scanning_staged_then_
 		assert main(["scan", "--staged"], env={"SKIP_SECRET_GUARD": value}, decider=FakeDecider()) == 1
 
 
-def test_given_skip_secret_guard_when_scanning_files_or_a_diff_range_then_it_is_ignored_so_ci_still_gates(tmp_path):
+def test_given_skip_smart_commit_guard_when_scanning_files_or_a_diff_range_then_it_is_ignored_so_ci_still_gates(tmp_path):
 	f = write(tmp_path, "app.py", f'KEY = "{AWS_KEY}"\n')
 	assert main(["scan", "--files", f], env={"SKIP_SECRET_GUARD": "1"}, decider=FakeDecider()) == 1
 
@@ -177,7 +177,7 @@ def test_given_an_unreachable_model_when_running_doctor_then_it_only_warns(tmp_p
 	assert "WARN" in capsys.readouterr().out
 
 
-def test_given_skip_secret_guard_exported_when_running_doctor_then_it_warns(tmp_path, monkeypatch, capsys):
+def test_given_skip_smart_commit_guard_exported_when_running_doctor_then_it_warns(tmp_path, monkeypatch, capsys):
 	git(tmp_path, "init", "-q")
 	monkeypatch.chdir(tmp_path)
 	main(["install-hook", "--shared"], env={})

@@ -1,4 +1,4 @@
-from secret_guard.diff import parse_added_lines
+from smart_commit_guard.diff import parse_added_lines
 
 DIFF = """diff --git a/src/app.py b/src/app.py
 index 111..222 100644

@@ -113,7 +113,7 @@ wheels = [
 ]
 
 [[package]]
-name = "secret-guard"
+name = "smart-commit-guard"
 version = "0.1.0"
 source = { editable = "." }
 

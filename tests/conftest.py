@@ -1,6 +1,6 @@
 import pytest
 
-from secret_guard.decider import DeciderUnavailable
+from smart_commit_guard.decider import DeciderUnavailable
 
 
 class FakeDecider:

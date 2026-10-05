@@ -1,6 +1,6 @@
 import pytest
 
-from secret_guard.decider import MAX_ITEM_CHARS, DeciderUnavailable, HttpDecider
+from smart_commit_guard.decider import MAX_ITEM_CHARS, DeciderUnavailable, HttpDecider
 
 
 def make(response, calls):

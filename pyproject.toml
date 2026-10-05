@@ -1,5 +1,5 @@
 [project]
-name = "secret-guard"
+name = "smart-commit-guard"
 version = "0.1.0"
 description = "Pre-commit and CI secret gate: deterministic rules plus a small decision model for ambiguous cases"
 requires-python = ">=3.12"
@@ -20,11 +20,11 @@ classifiers = [
 dependencies = []
 
 [project.urls]
-Homepage = "https://github.com/illescasDaniel/secret-guard"
-Issues = "https://github.com/illescasDaniel/secret-guard/issues"
+Homepage = "https://github.com/illescasDaniel/smart-commit-guard"
+Issues = "https://github.com/illescasDaniel/smart-commit-guard/issues"
 
 [project.scripts]
-secret-guard = "secret_guard.cli:main"
+smart-commit-guard = "smart_commit_guard.cli:main"
 
 [build-system]
 requires = ["uv_build>=0.12.20,<0.13.0"]
@@ -44,4 +44,4 @@ indent-style = "tab"
 
 [tool.taskipy.tasks]
 test = { cmd = "pytest -q", help = "unit tests (no model, no network)" }
-setup-hooks = { cmd = "uv run secret-guard install-hook --shared --force", help = "enable the shared pre-commit hook in this clone" }
+setup-hooks = { cmd = "uv run smart-commit-guard install-hook --shared --force", help = "enable the shared pre-commit hook in this clone" }

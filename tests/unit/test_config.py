@@ -1,6 +1,6 @@
 import pytest
 
-from secret_guard.config import Config, ConfigError
+from smart_commit_guard.config import Config, ConfigError
 
 
 def test_given_no_env_when_loading_then_defaults_point_at_a_local_server():
