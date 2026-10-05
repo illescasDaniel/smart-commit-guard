@@ -69,10 +69,46 @@ jobs:
         run: uvx --from 'smart-commit-guard>=0.1,<0.2' smart-commit-guard scan --no-model --files $(git ls-files)
 ```
 
+From 0.2 (not released yet) CI can also use the SARIF format for GitHub code scanning, `--all` instead of
+`--files $(git ls-files)` (which hits the argument-length limit on large repos), and `--config-from origin/main` so a pull
+request cannot change its own skip list. A GitHub Actions run prints findings as inline annotations on its own.
+
+```yaml
+      - run: uvx --from 'smart-commit-guard>=0.2,<0.3' smart-commit-guard scan --no-model --all
+      - run: uvx --from 'smart-commit-guard>=0.2,<0.3' smart-commit-guard scan --no-model --diff "origin/${{ github.base_ref }}...HEAD" --config-from "origin/${{ github.base_ref }}" --format sarif > results.sarif
+```
+
+#### Hosted model in CI only
+
+CI runs on a server your team already trusts with the code, while a commit hook runs on a laptop with work in progress. To
+use a hosted model only in CI, keep the hook on rules and set the scope (the repo file can only narrow it):
+
+```toml
+# .secret-guard.toml
+[model]
+hosted_scope = "ci"      # the commit hook never calls a hosted model; ambiguous candidates only warn there
+```
+
+In the workflow, run the scan without `--no-model` and give it the endpoint and the key from repository secrets:
+
+```yaml
+      - name: Scan the pull request's added lines (hosted model)
+        env:
+          SECRET_GUARD_BASE_URL: ${{ secrets.SECRET_GUARD_BASE_URL }}   # https only
+          SECRET_GUARD_ALLOW_HOSTED: "1"
+          SECRET_GUARD_API_KEY: ${{ secrets.SECRET_GUARD_API_KEY }}
+        run: uvx --from 'smart-commit-guard>=0.2,<0.3' smart-commit-guard scan --diff "origin/${{ github.base_ref }}...HEAD"
+```
+
+`scan --files` and `--all` count as CI too, even when run locally.
+
 ## How it works
 
-1. Only **added lines** are scanned. Lockfiles, binaries, minified files and `.env.example` are skipped.
-2. **High-confidence rules** (private keys, AWS keys, `sk-`/`ghp_`/`xox`/`AIza`/`glpat-` tokens, chat webhook URLs,
+1. Only **added lines** are scanned. Binaries and `.env.example` are skipped. Lockfiles and generated files (`.min.js`,
+   `.map`) only get the high-confidence rules below, since they can carry inlined keys or `user:token@` URLs but are too
+   noisy for model candidates.
+2. **High-confidence rules** (private keys, AWS keys, GitHub, GitLab, Slack, Stripe, Google, Anthropic/OpenAI-style,
+   npm, PyPI, Hugging Face, SendGrid, Shopify, DigitalOcean and similar token shapes, chat webhook URLs,
    connection strings with a password) **block immediately**, with no model call, outside test/doc/example paths.
 3. A staged **environment file** (`.env`, `.env.local`, `prod.env`; not `.env.example`/`.sample`/`.template`) blocks as a whole,
    with no model call, as long as it has any non-comment line. Add it to `.gitignore`, or allowlist it if intentional.
@@ -80,7 +116,8 @@ jobs:
    private keys (`id_rsa`, `id_ed25519`...), key stores (`.p12`, `.pfx`, `.jks`, `.keystore`, `.ppk`), KeePass databases,
    `.netrc`, `.pgpass`, `.pypirc`, `.htpasswd`, `.git-credentials`, `.aws/credentials`, `.docker/config.json`,
    `.kube/config`, `kubeconfig`, Terraform state and `.tfvars`, `credentials.json`, Google `client_secret*.json` and
-   service-account keys, and iOS provisioning profiles. Names containing `example`, `sample`, `template` or `defaults`
+   service-account keys, iOS provisioning profiles, `.vault-token`, `.cargo/credentials`, `.gem/credentials`,
+   `.composer/auth.json` and `.config/gh/hosts.yml`. Names containing `example`, `sample`, `template` or `defaults`
    are exempt. Public files (`id_rsa.pub`, `.pem`/`.crt` certificates) are not matched by name; a private key inside
    them is still caught by content.
 5. **Candidates** (`password = "..."`, `Bearer` tokens, `-pSECRET` CLI flags, unquoted YAML values, high-entropy
@@ -89,9 +126,14 @@ jobs:
    `p >= 0.4` (configurable).
 7. If the model is unreachable: rule hits still block; model-only candidates warn and allow.
 
-Findings never print the secret, only a shape-preserving mask such as `sk_live_A9a9A9a9...`.
+Findings never print the secret, only a shape-preserving mask such as `sk_live_A9a9A9a9...`. Every secret on a line is
+masked, and so is any other long random-looking token.
 
-Exit codes: `0` allowed (warnings may print), `1` blocked, `2` tool error.
+The scan does not depend on your git configuration: external diff tools, `textconv`, `diff.noprefix`/`mnemonicPrefix`,
+`diff.relative` and `binary`/`-diff` attributes are overridden, so they cannot hide a file from the gate.
+
+Exit codes: `0` allowed (warnings may print), `1` blocked by a finding, `2` tool or configuration error (an unexpected
+crash is also `2`, with the details on stderr when `SMART_COMMIT_GUARD_DEBUG=1`).
 
 ## Commands
 
@@ -99,8 +141,11 @@ Exit codes: `0` allowed (warnings may print), `1` blocked, `2` tool error.
 |---|---|
 | `smart-commit-guard scan --staged` | the staged diff (what the hook runs) |
 | `smart-commit-guard scan --diff RANGE` | a revision range, for CI (`origin/main...HEAD`) |
-| `smart-commit-guard scan --files PATH...` | whole files |
-| `--json`, `--no-model` | machine-readable output; rules only (no model call) |
+| `smart-commit-guard scan --files PATH...` | whole files (`--files -` reads NUL-separated paths from stdin) |
+| `smart-commit-guard scan --all` | every tracked file (`git ls-files`) |
+| `--format text\|json\|sarif`, `--json`, `--no-model` | output format (`--json` is `--format json`); rules only (no model call) |
+| `--config-from REF` | read `.secret-guard.toml` from a revision such as `origin/main`, not the working tree |
+| `--version` | print the version |
 | `smart-commit-guard install-hook [--force]` | per-clone hook in the effective hooks directory |
 | `smart-commit-guard install-hook --shared` | committable `.githooks/pre-commit` plus `core.hooksPath` |
 | `smart-commit-guard doctor` | verify the hook, the rules and the model |
@@ -112,9 +157,13 @@ Exit codes: `0` allowed (warnings may print), `1` blocked, `2` tool error.
 | `SECRET_GUARD_BASE_URL` | `http://localhost:11435` | model server |
 | `SECRET_GUARD_MODEL` | `jevk5:4b` | model name sent to the server |
 | `SECRET_GUARD_API_KEY` | unset | Bearer token, only if the server wants one |
-| `SECRET_GUARD_TIMEOUT` | `10` | seconds per model call |
+| `SECRET_GUARD_TIMEOUT` | `10` | seconds per model call (must be > 0) |
 | `SECRET_GUARD_BLOCK_AT` / `SECRET_GUARD_WARN_AT` | `0.5` / `0.4` | thresholds, see "Other models" |
-| `SECRET_GUARD_ALLOW_HOSTED` | unset | must be `1` to use a non-local URL, see "Privacy" |
+| `SECRET_GUARD_ALLOW_HOSTED` | unset | must be `1` to use a non-local URL, see "Privacy"; hosted URLs must be `https` |
+| `SECRET_GUARD_HOSTED_SCOPE` | `all` | `ci` keeps a hosted model out of the commit hook (`scan --staged`); `[model] hosted_scope` in `.secret-guard.toml` can only narrow it |
+| `SECRET_GUARD_BUDGET` | `5` for `--staged`, `120` otherwise | total seconds of model time per scan; candidates left over only warn |
+| `SECRET_GUARD_ALLOW_INSECURE` | unset | `1` allows an `http://` hosted URL on a network you fully control |
+| `SMART_COMMIT_GUARD_DEBUG` | unset | `1` prints the traceback of an unexpected error |
 | `SKIP_SECRET_GUARD` | unset | `1` bypasses the commit hook once, see below |
 
 ## Bypassing a false positive
@@ -132,7 +181,16 @@ skip = ["tests/fixtures/*", "docs/*"]
 # Findings to accept. A fingerprint is sha256(path + masked line), so the file holds no secret
 # and only matches that line shape in that file.
 allowlist = ["b37018356662157b"]
+
+# Optional: where a hosted model may be used (see "Hosted model in CI only"). It can only narrow, never widen.
+[model]
+hosted_scope = "ci"
 ```
+
+`skip` and `allowlist` must be lists of strings and unknown keys are an error (exit 2), so a typo cannot silently disable
+the scan. The file is read from the repository root, whatever directory you run from. A skip pattern that covers every
+changed file prints a warning. In `--diff` mode a change to this file inside the range also warns, since it is part of
+the diff it guards; use `--config-from origin/main` to read it from the base branch instead.
 
 Allowlisting works for the hook and for CI.
 
@@ -190,6 +248,24 @@ message telling them how to install it (the gate fails closed rather than silent
 `core.hooksPath` replaces `.git/hooks/` for the clone. If you already use other hooks, call them from
 `.githooks/pre-commit` or use a hook manager.
 
+### With the pre-commit framework or as a GitHub Action (from 0.2)
+
+```yaml
+# .pre-commit-config.yaml
+repos:
+  - repo: https://github.com/illescasDaniel/smart-commit-guard
+    rev: v0.2.0
+    hooks:
+      - id: smart-commit-guard
+```
+
+```yaml
+# .github/workflows/secrets.yml, step
+- uses: illescasDaniel/smart-commit-guard@v0.2.0
+  with:
+    args: scan --no-model --diff origin/${{ github.base_ref }}...HEAD --config-from origin/${{ github.base_ref }}
+```
+
 ## Testing that the hook works
 
 Run the built-in check first:
@@ -231,8 +307,16 @@ PYTHONPATH=src uv run python evals/run_eval.py
 ### Privacy
 
 The staged diff may contain real secrets, so the default backend is **local** and nothing is sent anywhere else.
-A non-local `SECRET_GUARD_BASE_URL` is refused (exit 2) unless `SECRET_GUARD_ALLOW_HOSTED=1`. With a hosted backend
-only **masked** lines are sent, never the secret value, a full file or the unmasked diff. No telemetry.
+
+- A non-local `SECRET_GUARD_BASE_URL` is refused (exit 2) unless `SECRET_GUARD_ALLOW_HOSTED=1`, and it must be `https`.
+- **A hosted backend receives the candidate lines unmasked**: the model has to see the real value to judge it, and a masked
+  value carries too little signal. Only use a hosted backend you would trust with the secrets themselves (for example a
+  server you host on your own network), or limit it to CI with `SECRET_GUARD_HOSTED_SCOPE=ci`.
+- Only candidate lines are sent (a window of about 300 characters around the candidate for very long lines), never whole
+  files or the full diff. Lines that the rules already block are never sent.
+- Local model calls ignore `HTTP_PROXY`/`HTTPS_PROXY`, so an unmasked line never goes through a corporate proxy on its way to
+  `localhost`. Hosted calls honour them. Redirects are never followed.
+- Everything printed (terminal, `--json`, SARIF, the skips log, allowlist fingerprints) is masked. No telemetry.
 
 ## Development
 

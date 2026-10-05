@@ -2,6 +2,7 @@
 
 Status: **Approved** (including the one-candidate-per-request and calibrated-threshold amendments, 2026-10-05, and the
 `SKIP_SECRET_GUARD` bypass; skips log, `doctor` and `install-hook --shared` added 2026-10-05 at the user's request).
+Amended for 0.2 (2026-10-05, see `specs/next-version/PLAN.md`): trust boundary, hosted scope, safe git invocation, config validation.
 
 ## Goal
 Stop real secrets (API keys, passwords, private keys, tokens, connection strings with passwords) from being committed.
@@ -19,9 +20,18 @@ placeholder, mock or env reference). The tool is a CLI for a git pre-commit hook
 ### Trust boundary
 - The staged diff may contain real secrets. **Default backend is local**: a model server on `localhost` or a
   user-chosen URL. Nothing is sent to a hosted API unless `SECRET_GUARD_ALLOW_HOSTED=1` is set.
-- With a hosted backend, only **redacted** snippets are sent: each candidate value is replaced by a mask that keeps shape
-  (length class, character classes, known prefix) but not content. Full files and the unmasked diff are never sent.
-- Findings output never prints the full secret: show the file, line, rule and a masked preview.
+- The model receives the **same unmasked candidate line in every mode**, local or hosted: a masked value is a non-secret by
+  the model's own criteria and carries too little signal to judge. Choosing a hosted backend (`SECRET_GUARD_ALLOW_HOSTED=1`,
+  `https` only) is an explicit consent to send candidate lines, which may contain real secrets, to it.
+- Only candidate lines are sent (a window of about 300 characters centred on the candidate for long lines), never other
+  lines, whole files or the full diff. A line a rule already blocks is never sent.
+- `SECRET_GUARD_HOSTED_SCOPE=ci` (or `[model] hosted_scope = "ci"` in the repo file) keeps a hosted model out of
+  `scan --staged`: there, model-only candidates warn as if the model were unavailable and rule hits still block. The repo
+  file can only narrow the scope; the most restrictive of file and environment wins. A loopback URL is never affected.
+- Local (loopback) model calls bypass `HTTP_PROXY`/`HTTPS_PROXY`; no call follows a redirect.
+- Findings output never prints the full secret: show the file, line, rule and a masked preview. Every hit on the line is
+  masked, plus any other token of 16+ characters with letters, digits and entropy above 3.0. This holds for the terminal,
+  `--json`, SARIF, the skips log and allowlist fingerprints.
 - The model client sends no data anywhere but the configured base URL. No telemetry.
 
 ### Failure handling
@@ -34,9 +44,19 @@ placeholder, mock or env reference). The tool is a CLI for a git pre-commit hook
 | `SKIP_SECRET_GUARD=1` and `scan --staged` | Nothing is scanned (no model call); prints a loud `SKIPPED` notice on stderr; exit 0; an entry is appended to `secret-guard-skips.log` in the git dir (rules-only, masked, best effort: a log failure never blocks) |
 | `SKIP_SECRET_GUARD=1` with `--diff` or `--files` | Ignored: CI and explicit scans cannot be skipped this way |
 | Not a git repo, or git fails | Exit 2 with a message |
+| Any unexpected exception, an invalid `.secret-guard.toml` (wrong type, unknown key, bad scope) or an invalid setting (`SECRET_GUARD_TIMEOUT <= 0`, bad scope, hosted URL that is not `https`) | Exit 2 with a one-line message (`--json` prints `{"exit_code": 2, "error": ...}`); exit 1 only ever means a finding blocked |
+| `SECRET_GUARD_HOSTED_SCOPE=ci` (env or repo file), hosted URL, `scan --staged` | The model is not called; model-only candidates warn (reported as `model_skipped: "hosted_scope"` in `--json`, with a note on stderr); rule hits still block |
+| The model time budget (`SECRET_GUARD_BUDGET`) runs out | The candidates not yet judged warn as "not judged by the model" |
+| A diff scan where `.secret-guard.toml` changes in the range | Warning on stderr; `--config-from REF` reads the config from a trusted revision |
 | Environment file (`.env`, `.env.*`, `*.env`, not `.example`/`.sample`/`.template`/`.dist`/`.defaults`) with at least one non-blank, non-comment added line | **Block**, one finding per file (no model, contents not printed); allowlist it or add the path to `skip` if intentional |
 | Sensitive file name (SSH private keys, key stores such as `.p12`/`.pfx`/`.jks`/`.keystore`/`.ppk`, `.kdbx`, `.netrc`, `.pgpass`, `.pypirc`, `.htpasswd`, `.git-credentials`, `.aws/credentials`, `.docker/config.json`, `.kube/config`, Terraform state and `.tfvars`, `credentials.json`, Google client-secret and service-account JSON, `.mobileprovision`; template names exempt) | **Block** by name, one finding per file, binaries included (checked from the changed-file list, not only text lines); same allowlist/`skip` escape |
-| Binary file, lockfile, generated file, `.env.example` | Skipped |
+| Binary file (by suffix, or NUL bytes), `.env.example` | Skipped |
+| Lockfile, generated file (`.min.js`, `.min.css`, `.map`) | High-confidence rules only; no candidates, no model |
+
+**Git invocation.** Every diff is read with the user's diff configuration overridden (no external diff, no textconv, `a/` and
+`b/` prefixes, no relative paths, no rename detection, `--text` so `binary` / `-diff` attributes cannot hide a file, binary
+suffixes excluded from the pathspec), decoded as UTF-8 whatever the locale, with C-quoted paths decoded. A user's git config
+must never change what is scanned.
 
 **Rule hit vs candidate (clarification).** Only *high-confidence* rules (private keys, AWS keys, token prefixes, URLs with a
 password) block without the model. Credential-assignment (`password = "..."`) and high-entropy literals are
@@ -48,19 +68,24 @@ password) block without the model. Credential-assignment (`password = "..."`) an
 - Rules plus candidate extraction: O(added lines), single pass.
 - Model calls: **one candidate per request** (measured with `jevk5:4b`: the score of a line depends heavily on its
   position in a batch, e.g. 0.87 as `items[0]` versus 0.37 as `items[1]`; alone it is accurate and not slower per item,
-  ~145 ms). Candidate text capped at 300 characters, at most 30 candidates judged per scan. Beyond the cap the remainder is
-  reported as "unjudged" (warn).
-- Per-call timeout default 10 s (`SECRET_GUARD_TIMEOUT`). Target median hook time <= 1 s with a local model.
+  ~145 ms). Candidate text is a window of about 300 characters centred on the candidate, at most 30 distinct candidates
+  judged per scan (identical lines are judged once). Beyond the cap the remainder is reported as "unjudged" (warn).
+- Per-call timeout default 10 s (`SECRET_GUARD_TIMEOUT`, must be > 0). Total model time per scan is bounded by
+  `SECRET_GUARD_BUDGET` (default 5 s for `--staged`, 120 s otherwise); what is left over warns as "unjudged".
+  Target median hook time <= 1 s with a local model.
 
 ### Configuration
 Env vars: `SECRET_GUARD_BASE_URL`, `SECRET_GUARD_MODEL`, `SECRET_GUARD_API_KEY` (only if the server wants one),
-`SECRET_GUARD_TIMEOUT`, `SECRET_GUARD_ALLOW_HOSTED`, `SECRET_GUARD_BLOCK_AT`, `SECRET_GUARD_WARN_AT`.
+`SECRET_GUARD_TIMEOUT`, `SECRET_GUARD_ALLOW_HOSTED`, `SECRET_GUARD_ALLOW_INSECURE`, `SECRET_GUARD_HOSTED_SCOPE`,
+`SECRET_GUARD_BUDGET`, `SECRET_GUARD_BLOCK_AT`, `SECRET_GUARD_WARN_AT`, `SMART_COMMIT_GUARD_DEBUG`.
 
 **Bypass:** `SKIP_SECRET_GUARD=1 git commit -m "..."` is an explicit acknowledgement that a block is a false positive. Only
 the exact value `1` counts, only for `scan --staged` (the commit hook). It is not honored for `--diff` (CI), so a
 bypassed commit still has to pass CI; a false positive that must pass CI gets an allowlist entry in `.secret-guard.toml`.
-Optional `.secret-guard.toml` in the repo root: extra skip globs, allowlisted fingerprints (hash of the masked finding, so
-the allowlist itself holds no secret).
+Optional `.secret-guard.toml` in the repo root (found from any directory; `--files` paths are normalised to repo-relative
+POSIX paths first): extra skip globs, allowlisted fingerprints (hash of the masked finding, so the allowlist itself holds no
+secret), and `[model] hosted_scope`. `skip` and `allowlist` must be lists of strings; unknown keys are an error. Hosted URLs
+come only from the environment, never from this committed file.
 
 ### Model protocol
 `POST {base_url}/v1/systemone` (Bearer auth when an API key is set) with `state` (`items`: `path`, `line`), optional `model`,
@@ -68,7 +93,10 @@ and `questions` of type `noul`: `instructions` plus optional `criteria` (`true` 
 Answers are read from `answers[<key>].noul`. A missing or non-noul answer is a failure (see table).
 
 ## CLI
-- `smart-commit-guard scan --staged` | `--diff <range>` | `--files <paths...>`; `--json`; `--no-model` (rules only).
+- `smart-commit-guard scan --staged` | `--diff <range>` (a range with `..`; a single revision is rejected) | `--files <paths...>`
+  (`-`: NUL-separated paths on stdin) | `--all` (every tracked file); `--format text|json|sarif` (`--json` is an alias; text adds
+  GitHub Actions annotations when `GITHUB_ACTIONS=true`); `--no-model` (rules only); `--config-from REF`.
+- `smart-commit-guard --version`.
 - `smart-commit-guard doctor` checks the hook (exists at the effective hooks path, executable, runs `scan --staged`), that rules block a
   synthetic secret, and that the model answers. Exit 1 only for a missing or broken hook, broken rules or invalid config; an
   unreachable model or an exported `SKIP_SECRET_GUARD` is a warning.
@@ -88,8 +116,20 @@ Answers are read from `answers[<key>].noul`. A missing or non-noul answer is a f
 - **Given** the model is unreachable and a rule hit exists, **then** exit 1; **and given** only a model-only candidate,
   **then** exit 0 with a warning that the model was unavailable.
 - **Given** a hosted base URL and no `SECRET_GUARD_ALLOW_HOSTED`, **then** exit 2 and nothing is sent.
-- **Given** a hosted backend with opt-in, **then** the request body contains the masked value and not the original.
-- **Given** a changed `package-lock.json`, **then** it is skipped.
+- **Given** a hosted backend with opt-in, **then** the request body contains only the candidate line as written, not other
+  lines or files; **and given** an `http://` hosted URL, **then** exit 2.
+- **Given** `SECRET_GUARD_HOSTED_SCOPE=ci` and a hosted URL, **when** scanning staged, **then** the model is not called, a
+  candidate warns (exit 0), a rule hit still blocks, and a note says why; **and given** `--diff` or `--files` **then** the model judges.
+- **Given** repo scope `ci` and environment scope `all`, **then** the scope is `ci`.
+- **Given** a changed `package-lock.json` with an AWS key, **then** it blocks; **and given** only candidates in it, **then** nothing is reported.
+- **Given** `diff.external`, a `binary` attribute, `diff.mnemonicPrefix` or `diff.relative` in the user's git config, **then** a staged secret still blocks, with a plain repo-relative path.
+- **Given** a staged file named `café.py`, `"quoted".py` or with a tab, **then** findings and skip globs use the real name.
+- **Given** a staged Latin-1 file, **then** it is scanned (no crash); **and given** an unexpected crash, **then** exit 2, never 1.
+- **Given** `skip = "tests/*"` in `.secret-guard.toml`, **then** exit 2 naming the key.
+- **Given** two secrets on one line, **then** neither appears in any output; **and given** a placeholder before a real secret on the
+  same line, **then** the real one is still judged.
+- **Given** a candidate at column 350 of a long line, **then** the model payload contains it.
+- **Given** `HTTP_PROXY` set and a loopback model, **then** the call bypasses the proxy; **and given** a redirect, **then** it is not followed.
 - **Given** `SKIP_SECRET_GUARD=1` and a staged secret, **when** scanning staged, **then** exit 0, a `SKIPPED` notice, no model call;
   **and given** any other value (`0`, empty, `true`) **then** it still blocks; **and given** `--files`/`--diff` **then** the
   variable is ignored.

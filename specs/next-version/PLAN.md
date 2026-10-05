@@ -1,13 +1,78 @@
 # Plan: smart-commit-guard next version (0.2.0)
 
-Status: **Draft for review.** Written from a code review plus live probes in an isolated container (no model server, Linux,
-git 2.x, Python 3.13). All work below still has to be implemented and tested in a full environment (local model, macOS,
-Windows).
+Status: **In progress.** Written from a code review plus live probes in an isolated container (no model server, Linux,
+git 2.x, Python 3.13). Everything that does not need a decision model was implemented and tested in that container (Linux,
+Python 3.12 and 3.13); what is left needs the local model, macOS or Windows and is marked **TODO(local)** in the progress
+section below and inline.
 
 Legend:
 - **[confirmed]** reproduced in this session. The repro is included.
 - **[by reading]** follows from the code but was not run.
 - **[to measure]** needs the model, real repos or another OS before deciding.
+
+## Progress (implemented without a model; see `CHANGELOG.md`)
+
+Done, with tests (529 unit and integration tests, ruff and ty clean):
+- **0.1** safe diff invocation (`git.py`): pinned config, `--no-ext-diff --no-textconv --text --no-renames`, binary suffixes
+  excluded from the pathspec, NUL-byte files dropped. Integration tests for every row of the table.
+- **0.2** C-quoted path decoding in the parser and `-z` name lists (the `--raw -z` matching idea was not needed).
+- **0.3** UTF-8 everywhere, catch-all exit 2, `--json` errors, `SMART_COMMIT_GUARD_DEBUG`.
+- **0.4** validated `.secret-guard.toml` (types, unknown keys, scope), warning for a skip that covers every changed file.
+- **0.5** loopback bypasses proxies (tested against a real throwaway server with a dead `HTTP_PROXY`), no redirects.
+- **0.6** the model gets the unmasked candidate line in every mode, spec, README, config message and tests updated.
+- **0.6.1** hosted scope (`SECRET_GUARD_HOSTED_SCOPE`, `[model] hosted_scope`, most restrictive wins, `model_skipped`, doctor).
+- **0.7, 0.8, 0.9** all hits per line, previews mask every hit and other long random-looking tokens (Hypothesis property test),
+  centred window for long lines.
+- **1.1, 1.2 (rules), 1.4, 1.5** rule table with ~20 more token shapes (positive and negative example per rule, enforced by a
+  test), UUID / hex-digest / `sk-learn-...` false positives, rules-only for lockfiles and generated files, more sensitive names.
+  `secrets.yml` stays candidate-only.
+- **2.1, 2.3** repo root and `--files` path normalisation, timeout > 0, https for hosted URLs (`SECRET_GUARD_ALLOW_INSECURE`).
+- **2.2 (part)** `SECRET_GUARD_BUDGET` (5 s staged / 120 s otherwise), identical candidates judged once.
+- **2.5 (part)** `--version`, `--json` errors, `--files` binary and size checks, `--diff` single revision rejected, `.exe` name check
+  in `_executable()`, duplicate regex fragment gone.
+- **3.1 (part)** `--all`, `--files -`, `--format sarif`, GitHub annotations, `.pre-commit-hooks.yaml`, `action.yml`.
+- **3.2 (part)** `--config-from REF`, warning when the config changes inside a scanned range.
+- **4.1** every eval case has a `stage`; `tests/unit/test_eval_cases.py` runs without a model and fails when a real case is `no-hit`.
+  `run_eval.py` uses the shared `policy.stage`, fills its cache with one call per candidate (the per-scan cap would have left
+  holes) and records model, question version and tool version in `evals/last_run.json`.
+- **4.2 (part)** six of the probes from this plan were added to `cases_tune.json`.
+- **P3 (part)** `git.py`, rule table, Python 3.14 in the CI matrix and classifiers, coverage in CI, Dependabot for actions and uv,
+  `CHANGELOG.md`.
+
+### TODO(local): needs the decision model, macOS or Windows
+These were deliberately left out because they cannot be validated without a model or another OS. Do them in the local environment:
+1. **Run the eval** (`PYTHONPATH=src uv run python evals/run_eval.py`) on the updated rules and case sets, and commit the new
+   `evals/last_run.json`. The rule changes (1.1, 1.2) moved some cases between stages; the stage test keeps the deterministic
+   part honest, but recall, precision and the thresholds (block 0.5 / warn 0.4) must be re-checked with the model.
+2. **0.6 check:** run the eval against a hosted endpoint and confirm the scores match the local run for the same model (the
+   input is now identical). A different hosted model needs its own thresholds.
+3. **0.9 check:** does the centred window change scores for short lines (it should not: short lines are sent whole)?
+4. **1.2 measure:** replay the last 500 commits of 5 to 10 real repos (`scan --diff C~1..C --json`), count model calls per
+   commit (target: under 1 on average) and add skip rules for the top 20 boring candidate shapes. The new `--no-renames` also
+   rescans moved files: count how many extra candidates that adds.
+5. **1.3:** the placeholder filter still drops `DB_PASSWORD = "Password123!"`. Change it (drop only when the rest is low entropy
+   or a known pattern), add those as `real` cases, and check the false-block rate on the `ok` cases does not rise.
+6. **2.2 measure:** parallel model calls (2 to 4 workers: does ollaya serve them concurrently, are scores identical, p95 hook time);
+   the optional verdict cache (keyed by `sha256(model, question version, line text)`, storing only `p`); and check that the
+   default budgets (5 s hook, 120 s CI) fit the real latency.
+7. **2.4 merge commits:** compare the options on a real merge of two branches (scan only lines in neither parent, or rules only).
+8. **0.1 measure:** `--text` (current) versus a `--numstat` second pass on a 5,000-file staged change and on a repo with large
+   real binaries or LFS pointers. Current code excludes binary suffixes from the pathspec and drops NUL files after reading.
+9. **4.2 / 4.3:** template-generated cases split by template, a real-world `ok` corpus mined from OSS repos, per-family recall and
+   precision with bootstrap confidence intervals, and the experiments table (context lines, question wording, other models,
+   hook latency, `evals/thresholds.json`).
+10. **Windows:** `text=True` code page crash is fixed by explicit UTF-8, but test it; `--files` backslash paths; the shared hook
+    looking for `.venv/Scripts/smart-commit-guard.exe`; `_executable()` with `.exe` (changed, untested); CI `install-smoke` on macOS
+    and Windows (needs `Scripts` vs `bin` handling).
+11. **3.3 doctor:** run the hook the way git does, report the version it finds, warn when `.githooks` is stale.
+
+### Not started (no model needed, just not done yet)
+These remain: 3.1 push-event range handling (docs only), 3.2 richer `[[allow]]` entries,
+inline pragma, `--baseline`, fingerprint v2 with `allowlist migrate`, repo-level model thresholds; 3.3 `install-hook --chain`
+and the pinned `uvx` range in the shared hook; P3 pinning third-party actions by commit SHA (needs the SHAs), a GitHub release
+with notes in the release workflow, and the version bump to 0.2.0.
+
+---
 
 Work in priority order. P0 items are silent bypasses or leaks, so the gate either lets secrets through without saying so or
 prints them. Fix those before adding features.

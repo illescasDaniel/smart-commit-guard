@@ -14,7 +14,7 @@ jobs:
       - run: uv run ruff check .
       - run: uv run ty check
       - name: Scan this repo with its own rules (no model in CI)
-        run: uv run smart-commit-guard scan --no-model --files $(git ls-files)
+        run: uv run smart-commit-guard scan --no-model --all
 
   test:
     name: tests (${{ matrix.os }}, py${{ matrix.python }})
@@ -23,13 +23,13 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        python: ["3.12", "3.13"]
+        python: ["3.12", "3.13", "3.14"]
     env:
       UV_PYTHON: ${{ matrix.python }}
     steps:
       - uses: actions/checkout@v7
       - uses: astral-sh/setup-uv@v10.2.0
-      - run: uv run pytest -q
+      - run: uv run --with pytest-cov pytest -q --cov=smart_commit_guard --cov-report=term-missing
 
   install-smoke:
     name: clean install of the built wheel
