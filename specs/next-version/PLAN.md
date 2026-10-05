@@ -102,8 +102,7 @@ Changes:
 - Only candidate lines are sent, never whole files or the full diff, and rule hits outside example paths still never reach
   the model. Keep both properties and say so in the docs. Lines that rules already block never leave the machine.
 - `doctor` with a hosted URL: print a `WARN` that candidate lines are sent unmasked to `<host>`.
-- Optional, for teams that want it: `SECRET_GUARD_HOSTED_SCOPE=ci` refuses a hosted URL for `scan --staged` (hook) and allows
-  it for `--diff`/`--files`. Low priority; only if someone asks.
+- Hosted scope, so a team can use a hosted model in CI without sending developers' commits to it (see 0.6.1 below).
 - Keep the question's "a masked value (runs of A/a/9/*)" criterion: it now only covers values that are masked in the
   source itself (docs showing `****` or `AAAA9999`), which is still correct.
 
@@ -122,6 +121,39 @@ Tests and docs to update in the same change:
 To measure in the model environment: run the eval against a hosted endpoint with the change and confirm the scores match
 the local run for the same model (they should, since the input is now identical). If a different hosted model is used, it
 needs its own thresholds (4.3, "Other models").
+
+### 0.6.1 Hosted scope: allow a hosted model in CI but not in the commit hook [new feature]
+Why: CI runs on a server the team already trusts with the code, and its secrets live in the CI provider anyway. A
+developer's commit hook runs on a laptop, often with work in progress that was never meant to leave it. Some teams will
+want a hosted model only in CI.
+
+Design:
+- New setting `SECRET_GUARD_HOSTED_SCOPE` with values `all` (default, the 0.6 behaviour) and `ci`.
+- With `ci`, a hosted URL is used only for `scan --diff` and `scan --files`. For `scan --staged` (the hook) the model is
+  **not called**: model-only candidates are handled exactly like "model unavailable" today (warn and allow) and rule hits
+  still block. The commit is not refused (exit 2 on every commit would push people to `--no-verify`); CI is the backstop.
+  A loopback URL is never affected by the scope.
+- The scope follows the scan mode, not CI environment variables (`CI`, `GITHUB_ACTIONS`): the mode is reliable and cannot be
+  changed by a stray variable. Note in the docs that `--files` run locally counts as "ci" too.
+- The note printed for the hook says why: "hosted model not used for commits (SECRET_GUARD_HOSTED_SCOPE=ci); ambiguous
+  candidates only warn, CI will judge them". In `--json`, add `"model_skipped": "hosted_scope"` next to `model_unavailable`.
+- It may also be set in `.secret-guard.toml` (`[model] hosted_scope = "ci"`), because it can only **narrow** where data goes.
+  The committed file must never be able to widen it: an env value of `all` does not override a repo value of `ci`
+  (most restrictive wins). This matches the 3.2 rule that hosted URLs come only from the env.
+- Invalid value: exit 2 with the allowed values (same as other config errors).
+- `doctor` prints the effective scope next to the hosted warning, for example
+  `WARN model: hosted (api.example.com), used in CI only; commits fall back to rules`.
+
+Tests:
+- Scope `ci` + hosted URL + `--staged`: the decider is never called, a model-only candidate warns (exit 0), a rule hit still
+  blocks (exit 1), and the note is printed.
+- Scope `ci` + hosted URL + `--diff`/`--files`: the decider is called with the unmasked line.
+- Scope `ci` + loopback URL + `--staged`: the decider is called (scope only applies to hosted URLs).
+- Repo `ci` with env `all` resolves to `ci`; env `ci` with no repo setting resolves to `ci`; bad value exits 2.
+
+Docs: a row in the README env-var table, a short "Hosted model in CI only" example (the GitHub Actions snippet without
+`--no-model`, plus `SECRET_GUARD_BASE_URL`, `SECRET_GUARD_ALLOW_HOSTED=1` and `SECRET_GUARD_API_KEY` from repository
+secrets), and a new row in the SPEC failure-handling table.
 
 ### 0.7 A second secret on the same line is printed in clear [confirmed]
 `scan_line` returns only the first hit, and the preview masks only that value. Repro:
@@ -334,6 +366,7 @@ Also store the model name, question version and tool version in `evals/last_run.
 3. Proxy and redirect hardening (0.5).
 4. All-hits-per-line, full masking, centred window (0.7, 0.8, 0.9) with the property test.
 5. Rule additions and FP fixes (1.1 to 1.5), each with unit tests and eval cases; then the rules-only eval gate (4.1).
-6. Hosted mode sends unmasked candidate lines (0.6), with the spec, README and test updates listed there.
+6. Hosted mode sends unmasked candidate lines (0.6), with the spec, README and test updates listed there; then the hosted
+   scope setting (0.6.1).
 7. In the model environment: the 4.3 experiments; recalibrate thresholds; update the spec's eval section.
 8. Features (3.x) as time allows; `--all`, SARIF/annotations and `.pre-commit-hooks.yaml` first.
