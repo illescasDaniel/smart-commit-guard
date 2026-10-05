@@ -39,5 +39,15 @@ def mask_line(line: str, hits: Iterable[LineHit]) -> str:
 
 
 def fingerprint(path: str, masked_line: str) -> str:
-	"""Stable hash of a masked finding, for the allowlist."""
+	"""v1: stable hash of a masked finding. Re-indenting the line changes it, so it is only accepted, never printed."""
 	return hashlib.sha256(f"{path}\0{masked_line}".encode()).hexdigest()[:16]
+
+
+def fingerprint_v2(path: str, masked_line: str) -> str:
+	"""v2 (printed): the same hash over the stripped line, so re-indenting does not break an allowlist entry."""
+	return "v2:" + hashlib.sha256(f"{path}\0{masked_line.strip()}".encode()).hexdigest()[:16]
+
+
+def fingerprints(path: str, masked_line: str) -> tuple[str, str]:
+	"""(v2, v1): an allowlist entry in either form matches."""
+	return fingerprint_v2(path, masked_line), fingerprint(path, masked_line)

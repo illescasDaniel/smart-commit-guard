@@ -1,8 +1,9 @@
 # Changelog
 
-## Unreleased (0.2.0)
+## 0.2.0 - 2026-10-05
 
-Allowlist fingerprints change for lines that have a second secret or another long random-looking token (the preview now masks
+Printed allowlist fingerprints are now `v2:...` (hash of the stripped line); v1 entries keep working, and
+`smart-commit-guard allowlist migrate` rewrites them. Fingerprints change for lines that have a second secret or another long random-looking token (the preview now masks
 them), and for paths with non-ASCII or special characters (they are now spelled as git stores them). Re-run the scan and
 update `.secret-guard.toml` if a previously allowlisted finding comes back.
 
@@ -31,5 +32,10 @@ update `.secret-guard.toml` if a previously allowlisted finding comes back.
 - Many more token shapes (GitHub fine-grained, Anthropic, Stripe webhook, Slack app, Google OAuth, GitLab, SendGrid, PyPI, npm, Shopify, DigitalOcean, Doppler, Hugging Face, Telegram, Azure storage, PGP private keys), JWT and `.npmrc` candidates, more sensitive file names.
 - Fewer false positives: `sk-learn-contrib-projects`, UUIDs, hex digests on hash lines, slash-separated words.
 - `scan --all`, `--files -`, `--format sarif`, GitHub Actions annotations, `--config-from REF`, a warning when the config changes inside a scanned range, `--version`, a size cap and binary detection for `--files`.
+- `[[allow]]` entries in `.secret-guard.toml` (`fingerprint`, a required `reason`, optional `path` glob), and an opt-in inline pragma (`allow_inline = true`, then `# smart-commit-guard: allow` on a line).
+- `baseline create` and `scan --baseline FILE`: adopt the tool on an existing repo and fail on new findings only.
+- Fingerprint v2 and `allowlist migrate`.
+- `install-hook --chain`: keep an existing hook as `pre-commit.local` and run it first.
+- `scripts/pin_actions.py` pins GitHub Actions to commit SHAs (`--check` for CI).
 - `.pre-commit-hooks.yaml` for the pre-commit framework and a composite GitHub Action (`action.yml`).
 - Eval cases record the stage that decides them, and a unit test checks it without a model (`tests/unit/test_eval_cases.py`).

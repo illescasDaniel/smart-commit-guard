@@ -1,6 +1,6 @@
 [project]
 name = "smart-commit-guard"
-version = "0.1.0"
+version = "0.2.0"
 description = "Pre-commit and CI secret gate: deterministic rules plus a small decision model for ambiguous cases"
 requires-python = ">=3.12"
 readme = "README.md"

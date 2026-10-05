@@ -92,3 +92,25 @@ def test_given_an_invalid_repo_file_when_parsing_then_the_error_names_the_key(te
 
 def test_given_no_repo_file_when_loading_then_the_settings_are_empty(tmp_path):
 	assert RepoSettings.load(tmp_path) == RepoSettings()
+
+
+# [[allow]] entries and allow_inline
+
+
+def test_given_allow_entries_when_parsing_then_fingerprints_and_path_globs_are_available():
+	s = RepoSettings.parse('allowlist = ["a1"]\n[[allow]]\nfingerprint = "v2:b2"\nreason = "fixture"\npath = "tests/*"\n'
+						   '[[allow]]\nfingerprint = "c3"\nreason = "docs example"\n')
+	assert s.fingerprints == {"a1", "v2:b2", "c3"} and s.allow_paths == {"v2:b2": "tests/*"}
+
+
+@pytest.mark.parametrize("text, needle", [
+	('[[allow]]\nfingerprint = "x"', "reason"), ('[[allow]]\nfingerprint = "x"\nreason = " "', "reason"),
+	('[[allow]]\nreason = "r"', "fingerprint"), ('[[allow]]\nfingerprint = "x"\nreason = "r"\nwhy = 1', "why"),
+	('[[allow]]\nfingerprint = "x"\nreason = "r"\npath = 3', "path"), ('allow = ["x"]', "allow"), ('allow_inline = "yes"', "allow_inline")])
+def test_given_a_malformed_allow_entry_when_parsing_then_the_error_names_the_problem(text, needle):
+	with pytest.raises(ConfigError, match=needle):
+		RepoSettings.parse(text)
+
+
+def test_given_allow_inline_when_parsing_then_it_defaults_to_off():
+	assert RepoSettings.parse("").allow_inline is False and RepoSettings.parse("allow_inline = true").allow_inline is True

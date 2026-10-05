@@ -66,11 +66,15 @@ These were deliberately left out because they cannot be validated without a mode
     and Windows (needs `Scripts` vs `bin` handling).
 11. **3.3 doctor:** run the hook the way git does, report the version it finds, warn when `.githooks` is stale.
 
-### Not started (no model needed, just not done yet)
-These remain: 3.1 push-event range handling (docs only), 3.2 richer `[[allow]]` entries,
-inline pragma, `--baseline`, fingerprint v2 with `allowlist migrate`, repo-level model thresholds; 3.3 `install-hook --chain`
-and the pinned `uvx` range in the shared hook; P3 pinning third-party actions by commit SHA (needs the SHAs), a GitHub release
-with notes in the release workflow, and the version bump to 0.2.0.
+### Done in the second pass (no model needed)
+3.2 richer `[[allow]]` entries, opt-in inline pragma, `--baseline` / `baseline create`, fingerprint v2 with `allowlist migrate`
+(v1 and v2 both accepted for this release); 3.3 `install-hook --chain`; P3 `scripts/pin_actions.py` (and the version bump to 0.2.0).
+**TODO(local):** run `python scripts/pin_actions.py` with network access and commit the result (SHAs were not resolved in the
+cloud session because it may only read this repository); then add `--check` to CI.
+
+### Still not done
+3.1 push-event range handling (docs only), repo-level model thresholds in `.secret-guard.toml` (best done after the recalibration),
+3.3 the pinned `uvx` range in the shared hook and the extra `doctor` checks, a GitHub release with notes in the release workflow.
 
 ---
 

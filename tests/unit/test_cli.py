@@ -2,6 +2,7 @@ import json
 import subprocess
 import sys
 
+import pytest
 from conftest import AWS_KEY, FakeDecider
 
 from smart_commit_guard.cli import main
@@ -323,3 +324,114 @@ def test_given_doctor_when_run_then_it_prints_the_version(tmp_path, monkeypatch,
 	monkeypatch.chdir(tmp_path)
 	main(["doctor"], env={}, decider=FakeDecider())
 	assert "version" in capsys.readouterr().out
+
+
+# --- baseline, allowlist migrate, [[allow]], inline pragma, install-hook --chain
+
+
+def finding_fingerprint(capsys, *args):
+	main(["scan", *args, "--json"], env={}, decider=FakeDecider(lambda p, t: 0.99))
+	return json.loads(capsys.readouterr().out)["findings"][0]["fingerprint"]
+
+
+def test_given_a_finding_when_printing_then_the_fingerprint_is_v2(tmp_path, monkeypatch, capsys):
+	staged_repo(tmp_path, monkeypatch)
+	assert finding_fingerprint(capsys, "--staged").startswith("v2:")
+
+
+def test_given_an_allow_entry_with_a_reason_when_scanning_then_the_finding_is_accepted(tmp_path, monkeypatch, capsys):
+	staged_repo(tmp_path, monkeypatch)
+	fp = finding_fingerprint(capsys, "--staged")
+	(tmp_path / ".secret-guard.toml").write_text(f'[[allow]]\nfingerprint = "{fp}"\nreason = "fixture"\npath = "db.py"\n')
+	assert main(["scan", "--staged"], env={}, decider=FakeDecider(lambda p, t: 0.99)) == 0
+
+
+def test_given_inline_allow_when_the_repo_enables_it_then_the_pragma_works_and_otherwise_not(tmp_path, monkeypatch):
+	staged_repo(tmp_path, monkeypatch, 'DB_PASS = "Winter2026!Admin"  # smart-commit-guard: allow\n')
+	assert main(["scan", "--staged"], env={}, decider=FakeDecider(lambda p, t: 0.99)) == 1
+	(tmp_path / ".secret-guard.toml").write_text("allow_inline = true\n")
+	assert main(["scan", "--staged"], env={}, decider=FakeDecider(lambda p, t: 0.99)) == 0
+
+
+def test_given_an_existing_repo_with_findings_when_using_a_baseline_then_only_new_findings_fail(tmp_path, monkeypatch, capsys):
+	staged_repo(tmp_path, monkeypatch)
+	git(tmp_path, "commit", "-q", "-m", "old")
+	assert main(["baseline", "create", "--no-model"], env={}) == 0
+	baseline = json.loads((tmp_path / ".secret-guard-baseline.json").read_text())
+	assert baseline["version"] == 1 and len(baseline["findings"]) == 1 and "Winter2026" not in json.dumps(baseline)
+	capsys.readouterr()
+	d = FakeDecider(lambda p, t: 0.99)
+	assert main(["scan", "--all", "--baseline", ".secret-guard-baseline.json"], env={}, decider=d) == 0
+	(tmp_path / "new.py").write_text('API_TOKEN = "Zq8Lm2Pr0dKx9Wv3TnHq7zLm2"\n')
+	git(tmp_path, "add", "new.py")
+	assert main(["scan", "--all", "--baseline", ".secret-guard-baseline.json"], env={}, decider=d) == 1
+
+
+def test_given_a_missing_or_invalid_baseline_when_scanning_then_exit_2(tmp_path, capsys):
+	f = write(tmp_path, "a.py", "x = 1\n")
+	assert main(["scan", "--files", f, "--baseline", str(tmp_path / "nope.json")], env={}, decider=FakeDecider()) == 2
+	bad = write(tmp_path, "bad.json", '{"nope": 1}')
+	assert main(["scan", "--files", f, "--baseline", bad], env={}, decider=FakeDecider()) == 2
+	assert "baseline" in capsys.readouterr().err
+
+
+def test_given_v1_fingerprints_when_migrating_then_they_become_v2_and_comments_survive(tmp_path, monkeypatch, capsys):
+	from smart_commit_guard.redact import fingerprint, mask
+
+	staged_repo(tmp_path, monkeypatch)
+	masked = 'DB_PASS = "' + mask("Winter2026!Admin") + '"'
+	v1 = fingerprint("db.py", masked)
+	(tmp_path / ".secret-guard.toml").write_text(f'# keep me\nallowlist = ["{v1}", "deadbeefdeadbeef"]\n')
+	assert main(["allowlist", "migrate"], env={}) == 0
+	text = (tmp_path / ".secret-guard.toml").read_text()
+	err = capsys.readouterr().err
+	assert text.startswith("# keep me") and f'"{v1}"' not in text and '"v2:' in text and "deadbeefdeadbeef" in text
+	assert "deadbeefdeadbeef" in err   # reported as stale
+	assert main(["scan", "--staged"], env={}, decider=FakeDecider(lambda p, t: 0.99)) == 0   # the v2 entry matches
+
+
+def test_given_no_config_file_when_migrating_then_exit_2(tmp_path, monkeypatch):
+	git(tmp_path, "init", "-q")
+	monkeypatch.chdir(tmp_path)
+	assert main(["allowlist", "migrate"], env={}) == 2
+
+
+def test_given_an_existing_hook_when_installing_with_chain_then_it_is_kept_and_runs_first(tmp_path, monkeypatch):
+	git(tmp_path, "init", "-q")
+	hook = tmp_path / ".git" / "hooks" / "pre-commit"
+	hook.write_text("#!/bin/sh\necho mine >> ran.txt\n")
+	monkeypatch.chdir(tmp_path)
+	assert main(["install-hook"], env={}) == 2
+	assert main(["install-hook", "--chain"], env={}) == 0
+	local = tmp_path / ".git" / "hooks" / "pre-commit.local"
+	assert "echo mine" in local.read_text() and "pre-commit.local" in hook.read_text() and "scan --staged" in hook.read_text()
+	assert hook.read_text().index("pre-commit.local") < hook.read_text().index("scan --staged")
+
+
+@pytest.mark.skipif(sys.platform == "win32", reason="runs a POSIX shell hook")
+def test_given_a_chained_hook_when_the_local_hook_fails_then_the_commit_is_refused_before_the_scan(tmp_path, monkeypatch):
+	git(tmp_path, "init", "-q")
+	hooks = tmp_path / ".git" / "hooks"
+	(hooks / "pre-commit").write_text("#!/bin/sh\nexit 7\n")
+	(hooks / "pre-commit").chmod(0o755)
+	monkeypatch.chdir(tmp_path)
+	main(["install-hook", "--chain"], env={})
+	r = subprocess.run([str(hooks / "pre-commit")], cwd=tmp_path, capture_output=True, check=False)
+	assert r.returncode == 7
+
+
+def test_given_chain_and_no_existing_hook_when_installing_then_a_plain_hook_is_written(tmp_path, monkeypatch):
+	git(tmp_path, "init", "-q")
+	monkeypatch.chdir(tmp_path)
+	assert main(["install-hook", "--chain"], env={}) == 0
+	assert "pre-commit.local" not in (tmp_path / ".git" / "hooks" / "pre-commit").read_text()
+
+
+def test_given_chain_and_shared_when_a_hook_exists_there_then_it_is_chained(tmp_path, monkeypatch):
+	git(tmp_path, "init", "-q")
+	shared = tmp_path / ".githooks"
+	shared.mkdir()
+	(shared / "pre-commit").write_text("#!/bin/sh\necho husky\n")
+	monkeypatch.chdir(tmp_path)
+	assert main(["install-hook", "--shared", "--chain"], env={}) == 0
+	assert "echo husky" in (shared / "pre-commit.local").read_text() and "pre-commit.local" in (shared / "pre-commit").read_text()

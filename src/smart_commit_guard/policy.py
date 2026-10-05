@@ -1,14 +1,15 @@
 """Scan policy: thresholds, batching and fail-open/closed rules live here, not in the model."""
 from __future__ import annotations
 
+import fnmatch
 import re
 import time
-from collections.abc import Callable, Sequence
+from collections.abc import Callable, Mapping, Sequence
 from collections.abc import Set as AbstractSet
 from typing import Literal
 
 from .decider import MAX_BATCH, Decider, DeciderUnavailable
-from .redact import fingerprint, mask_line
+from .redact import fingerprints, mask_line
 from .rules import scan_line
 from .skip import (
 	is_env_file,
@@ -23,7 +24,16 @@ MAX_CALLS = 30   # one candidate per request (see decider.MAX_BATCH), so this is
 WINDOW_CHARS = 300   # what the model sees of a long line: about this many characters centred on the candidate
 
 FILE_PREVIEW = "<contents hidden>"
+PRAGMA = "smart-commit-guard: allow"   # honoured only when the repo file sets `allow_inline = true`
 _KEY_BEFORE = re.compile(r"[A-Za-z0-9_.-]{1,80}[\"']?\s*[:=]\s*[\"']?$")
+
+
+def _allowed(path: str, masked: str, allowlist: AbstractSet[str], allow_paths: Mapping[str, str]) -> bool:
+	"""An entry in either fingerprint form; an `[[allow]]` entry with a `path` glob only counts for matching paths."""
+	for fp in fingerprints(path, masked):
+		if fp in allowlist and (fp not in allow_paths or fnmatch.fnmatchcase(path, allow_paths[fp])):
+			return True
+	return False
 
 
 def _label(hit: LineHit) -> str:
@@ -66,8 +76,8 @@ def stage(path: str, text: str) -> Literal["no-hit", "name-block", "rule-block",
 
 
 def scan(lines: Sequence[AddedLine], decider: Decider | None, *, block_at: float = 0.5, warn_at: float = 0.4,
-		 allowlist: AbstractSet[str] = frozenset(), paths: Sequence[str] = (), budget: float | None = None,
-		 clock: Callable[[], float] = time.monotonic) -> ScanResult:
+		 allowlist: AbstractSet[str] = frozenset(), allow_paths: Mapping[str, str] = {},
+		 inline_allow: bool = False, paths: Sequence[str] = (), budget: float | None = None, clock: Callable[[], float] = time.monotonic) -> ScanResult:
 	"""decider=None means rules only. The decider receives the candidate line as written (a window around the candidate
 	when the line is long), never other lines or whole files; lines that rules already block are never sent.
 	`budget` is the total seconds of model time for the scan: candidates left over are reported as not judged.
@@ -85,14 +95,16 @@ def scan(lines: Sequence[AddedLine], decider: Decider | None, *, block_at: float
 		if why and not is_env_file(path):
 			by_name.setdefault(path, (1, why))
 	for path, (number, why) in by_name.items():   # one block per file, no model, contents never printed
-		if fingerprint(path, FILE_PREVIEW) not in allowlist:
+		if not _allowed(path, FILE_PREVIEW, allowlist, allow_paths):
 			result.findings.append(Finding(path, number, "block", why, FILE_PREVIEW))
 	for line in lines:
+		if inline_allow and PRAGMA in line.text:   # a visible, reviewable opt-out for this one line
+			continue
 		hits = line_hits(line.path, line.text)
 		if not hits:
 			continue
 		masked = mask_line(line.text, hits)
-		if fingerprint(line.path, masked) in allowlist:
+		if _allowed(line.path, masked, allowlist, allow_paths):
 			continue
 		if not is_example_path(line.path) and any(h.high_confidence for h in hits):
 			labels = ", ".join(dict.fromkeys(_label(h) for h in hits if h.high_confidence))

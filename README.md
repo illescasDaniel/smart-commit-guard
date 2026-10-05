@@ -21,7 +21,7 @@ Or install nothing and run it through [`uvx`](https://docs.astral.sh/uv/guides/t
 on first use. `uvx` caches releases, so pin a range in hooks and CI:
 
 ```bash
-uvx --from 'smart-commit-guard>=0.1,<0.2' smart-commit-guard doctor
+uvx --from 'smart-commit-guard>=0.2,<0.3' smart-commit-guard doctor
 ```
 
 ## Quickstart
@@ -36,7 +36,10 @@ git add .githooks .gitattributes && git commit -m "Add the smart-commit-guard pr
 
 The shared hook finds `smart-commit-guard` on `PATH`, then in the repo's `.venv`, then falls back to `uvx`. To pin the
 `uvx` fallback to a release range, edit the `uvx` line in `.githooks/pre-commit` to
-`uvx --from 'smart-commit-guard>=0.1,<0.2' smart-commit-guard scan --staged`.
+`uvx --from 'smart-commit-guard>=0.2,<0.3' smart-commit-guard scan --staged`.
+
+Already have a pre-commit hook (husky, lefthook, a custom one)? `install-hook --chain` (also with `--shared`) keeps it as
+`pre-commit.local` next to the new hook and runs it first; if it fails, the commit stops before the scan.
 
 Or protect only your own clone: `smart-commit-guard install-hook`. Either way, check the result with
 `smart-commit-guard doctor`.
@@ -63,13 +66,13 @@ jobs:
       - uses: astral-sh/setup-uv@v10
       - name: Scan the pull request's added lines
         if: github.event_name == 'pull_request'
-        run: uvx --from 'smart-commit-guard>=0.1,<0.2' smart-commit-guard scan --no-model --diff "origin/${{ github.base_ref }}...HEAD"
+        run: uvx --from 'smart-commit-guard>=0.2,<0.3' smart-commit-guard scan --no-model --diff "origin/${{ github.base_ref }}...HEAD"
       - name: Scan the whole tree
         if: github.event_name == 'push'
-        run: uvx --from 'smart-commit-guard>=0.1,<0.2' smart-commit-guard scan --no-model --files $(git ls-files)
+        run: uvx --from 'smart-commit-guard>=0.2,<0.3' smart-commit-guard scan --no-model --all
 ```
 
-From 0.2 (not released yet) CI can also use the SARIF format for GitHub code scanning, `--all` instead of
+CI can also use the SARIF format for GitHub code scanning, `--all` instead of
 `--files $(git ls-files)` (which hits the argument-length limit on large repos), and `--config-from origin/main` so a pull
 request cannot change its own skip list. A GitHub Actions run prints findings as inline annotations on its own.
 
@@ -145,6 +148,10 @@ crash is also `2`, with the details on stderr when `SMART_COMMIT_GUARD_DEBUG=1`)
 | `smart-commit-guard scan --all` | every tracked file (`git ls-files`) |
 | `--format text\|json\|sarif`, `--json`, `--no-model` | output format (`--json` is `--format json`); rules only (no model call) |
 | `--config-from REF` | read `.secret-guard.toml` from a revision such as `origin/main`, not the working tree |
+| `--baseline FILE` | ignore the findings recorded in a baseline file |
+| `smart-commit-guard baseline create [-o FILE] [--no-model]` | record the current findings (default `.secret-guard-baseline.json`) |
+| `smart-commit-guard allowlist migrate` | rewrite v1 fingerprints in `.secret-guard.toml` to v2 |
+| `smart-commit-guard install-hook --chain` | keep an existing hook as `pre-commit.local` and run it first |
 | `--version` | print the version |
 | `smart-commit-guard install-hook [--force]` | per-clone hook in the effective hooks directory |
 | `smart-commit-guard install-hook --shared` | committable `.githooks/pre-commit` plus `core.hooksPath` |
@@ -182,6 +189,16 @@ skip = ["tests/fixtures/*", "docs/*"]
 # and only matches that line shape in that file.
 allowlist = ["b37018356662157b"]
 
+# The same, with the reason reviewers see (and optionally the paths it may apply to). `reason` is required.
+[[allow]]
+fingerprint = "v2:3f9a1c0b7d52e864"
+reason = "Fixture: a fake password used by the login tests"
+path = "tests/*"
+
+# Optional: honour `# smart-commit-guard: allow` at the end of a line. Off by default: it is easy to abuse (but, unlike
+# SKIP_SECRET_GUARD, it is visible in review).
+allow_inline = true
+
 # Optional: where a hosted model may be used (see "Hosted model in CI only"). It can only narrow, never widen.
 [model]
 hosted_scope = "ci"
@@ -193,6 +210,21 @@ changed file prints a warning. In `--diff` mode a change to this file inside the
 the diff it guards; use `--config-from origin/main` to read it from the base branch instead.
 
 Allowlisting works for the hook and for CI.
+
+**Fingerprints.** Printed fingerprints are `v2:` + the hash of the path and the *stripped* masked line, so re-indenting a line
+does not break its entry. Plain 16-hex entries (v1, from 0.1) are still accepted for now; `smart-commit-guard allowlist migrate`
+rewrites them to v2 in place (comments and layout are kept) and lists entries that no longer match anything.
+
+### Adopting the tool on an existing repo: a baseline
+
+```bash
+smart-commit-guard baseline create            # records every current finding (masked, fingerprints only) in .secret-guard-baseline.json
+git add .secret-guard-baseline.json && git commit -m "Record the secret-scan baseline"
+smart-commit-guard scan --all --baseline .secret-guard-baseline.json    # fails only on findings that are not in the baseline
+```
+
+`baseline create --no-model` records rules-only results. The baseline hides the old findings, it does not fix them: rotate
+anything that was real, then shrink the file.
 
 ### 2. `SKIP_SECRET_GUARD=1` (one commit, local only)
 
@@ -248,7 +280,7 @@ message telling them how to install it (the gate fails closed rather than silent
 `core.hooksPath` replaces `.git/hooks/` for the clone. If you already use other hooks, call them from
 `.githooks/pre-commit` or use a hook manager.
 
-### With the pre-commit framework or as a GitHub Action (from 0.2)
+### With the pre-commit framework or as a GitHub Action
 
 ```yaml
 # .pre-commit-config.yaml
@@ -325,6 +357,7 @@ uv sync
 uv run task setup-hooks   # dogfood the shared hook
 uv run task test
 uv run ruff check . && uv run ty check
+python scripts/pin_actions.py     # pin GitHub Actions to commit SHAs (needs github.com; --check for CI)
 ```
 
 Behavior is specified in [`specs/secret-scan/SPEC.md`](specs/secret-scan/SPEC.md).

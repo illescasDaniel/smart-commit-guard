@@ -11,7 +11,9 @@ _LOOPBACK = {"localhost", "127.0.0.1", "::1"}
 CONFIG_NAME = ".secret-guard.toml"
 HOSTED_SCOPES = ("all", "ci")   # where a hosted model may be used: everywhere, or only in CI-style scans (not the commit hook)
 _TOP_LEVEL_KEYS = {"skip": "a list of glob strings", "allowlist": "a list of fingerprint strings",
-				   "model": "a table, for example [model] hosted_scope = \"ci\""}
+				   "allow": "a list of tables, for example [[allow]] fingerprint = \"...\" reason = \"...\"",
+				   "allow_inline": "true or false", "model": "a table, for example [model] hosted_scope = \"ci\""}
+_ALLOW_KEYS = {"fingerprint", "path", "reason"}
 _MODEL_KEYS = {"hosted_scope"}
 
 
@@ -40,11 +42,30 @@ def _scope(value: str, source: str) -> str:
 
 
 @dataclass(frozen=True)
+class AllowEntry:
+	"""`[[allow]]`: a fingerprint with the reason a reviewer should see, and optionally the paths it may apply to."""
+	fingerprint: str
+	reason: str
+	path: str | None = None
+
+
+@dataclass(frozen=True)
 class RepoSettings:
 	"""What `.secret-guard.toml` may say. It is part of the diff it guards, so it can only narrow where data goes."""
 	skip: tuple[str, ...] = ()
 	allowlist: frozenset[str] = frozenset()
 	hosted_scope: str | None = None
+	allow: tuple[AllowEntry, ...] = ()
+	allow_inline: bool = False   # honour `# smart-commit-guard: allow` on a line; off by default because it is easy to abuse
+
+	@property
+	def fingerprints(self) -> frozenset[str]:
+		"""Every accepted fingerprint: the plain `allowlist` plus the `[[allow]]` entries."""
+		return self.allowlist | {e.fingerprint for e in self.allow}
+
+	@property
+	def allow_paths(self) -> dict[str, str]:
+		return {e.fingerprint: e.path for e in self.allow if e.path}
 
 	@classmethod
 	def parse(cls, text: str, source: str = CONFIG_NAME) -> RepoSettings:
@@ -61,6 +82,24 @@ class RepoSettings:
 			if not isinstance(value, list) or not all(isinstance(v, str) for v in value):
 				raise ConfigError(f"{source}: {key!r} must be {_TOP_LEVEL_KEYS[key]}, for example {key} = [\"...\"]")
 			lists[key] = value
+		allow = []
+		raw_allow = data.get("allow", [])
+		if not isinstance(raw_allow, list) or not all(isinstance(e, dict) for e in raw_allow):
+			raise ConfigError(f"{source}: 'allow' must be {_TOP_LEVEL_KEYS['allow']}")
+		for entry in raw_allow:
+			for key in entry:
+				if key not in _ALLOW_KEYS:
+					raise ConfigError(f"{source}: unknown key {key!r} in [[allow]] (allowed: {', '.join(sorted(_ALLOW_KEYS))})")
+			for key in ("fingerprint", "reason"):
+				if not isinstance(entry.get(key), str) or not entry[key].strip():
+					raise ConfigError(f"{source}: every [[allow]] entry needs a non-empty string {key!r}"
+									  + (" (say why, so reviewers can judge it)" if key == "reason" else ""))
+			if "path" in entry and not isinstance(entry["path"], str):
+				raise ConfigError(f"{source}: [[allow]] 'path' must be a glob string")
+			allow.append(AllowEntry(entry["fingerprint"], entry["reason"], entry.get("path")))
+		inline = data.get("allow_inline", False)
+		if not isinstance(inline, bool):
+			raise ConfigError(f"{source}: 'allow_inline' must be true or false")
 		model = data.get("model", {})
 		if not isinstance(model, dict):
 			raise ConfigError(f"{source}: 'model' must be a table, for example [model] hosted_scope = \"ci\"")
@@ -72,7 +111,7 @@ class RepoSettings:
 			if not isinstance(scope, str):
 				raise ConfigError(f"{source}: [model] hosted_scope must be one of {', '.join(HOSTED_SCOPES)}")
 			scope = _scope(scope, f"{source}: [model] hosted_scope")
-		return cls(tuple(lists["skip"]), frozenset(lists["allowlist"]), scope)
+		return cls(tuple(lists["skip"]), frozenset(lists["allowlist"]), scope, tuple(allow), inline)
 
 	@classmethod
 	def load(cls, root: Path) -> RepoSettings:

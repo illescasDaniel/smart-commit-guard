@@ -63,6 +63,11 @@ password) block without the model. Credential-assignment (`password = "..."`) an
 *candidates*: judged by the model, and warn-and-allow when it is unavailable.
 
 **Allowlist fingerprint** = hash of the path plus the line with the secret replaced by its mask, so it only matches that line shape.
+v2 (printed, `v2:` + 16 hex) hashes the *stripped* masked line, so re-indenting does not break an entry; v1 (16 hex, whole line)
+is still accepted. `allowlist migrate` rewrites v1 entries to v2 in `.secret-guard.toml`. `[[allow]]` entries carry a required
+`reason` and an optional `path` glob (the entry then only applies to matching paths). With `allow_inline = true`, a line
+containing `smart-commit-guard: allow` is not scanned (sensitive file names are not affected). A baseline file (`baseline create`,
+`scan --baseline`) is a list of v2 fingerprints that are ignored, to adopt the tool on an existing repo.
 
 ### Performance and resource budget
 - Rules plus candidate extraction: O(added lines), single pass.
@@ -96,13 +101,15 @@ Answers are read from `answers[<key>].noul`. A missing or non-noul answer is a f
 - `smart-commit-guard scan --staged` | `--diff <range>` (a range with `..`; a single revision is rejected) | `--files <paths...>`
   (`-`: NUL-separated paths on stdin) | `--all` (every tracked file); `--format text|json|sarif` (`--json` is an alias; text adds
   GitHub Actions annotations when `GITHUB_ACTIONS=true`); `--no-model` (rules only); `--config-from REF`.
-- `smart-commit-guard --version`.
+- `smart-commit-guard --version`; `scan --baseline FILE`; `baseline create [-o FILE] [--no-model]`; `allowlist migrate`.
 - `smart-commit-guard doctor` checks the hook (exists at the effective hooks path, executable, runs `scan --staged`), that rules block a
   synthetic secret, and that the model answers. Exit 1 only for a missing or broken hook, broken rules or invalid config; an
   unreachable model or an exported `SKIP_SECRET_GUARD` is a warning.
 - `smart-commit-guard install-hook --shared` writes a committable `.githooks/pre-commit` (no machine-specific paths), sets
   `core.hooksPath=.githooks` and adds `/.githooks/* text eol=lf` to `.gitattributes`; refuses to replace a different
   `core.hooksPath` or an existing hook without `--force`.
+- `install-hook [--shared] --chain` keeps an existing hook that is not ours as `pre-commit.local` (same directory) and the new hook
+  runs it first, stopping the commit if it fails.
 - `smart-commit-guard install-hook` writes a `pre-commit` hook that runs `scan --staged` (refuses to overwrite an existing hook
   without `--force`).
 - Intended for a git pre-commit hook and a CI step (the CI run covers `git commit --no-verify`).
@@ -141,7 +148,11 @@ Answers are read from `answers[<key>].noul`. A missing or non-noul answer is a f
 - **Given** a staged `.env` containing `A=b`, **then** exit 1 with one finding, no model call, and the content not printed;
   **and given** `.env.example`, **then** it is skipped.
 - **Given** a staged binary `prod.p12`, **then** exit 1 by name; **given** `id_rsa.pub` or `terraform.tfvars.example`, **then** no name finding.
-- **Given** an allowlisted fingerprint, **then** that finding is not reported.
+- **Given** an allowlisted fingerprint (v1 or v2), **then** that finding is not reported; **and given** the line re-indented, **then** a v2 entry still matches.
+- **Given** a baseline created from the current findings, **then** `scan --baseline` passes until a new finding appears.
+- **Given** `allow_inline = true` and `# smart-commit-guard: allow` on a line, **then** that line is not reported; without the setting it is.
+- **Given** an `[[allow]]` entry without a `reason`, **then** exit 2.
+- **Given** an existing hook and `install-hook --chain`, **then** it becomes `pre-commit.local` and runs first.
 - **Given** a removed line (`-`) containing a secret, **then** it is ignored (only added lines are scanned).
 
 ## Out of scope (v1)

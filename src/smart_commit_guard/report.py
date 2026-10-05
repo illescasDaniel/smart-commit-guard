@@ -5,7 +5,7 @@ import json
 import sys
 
 from . import __version__
-from .redact import fingerprint
+from .redact import fingerprint_v2
 from .types import Finding, ScanResult
 
 SARIF_SCHEMA = "https://json.schemastore.org/sarif-2.1.0.json"
@@ -18,7 +18,7 @@ def clip(s: str, n: int = 160) -> str:
 
 def _rows(result: ScanResult) -> list[dict]:
 	return [{"path": f.path, "line": f.number, "level": f.level, "reason": f.reason, "preview": f.preview, "p": f.p,
-			 "fingerprint": fingerprint(f.path, f.preview)} for f in result.findings]
+			 "fingerprint": fingerprint_v2(f.path, f.preview)} for f in result.findings]
 
 
 def as_json(result: ScanResult) -> str:
@@ -38,7 +38,7 @@ def as_sarif(result: ScanResult) -> str:
 		"message": {"text": f.reason},
 		"locations": [{"physicalLocation": {"artifactLocation": {"uri": f.path},
 											"region": {"startLine": f.number, "snippet": {"text": f.preview}}}}],
-		"partialFingerprints": {"smartCommitGuard/v1": row["fingerprint"]},
+		"partialFingerprints": {"smartCommitGuard/v2": row["fingerprint"]},
 	} for f, row in zip(result.findings, _rows(result))]
 	run = {"tool": {"driver": {"name": "smart-commit-guard", "version": __version__,
 							   "informationUri": "https://github.com/illescasDaniel/smart-commit-guard",

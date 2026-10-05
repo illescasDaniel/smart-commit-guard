@@ -234,3 +234,48 @@ def test_given_a_time_budget_when_it_runs_out_then_the_rest_is_not_judged_and_on
 def test_given_no_budget_when_scanning_then_it_never_runs_out():
 	lines = [AddedLine("src/a.py", i, f'PASS_{i} = "Winter{i:04d}!Admin"') for i in range(1, 6)]
 	assert not scan(lines, FakeDecider(), budget=None).budget_exhausted
+
+
+# --- fingerprint v2, [[allow]] paths and the inline pragma
+
+
+def test_given_a_v2_fingerprint_when_the_line_is_re_indented_then_it_still_matches_but_v1_does_not():
+	from smart_commit_guard.redact import fingerprint_v2
+
+	masked = 'DB_PASS = "' + mask("Winter2026!Admin") + '"'
+	v2 = fingerprint_v2(PASS.path, masked)
+	assert v2.startswith("v2:")
+	indented = AddedLine(PASS.path, 4, "\t\t" + PASS.text)
+	assert scan([indented], FakeDecider(lambda p, t: 0.99), allowlist={v2}).findings == []
+	assert scan([indented], FakeDecider(lambda p, t: 0.99), allowlist={fingerprint(PASS.path, masked)}).exit_code == 1
+
+
+def test_given_a_v1_fingerprint_when_scanning_the_same_line_then_it_is_still_accepted_for_now():
+	masked = 'DB_PASS = "' + mask("Winter2026!Admin") + '"'
+	assert scan([PASS], FakeDecider(lambda p, t: 0.99), allowlist={fingerprint(PASS.path, masked)}).findings == []
+
+
+def test_given_an_allow_entry_with_a_path_glob_when_the_path_does_not_match_then_it_does_not_apply():
+	from smart_commit_guard.redact import fingerprint_v2
+
+	masked = 'DB_PASS = "' + mask("Winter2026!Admin") + '"'
+	fp = fingerprint_v2(PASS.path, masked)
+	assert scan([PASS], FakeDecider(lambda p, t: 0.99), allowlist={fp}, allow_paths={fp: "src/*"}).findings == []
+	assert scan([PASS], FakeDecider(lambda p, t: 0.99), allowlist={fp}, allow_paths={fp: "tests/*"}).exit_code == 1
+
+
+def test_given_the_inline_pragma_when_it_is_enabled_then_only_that_line_is_ignored():
+	other = AddedLine("src/db.py", 5, 'DB_PASS = "Winter2026!Admin"')
+	marked = AddedLine("src/db.py", 4, 'DB_PASS = "Winter2026!Admin"  # smart-commit-guard: allow')
+	r = scan([marked, other], FakeDecider(lambda p, t: 0.99), inline_allow=True)
+	assert [f.number for f in r.findings] == [5]
+
+
+def test_given_the_inline_pragma_when_it_is_not_enabled_then_it_changes_nothing():
+	marked = AddedLine("src/db.py", 4, 'DB_PASS = "Winter2026!Admin"  # smart-commit-guard: allow')
+	assert scan([marked], FakeDecider(lambda p, t: 0.99)).exit_code == 1
+
+
+def test_given_the_inline_pragma_when_a_file_name_is_sensitive_then_the_file_still_blocks():
+	line = AddedLine("id_rsa", 1, "abc  # smart-commit-guard: allow")
+	assert scan([line], FakeDecider(), inline_allow=True).exit_code == 1
