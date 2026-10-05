@@ -35,6 +35,7 @@ placeholder, mock or env reference). The tool is a CLI for a git pre-commit hook
 | `SKIP_SECRET_GUARD=1` with `--diff` or `--files` | Ignored: CI and explicit scans cannot be skipped this way |
 | Not a git repo, or git fails | Exit 2 with a message |
 | Environment file (`.env`, `.env.*`, `*.env`, not `.example`/`.sample`/`.template`/`.dist`/`.defaults`) with at least one non-blank, non-comment added line | **Block**, one finding per file (no model, contents not printed); allowlist it or add the path to `skip` if intentional |
+| Sensitive file name (SSH private keys, key stores such as `.p12`/`.pfx`/`.jks`/`.keystore`/`.ppk`, `.kdbx`, `.netrc`, `.pgpass`, `.pypirc`, `.htpasswd`, `.git-credentials`, `.aws/credentials`, `.docker/config.json`, `.kube/config`, Terraform state and `.tfvars`, `credentials.json`, Google client-secret and service-account JSON, `.mobileprovision`; template names exempt) | **Block** by name, one finding per file, binaries included (checked from the changed-file list, not only text lines); same allowlist/`skip` escape |
 | Binary file, lockfile, generated file, `.env.example` | Skipped |
 
 **Rule hit vs candidate (clarification).** Only *high-confidence* rules (private keys, AWS keys, token prefixes, URLs with a
@@ -99,6 +100,7 @@ Answers are read from `answers[<key>].noul`. A missing or non-noul answer is a f
   unreachable model, **then** it only warns.
 - **Given** a staged `.env` containing `A=b`, **then** exit 1 with one finding, no model call, and the content not printed;
   **and given** `.env.example`, **then** it is skipped.
+- **Given** a staged binary `prod.p12`, **then** exit 1 by name; **given** `id_rsa.pub` or `terraform.tfvars.example`, **then** no name finding.
 - **Given** an allowlisted fingerprint, **then** that finding is not reported.
 - **Given** a removed line (`-`) containing a secret, **then** it is ignored (only added lines are scanned).
 

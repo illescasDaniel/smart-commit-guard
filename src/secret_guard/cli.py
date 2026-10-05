@@ -83,6 +83,12 @@ def _file_lines(paths: Sequence[str]) -> list[AddedLine]:
 	return out
 
 
+def _changed_paths(*diff_args: str) -> list[str]:
+	"""Added, modified or renamed files (binaries included), for the file-name rules."""
+	out = _git("-c", "core.quotepath=off", "diff", "--name-only", "--diff-filter=AMR", "-z", *diff_args)
+	return [p for p in out.split("\0") if p]
+
+
 def _repo_settings() -> tuple[list[str], frozenset[str]]:
 	"""(extra skip globs, allowlisted fingerprints) from `.secret-guard.toml` in the working directory."""
 	path = Path(".secret-guard.toml")
@@ -142,13 +148,16 @@ def _scan(args: argparse.Namespace, env: Mapping[str, str], decider: Decider | N
 		_log_skip()
 		return 0
 	if args.files:
-		lines = _file_lines(args.files)
+		lines, paths = _file_lines(args.files), list(args.files)
 	elif args.diff:
 		lines = parse_added_lines(_git("diff", "-U0", "--no-color", args.diff))
+		paths = _changed_paths(args.diff)
 	else:
 		lines = parse_added_lines(_git("diff", "--cached", "-U0", "--no-color"))
+		paths = _changed_paths("--cached")
 	skip, allow = _repo_settings()
 	lines = [l for l in lines if not any(fnmatch.fnmatch(l.path, g) for g in skip)]
+	paths = [p for p in paths if not any(fnmatch.fnmatch(p, g) for g in skip)]
 	hosted = False
 	if args.no_model:
 		decider, cfg = None, Config()
@@ -156,7 +165,7 @@ def _scan(args: argparse.Namespace, env: Mapping[str, str], decider: Decider | N
 		cfg = Config.from_env(env)
 		hosted = cfg.is_hosted
 		decider = decider or HttpDecider(cfg.base_url, cfg.model, cfg.timeout, cfg.api_key)
-	result = scan(lines, decider, block_at=cfg.block_at, warn_at=cfg.warn_at, hosted=hosted, allowlist=allow)
+	result = scan(lines, decider, block_at=cfg.block_at, warn_at=cfg.warn_at, hosted=hosted, allowlist=allow, paths=paths)
 	_report(result, args.json)
 	return result.exit_code
 

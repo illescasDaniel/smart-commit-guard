@@ -7,14 +7,13 @@ from collections.abc import Set as AbstractSet
 from .decider import MAX_BATCH, Decider, DeciderUnavailable
 from .redact import fingerprint, mask_in_line
 from .rules import scan_line
-from .skip import is_env_file, is_example_path, is_skipped
+from .skip import is_env_file, is_example_path, is_skipped, sensitive_file_reason
 from .types import AddedLine, Finding, LineHit, ScanResult
 
 MAX_CALLS = 30   # one candidate per request (see decider.MAX_BATCH), so this is also the candidates judged per scan
 
 
-ENV_REASON = "environment file should not be committed (add it to .gitignore, commit a .env.example instead)"
-ENV_PREVIEW = "<contents hidden>"
+FILE_PREVIEW = "<contents hidden>"
 
 
 def _label(hit: LineHit) -> str:
@@ -22,19 +21,26 @@ def _label(hit: LineHit) -> str:
 
 
 def scan(lines: Sequence[AddedLine], decider: Decider | None, *, block_at: float = 0.5, warn_at: float = 0.4,
-		 hosted: bool = False, allowlist: AbstractSet[str] = frozenset()) -> ScanResult:
-	"""decider=None means rules only. With hosted=True the decider only ever receives masked text."""
+		 hosted: bool = False, allowlist: AbstractSet[str] = frozenset(), paths: Sequence[str] = ()) -> ScanResult:
+	"""decider=None means rules only. With hosted=True the decider only ever receives masked text.
+
+	`paths` are changed files that have no text lines (binaries such as `.p12`); they are only checked by file name."""
 	result = ScanResult()
 	pending: list[tuple[AddedLine, LineHit, str]] = []   # (line, hit, masked line); the model decides these
-	env_flagged: set[str] = set()
+	by_name: dict[str, tuple[int, str]] = {}   # path -> (first line, why): a sensitive file is itself the finding
 	for line in lines:
-		if is_skipped(line.path):
-			continue
-		if is_env_file(line.path):   # the file itself is the finding: one block per file, no model, contents never printed
-			if line.path not in env_flagged and line.text.strip() and not line.text.lstrip().startswith("#"):
-				env_flagged.add(line.path)
-				if fingerprint(line.path, ENV_PREVIEW) not in allowlist:
-					result.findings.append(Finding(line.path, line.number, "block", ENV_REASON, ENV_PREVIEW))
+		why = sensitive_file_reason(line.path)
+		if why and not (is_env_file(line.path) and (not line.text.strip() or line.text.lstrip().startswith("#"))):
+			by_name.setdefault(line.path, (line.number, why))
+	for path in paths:
+		why = sensitive_file_reason(path)
+		if why and not is_env_file(path):
+			by_name.setdefault(path, (1, why))
+	for path, (number, why) in by_name.items():   # one block per file, no model, contents never printed
+		if fingerprint(path, FILE_PREVIEW) not in allowlist:
+			result.findings.append(Finding(path, number, "block", why, FILE_PREVIEW))
+	for line in lines:
+		if is_skipped(line.path) or sensitive_file_reason(line.path):
 			continue
 		hit = scan_line(line.text)
 		if hit is None:

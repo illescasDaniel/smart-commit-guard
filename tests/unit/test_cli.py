@@ -182,3 +182,28 @@ def test_given_skip_secret_guard_exported_when_running_doctor_then_it_warns(tmp_
 	main(["install-hook", "--shared"], env={})
 	main(["doctor"], env={"SKIP_SECRET_GUARD": "1"}, decider=FakeDecider())
 	assert "SKIP_SECRET_GUARD" in capsys.readouterr().out
+
+
+def test_given_a_staged_binary_key_store_when_scanning_staged_then_it_blocks_by_name(tmp_path, monkeypatch, capsys):
+	git(tmp_path, "init", "-q")
+	(tmp_path / "prod.p12").write_bytes(bytes(range(256)))
+	git(tmp_path, "add", "prod.p12")
+	monkeypatch.chdir(tmp_path)
+	assert main(["scan", "--staged"], env={}, decider=FakeDecider()) == 1
+	assert "prod.p12" in capsys.readouterr().out
+
+
+def test_given_a_skipped_glob_when_scanning_a_sensitive_file_then_it_passes(tmp_path, monkeypatch):
+	git(tmp_path, "init", "-q")
+	(tmp_path / "prod.p12").write_bytes(bytes(range(256)))
+	(tmp_path / ".secret-guard.toml").write_text('skip = ["prod.p12"]\n')
+	git(tmp_path, "add", "prod.p12")
+	monkeypatch.chdir(tmp_path)
+	assert main(["scan", "--staged"], env={}, decider=FakeDecider()) == 0
+
+
+def test_given_files_mode_with_a_sensitive_name_when_scanning_then_it_blocks(tmp_path):
+	d = tmp_path / ".ssh"
+	d.mkdir()
+	(d / "id_rsa").write_text("not really a key\n")
+	assert main(["scan", "--files", str(d / "id_rsa")], env={}, decider=FakeDecider()) == 1

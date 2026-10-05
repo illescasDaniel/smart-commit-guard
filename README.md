@@ -1,5 +1,10 @@
 # secret-guard
 
+[![CI](https://github.com/illescasDaniel/secret-guard/actions/workflows/ci.yml/badge.svg)](https://github.com/illescasDaniel/secret-guard/actions/workflows/ci.yml)
+[![PyPI](https://img.shields.io/pypi/v/secret-guard.svg)](https://pypi.org/project/secret-guard/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+![Python 3.12+](https://img.shields.io/badge/python-3.12%2B-blue)
+
 Stop real secrets (API keys, passwords, private keys, tokens, connection strings) from being committed.
 
 Deterministic rules catch the obvious cases. A small decision model judges the ambiguous ones, such as
@@ -34,11 +39,18 @@ secret-guard scan --diff origin/main...HEAD
    connection strings with a password) **block immediately**, with no model call, outside test/doc/example paths.
 3. A staged **environment file** (`.env`, `.env.local`, `prod.env`; not `.env.example`/`.sample`/`.template`) blocks as a whole,
    with no model call, as long as it has any non-comment line. Add it to `.gitignore`, or allowlist it if intentional.
-4. **Candidates** (`password = "..."`, `Bearer` tokens, `-pSECRET` CLI flags, unquoted YAML values, high-entropy
+4. A staged file whose **name** marks it as sensitive blocks as a whole, with no model call, binaries included: SSH
+   private keys (`id_rsa`, `id_ed25519`...), key stores (`.p12`, `.pfx`, `.jks`, `.keystore`, `.ppk`), KeePass databases,
+   `.netrc`, `.pgpass`, `.pypirc`, `.htpasswd`, `.git-credentials`, `.aws/credentials`, `.docker/config.json`,
+   `.kube/config`, `kubeconfig`, Terraform state and `.tfvars`, `credentials.json`, Google `client_secret*.json` and
+   service-account keys, and iOS provisioning profiles. Names containing `example`, `sample`, `template` or `defaults`
+   are exempt. Public files (`id_rsa.pub`, `.pem`/`.crt` certificates) are not matched by name; a private key inside
+   them is still caught by content.
+5. **Candidates** (`password = "..."`, `Bearer` tokens, `-pSECRET` CLI flags, unquoted YAML values, high-entropy
    literals) go to the model, one per request. Obvious placeholders (`changeme`, `your-...`, `xxxx`) are dropped first.
-5. The **policy lives in code**, not in the model: the model's probability `p` blocks at `p >= 0.5` and warns at
+6. The **policy lives in code**, not in the model: the model's probability `p` blocks at `p >= 0.5` and warns at
    `p >= 0.4` (configurable).
-6. If the model is unreachable: rule hits still block; model-only candidates warn and allow.
+7. If the model is unreachable: rule hits still block; model-only candidates warn and allow.
 
 Findings never print the secret, only a shape-preserving mask such as `sk_live_A9a9A9a9...`.
 

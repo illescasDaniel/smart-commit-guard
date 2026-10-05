@@ -111,3 +111,19 @@ def test_given_an_allowlisted_env_file_when_scanning_then_it_passes():
 
 def test_given_an_env_example_when_scanning_then_it_is_still_skipped():
 	assert scan([AddedLine(".env.example", 1, "A=b")], FakeDecider()).exit_code == 0
+
+
+def test_given_a_binary_key_store_listed_only_by_path_when_scanning_then_it_blocks_by_name():
+	r = scan([], FakeDecider(), paths=["certs/prod.p12", "logo.png"])
+	assert r.exit_code == 1 and [f.path for f in r.findings] == ["certs/prod.p12"]
+
+
+def test_given_a_private_key_file_with_text_lines_when_scanning_then_it_blocks_once_by_name():
+	lines = [AddedLine("id_rsa", i, "abcdefg") for i in range(1, 4)]
+	r = scan(lines, FakeDecider())
+	assert len(r.findings) == 1 and r.findings[0].reason == "SSH private key"
+
+
+def test_given_an_allowlisted_sensitive_file_when_scanning_then_it_passes():
+	fp = fingerprint("certs/prod.p12", "<contents hidden>")
+	assert scan([], FakeDecider(), paths=["certs/prod.p12"], allowlist={fp}).exit_code == 0
