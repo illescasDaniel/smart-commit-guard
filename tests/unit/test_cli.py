@@ -1,5 +1,6 @@
 import json
 import subprocess
+import sys
 
 from conftest import AWS_KEY, FakeDecider
 
@@ -128,7 +129,7 @@ def test_given_install_hook_shared_then_it_writes_a_tracked_hooks_folder_and_poi
 	monkeypatch.chdir(tmp_path)
 	assert main(["install-hook", "--shared"], env={}) == 0
 	hook = tmp_path / ".githooks" / "pre-commit"
-	assert hook.stat().st_mode & 0o100 and "scan --staged" in hook.read_text() and str(tmp_path) not in hook.read_text()
+	assert (sys.platform == "win32" or hook.stat().st_mode & 0o100) and "scan --staged" in hook.read_text() and str(tmp_path) not in hook.read_text()
 	assert "/.githooks/* text eol=lf" in (tmp_path / ".gitattributes").read_text()
 	out = subprocess.run(["git", "config", "core.hooksPath"], cwd=tmp_path, capture_output=True, text=True, check=False).stdout
 	assert out.strip() == ".githooks"

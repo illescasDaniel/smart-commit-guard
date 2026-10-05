@@ -36,20 +36,25 @@ ENV_REASON = "environment file should not be committed (add it to .gitignore, co
 _EXAMPLE_NAME_MARKERS = (".example", ".sample", "-example", "_example")
 
 
+def _norm(path: str) -> str:
+	"""Git paths use `/`, but `scan --files` takes native paths: on Windows they contain backslashes."""
+	return path.replace("\\", "/")
+
+
 def _parts(path: str) -> tuple[str, ...]:
-	return tuple(p.lower() for p in PurePosixPath(path).parts)
+	return tuple(p.lower() for p in PurePosixPath(_norm(path)).parts)
 
 
 def is_skipped(path: str) -> bool:
 	"""Lockfiles, generated files, binaries by extension, and `.env.example`."""
-	name = PurePosixPath(path).name.lower()
+	name = PurePosixPath(_norm(path)).name.lower()
 	return (name in _LOCKFILES or name == ".env.example" or name.endswith(_GENERATED_SUFFIXES)
 			or PurePosixPath(name).suffix in _BINARY_SUFFIXES)
 
 
 def is_env_file(path: str) -> bool:
 	"""`.env`, `.env.local`, `prod.env`...: files that hold real environment secrets and should not be committed."""
-	name = PurePosixPath(path).name.lower()
+	name = PurePosixPath(_norm(path)).name.lower()
 	return ((name == ".env" or name.startswith(".env.") or name.endswith(".env"))
 			and not any(m in name for m in _TEMPLATE_MARKERS))
 

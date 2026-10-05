@@ -54,3 +54,9 @@ def test_given_a_sensitive_file_name_when_checking_then_it_has_a_reason(path):
 	"cert.pem", "server.crt", ".env.example", "package.json", "kube/config.py", "aws/credentials.py"])
 def test_given_a_public_template_or_ordinary_name_when_checking_then_it_has_no_reason(path):
 	assert sensitive_file_reason(path) is None
+
+
+def test_given_windows_style_paths_when_checking_then_names_and_directories_are_still_recognised():
+	assert sensitive_file_reason("C:\\Users\\me\\.ssh\\id_rsa") == "SSH private key"
+	assert sensitive_file_reason("C:\\Users\\me\\.aws\\credentials") == "AWS credentials"
+	assert is_skipped("C:\\repo\\package-lock.json") and is_example_path("repo\\tests\\a.py")
