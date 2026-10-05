@@ -1,0 +1,29 @@
+[project]
+name = "secret-guard"
+version = "0.1.0"
+description = "Pre-commit and CI secret gate: deterministic rules plus a small decision model for ambiguous cases"
+requires-python = ">=3.12"
+license = "MIT"
+dependencies = []
+
+[project.scripts]
+secret-guard = "secret_guard.cli:main"
+
+[build-system]
+requires = ["uv_build>=0.12.20,<0.13.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = ["pytest>=9.1.1", "ruff>=0.15", "ty>=0.0.1", "taskipy>=1.14.1"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+indent-width = 4
+[tool.ruff.format]
+indent-style = "tab"
+
+[tool.taskipy.tasks]
+test = { cmd = "pytest -q", help = "unit tests (no model, no network)" }

@@ -1,0 +1,77 @@
+# Spec: secret-scan (secret-guard CLI)
+
+Status: **DRAFT, awaiting approval.**
+
+## Goal
+Stop real secrets (API keys, passwords, private keys, tokens, connection strings with passwords) from being committed.
+Deterministic rules catch the obvious cases. A small decision model judges the ambiguous cases (real credential versus
+placeholder, mock or env reference). The tool is a CLI for a git pre-commit hook and for CI.
+
+## Design decisions
+### Success criteria
+- On the labelled eval set (synthetic only): recall on real secrets >= 0.95 and false-block rate on placeholders <= 0.05
+  at the chosen thresholds, for the configured model. Thresholds are per model and come from the eval, not from this spec.
+- A staged commit with no candidates adds < 100 ms (no model call).
+- Exit code is a pure function of the scan result: 0 = commit allowed (warnings may print), 1 = blocked, 2 = tool error
+  (never silently 0 for a block).
+
+### Trust boundary
+- The staged diff may contain real secrets. **Default backend is local**: a model server on `localhost` or a
+  user-chosen URL. Nothing is sent to a hosted API unless `SECRET_GUARD_ALLOW_HOSTED=1` is set.
+- With a hosted backend, only **redacted** snippets are sent: each candidate value is replaced by a mask that keeps shape
+  (length class, character classes, known prefix) but not content. Full files and the unmasked diff are never sent.
+- Findings output never prints the full secret: show the file, line, rule and a masked preview.
+- The model client sends no data anywhere but the configured base URL. No telemetry.
+
+### Failure handling
+| Situation | Result |
+|---|---|
+| High-confidence rule hit (e.g. `-----BEGIN PRIVATE KEY-----`, AWS key) outside test/example paths | **Block**; no model call |
+| Rule hit in test/fixture/doc/example path | Ask the model; block only at p >= block threshold |
+| No rule hit but secret-looking name or high-entropy literal | Ask the model; block at p >= block threshold, warn between warn and block thresholds |
+| Model unreachable, times out or returns a malformed or incomplete answer | Rule hits still **block**; model-only candidates **warn and allow** (never treat a missing answer as a pass for a rule hit) |
+| Not a git repo, or git fails | Exit 2 with a message |
+| Binary file, lockfile, generated file, `.env.example` | Skipped |
+
+### Performance and resource budget
+- Rules plus candidate extraction: O(added lines), single pass.
+- Model calls: at most 1 per 30 candidates (batched), candidate text capped at 300 characters, at most 5 calls per scan.
+  Beyond the cap the remainder is reported as "unjudged" (warn).
+- Per-call timeout default 10 s (`SECRET_GUARD_TIMEOUT`). Target median hook time <= 1 s with a local model.
+
+### Configuration
+Env vars: `SECRET_GUARD_BASE_URL`, `SECRET_GUARD_MODEL`, `SECRET_GUARD_API_KEY` (only if the server wants one),
+`SECRET_GUARD_TIMEOUT`, `SECRET_GUARD_ALLOW_HOSTED`, `SECRET_GUARD_BLOCK_AT`, `SECRET_GUARD_WARN_AT`.
+Optional `.secret-guard.toml` in the repo root: extra skip globs, allowlisted fingerprints (hash of the masked finding, so
+the allowlist itself holds no secret).
+
+### Model protocol
+`POST {base_url}/v1/systemone` with `state` (`path`, `line` text) and `questions` of type `noul` that carry only
+`instructions`. Answers are read from `answers[<key>].noul`. A missing key is a failure (see table).
+
+## CLI
+- `secret-guard scan --staged` | `--diff <range>` | `--files <paths...>`; `--json`; `--no-model` (rules only).
+- `secret-guard install-hook` writes a `pre-commit` hook that runs `scan --staged` (refuses to overwrite an existing hook
+  without `--force`).
+- Intended for a git pre-commit hook and a CI step (the CI run covers `git commit --no-verify`).
+
+## BDD
+- **Given** a staged line `AWS_KEY = "AKIA...16 chars"` in `src/app.py`, **when** scanning, **then** exit 1 and the
+  finding shows a masked preview, with no model call.
+- **Given** `API_KEY = "your-api-key-here"` in `README.md` and the model answers p=0.03, **then** exit 0.
+- **Given** `DB_PASS = "Winter2026!Admin"` (no rule hit) and the model answers p=0.92 (>= block), **then** exit 1.
+- **Given** a model-only candidate with p=0.6 (between warn and block), **then** exit 0 and a warning is printed.
+- **Given** the model is unreachable and a rule hit exists, **then** exit 1; **and given** only a model-only candidate,
+  **then** exit 0 with a warning that the model was unavailable.
+- **Given** a hosted base URL and no `SECRET_GUARD_ALLOW_HOSTED`, **then** exit 2 and nothing is sent.
+- **Given** a hosted backend with opt-in, **then** the request body contains the masked value and not the original.
+- **Given** a changed `package-lock.json`, **then** it is skipped.
+- **Given** an allowlisted fingerprint, **then** that finding is not reported.
+- **Given** a removed line (`-`) containing a secret, **then** it is ignored (only added lines are scanned).
+
+## Out of scope (v1)
+- Scanning git history, or secret rotation or revocation.
+- PII detection beyond credentials.
+- An MCP server, a Claude Code `PreToolUse` wrapper, and any shared `decision-core` package (later, if wanted).
+- Auto-fixing or rewriting files.
+- Training or tuning the model.
