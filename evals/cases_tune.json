@@ -116,7 +116,7 @@
 	},
 	{
 		"path": "src/slack.py",
-		"text": "WEBHOOK = \"https://hooks\u002eslack.com/services/T0A1B2C3D/B4E5F6G7H/Zq8Lm2Pr0dKx9Wv3TnHq7zLm\"",
+		"text": "WEBHOOK = \"https://hooks\u002eslack.com/services/A1/B2/Zq8Lm2Pr0dKx9Wv3TnHq7zLm\"",
 		"label": "real"
 	},
 	{
