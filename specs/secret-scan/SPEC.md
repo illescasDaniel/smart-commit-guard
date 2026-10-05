@@ -1,7 +1,7 @@
 # Spec: secret-scan (secret-guard CLI)
 
 Status: **Approved** (including the one-candidate-per-request and calibrated-threshold amendments, 2026-10-05, and the
-`SKIP_SECRET_GUARD` bypass).
+`SKIP_SECRET_GUARD` bypass; skips log, `doctor` and `install-hook --shared` added 2026-10-05 at the user's request).
 
 ## Goal
 Stop real secrets (API keys, passwords, private keys, tokens, connection strings with passwords) from being committed.
@@ -31,7 +31,7 @@ placeholder, mock or env reference). The tool is a CLI for a git pre-commit hook
 | Rule hit in test/fixture/doc/example path | Ask the model; block only at p >= block threshold |
 | No rule hit but secret-looking name or high-entropy literal | Ask the model; block at p >= block threshold, warn between warn and block thresholds |
 | Model unreachable, times out or returns a malformed or incomplete answer | Rule hits still **block**; model-only candidates **warn and allow** (never treat a missing answer as a pass for a rule hit) |
-| `SKIP_SECRET_GUARD=1` and `scan --staged` | Nothing is scanned (no model call); prints a loud `SKIPPED` notice on stderr; exit 0 |
+| `SKIP_SECRET_GUARD=1` and `scan --staged` | Nothing is scanned (no model call); prints a loud `SKIPPED` notice on stderr; exit 0; an entry is appended to `secret-guard-skips.log` in the git dir (rules-only, masked, best effort: a log failure never blocks) |
 | `SKIP_SECRET_GUARD=1` with `--diff` or `--files` | Ignored: CI and explicit scans cannot be skipped this way |
 | Not a git repo, or git fails | Exit 2 with a message |
 | Binary file, lockfile, generated file, `.env.example` | Skipped |
@@ -67,6 +67,12 @@ Answers are read from `answers[<key>].noul`. A missing or non-noul answer is a f
 
 ## CLI
 - `secret-guard scan --staged` | `--diff <range>` | `--files <paths...>`; `--json`; `--no-model` (rules only).
+- `secret-guard doctor` checks the hook (exists at the effective hooks path, executable, runs `scan --staged`), that rules block a
+  synthetic secret, and that the model answers. Exit 1 only for a missing or broken hook, broken rules or invalid config; an
+  unreachable model or an exported `SKIP_SECRET_GUARD` is a warning.
+- `secret-guard install-hook --shared` writes a committable `.githooks/pre-commit` (no machine-specific paths), sets
+  `core.hooksPath=.githooks` and adds `/.githooks/* text eol=lf` to `.gitattributes`; refuses to replace a different
+  `core.hooksPath` or an existing hook without `--force`.
 - `secret-guard install-hook` writes a `pre-commit` hook that runs `scan --staged` (refuses to overwrite an existing hook
   without `--force`).
 - Intended for a git pre-commit hook and a CI step (the CI run covers `git commit --no-verify`).
@@ -85,6 +91,11 @@ Answers are read from `answers[<key>].noul`. A missing or non-noul answer is a f
 - **Given** `SKIP_SECRET_GUARD=1` and a staged secret, **when** scanning staged, **then** exit 0, a `SKIPPED` notice, no model call;
   **and given** any other value (`0`, empty, `true`) **then** it still blocks; **and given** `--files`/`--diff` **then** the
   variable is ignored.
+- **Given** a skipped commit, **then** the skips log gains one entry (time, branch, files, masked findings) and never the secret.
+- **Given** `install-hook --shared`, **then** `.githooks/pre-commit` is executable and path-free, `core.hooksPath` is set, and
+  re-running does not duplicate `.gitattributes`.
+- **Given** a healthy setup, **then** `doctor` exits 0; **given** no hook, **then** it exits 1 and names the fix; **given** an
+  unreachable model, **then** it only warns.
 - **Given** an allowlisted fingerprint, **then** that finding is not reported.
 - **Given** a removed line (`-`) containing a secret, **then** it is ignored (only added lines are scanned).
 

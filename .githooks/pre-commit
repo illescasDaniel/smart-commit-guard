@@ -1,0 +1,16 @@
+#!/bin/sh
+# managed by secret-guard (install-hook --shared). Commit this file so every clone gets the same gate.
+root=$(git rev-parse --show-toplevel)
+if command -v secret-guard >/dev/null 2>&1; then
+	exec secret-guard scan --staged
+elif [ -x "$root/.venv/bin/secret-guard" ]; then
+	exec "$root/.venv/bin/secret-guard" scan --staged
+elif command -v uvx >/dev/null 2>&1; then
+	exec uvx secret-guard scan --staged
+fi
+if [ "$SKIP_SECRET_GUARD" = "1" ]; then
+	echo "secret-guard: SKIPPED (SKIP_SECRET_GUARD=1) and the tool is unavailable: this commit was not scanned or logged." >&2
+	exit 0
+fi
+echo "secret-guard: not installed (try: uv tool install secret-guard); commit blocked. CI is the backstop, so install it." >&2
+exit 1

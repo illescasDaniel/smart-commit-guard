@@ -3,8 +3,26 @@ name = "secret-guard"
 version = "0.1.0"
 description = "Pre-commit and CI secret gate: deterministic rules plus a small decision model for ambiguous cases"
 requires-python = ">=3.12"
+readme = "README.md"
 license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Daniel Illescas Romero", email = "illescas.daniel@protonmail.com" }]
+keywords = ["secrets", "pre-commit", "git-hook", "security", "llm"]
+classifiers = [
+	"Development Status :: 4 - Beta",
+	"Environment :: Console",
+	"Intended Audience :: Developers",
+	"License :: OSI Approved :: MIT License",
+	"Programming Language :: Python :: 3.12",
+	"Topic :: Security",
+	"Topic :: Software Development :: Version Control :: Git",
+	"Typing :: Typed",
+]
 dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/illescasDaniel/secret-guard"
+Issues = "https://github.com/illescasDaniel/secret-guard/issues"
 
 [project.scripts]
 secret-guard = "secret_guard.cli:main"
@@ -27,3 +45,4 @@ indent-style = "tab"
 
 [tool.taskipy.tasks]
 test = { cmd = "pytest -q", help = "unit tests (no model, no network)" }
+setup-hooks = { cmd = "uv run secret-guard install-hook --shared --force", help = "enable the shared pre-commit hook in this clone" }
