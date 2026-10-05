@@ -1,6 +1,6 @@
 # Spec: secret-scan (secret-guard CLI)
 
-Status: **DRAFT, awaiting approval.**
+Status: **Approved** (clarifications below approved 2026-10-05).
 
 ## Goal
 Stop real secrets (API keys, passwords, private keys, tokens, connection strings with passwords) from being committed.
@@ -33,6 +33,12 @@ placeholder, mock or env reference). The tool is a CLI for a git pre-commit hook
 | Not a git repo, or git fails | Exit 2 with a message |
 | Binary file, lockfile, generated file, `.env.example` | Skipped |
 
+**Rule hit vs candidate (clarification).** Only *high-confidence* rules (private keys, AWS keys, token prefixes, URLs with a
+password) block without the model. Credential-assignment (`password = "..."`) and high-entropy literals are
+*candidates*: judged by the model, and warn-and-allow when it is unavailable.
+
+**Allowlist fingerprint** = hash of the path plus the line with the secret replaced by its mask, so it only matches that line shape.
+
 ### Performance and resource budget
 - Rules plus candidate extraction: O(added lines), single pass.
 - Model calls: at most 1 per 30 candidates (batched), candidate text capped at 300 characters, at most 5 calls per scan.
@@ -46,8 +52,9 @@ Optional `.secret-guard.toml` in the repo root: extra skip globs, allowlisted fi
 the allowlist itself holds no secret).
 
 ### Model protocol
-`POST {base_url}/v1/systemone` with `state` (`path`, `line` text) and `questions` of type `noul` that carry only
-`instructions`. Answers are read from `answers[<key>].noul`. A missing key is a failure (see table).
+`POST {base_url}/v1/systemone` (Bearer auth when an API key is set) with `state` (`items`: `path`, `line`), optional `model`,
+and `questions` of type `noul`: `instructions` plus optional `criteria` (`true` / `false` text, as the SDK schema allows).
+Answers are read from `answers[<key>].noul`. A missing or non-noul answer is a failure (see table).
 
 ## CLI
 - `secret-guard scan --staged` | `--diff <range>` | `--files <paths...>`; `--json`; `--no-model` (rules only).

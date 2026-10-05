@@ -27,6 +27,13 @@ def test_given_a_long_high_entropy_literal_when_scanning_then_it_is_a_candidate(
 
 
 @pytest.mark.parametrize("line", ["x = 1", "name = 'hello world'", "password = os.environ['PASSWORD']",
-								  "api_key = settings.api_key", "# set the token in the environment"])
+								  "api_key = settings.api_key", "# set the token in the environment",
+								  'p = "/storage/emulated/0/Download/Camera2"', 'monkeypatch.setattr(m, "_build_h264_export_pipe2", f)'])
 def test_given_ordinary_code_or_env_references_when_scanning_then_nothing_is_found(line):
 	assert scan_line(line) is None
+
+
+@pytest.mark.parametrize("line", ["DSN: postgresql://user:password@host:5432/db", "url = 'postgresql://ci:ci-pass-1@localhost:5432/t'"])
+def test_given_a_url_with_a_placeholder_password_or_local_host_when_scanning_then_it_is_a_candidate_not_a_block(line):
+	hit = scan_line(line)
+	assert hit and hit.kind == "candidate" and not hit.high_confidence

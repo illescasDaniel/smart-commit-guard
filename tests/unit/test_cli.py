@@ -42,6 +42,11 @@ def test_given_a_hosted_url_without_opt_in_when_scanning_then_exit_2_and_nothing
 	assert d.batches == []
 
 
+def test_given_a_directory_among_the_files_when_scanning_then_it_is_skipped(tmp_path):
+	f = write(tmp_path, "a.py", "x = 1\n")
+	assert main(["scan", "--files", str(tmp_path), f], env={}, decider=FakeDecider()) == 0
+
+
 def test_given_a_missing_file_when_scanning_then_exit_2(tmp_path):
 	assert main(["scan", "--files", str(tmp_path / "nope.py")], env={}, decider=FakeDecider()) == 2
 

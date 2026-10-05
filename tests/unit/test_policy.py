@@ -68,7 +68,7 @@ def test_given_local_when_scanning_then_the_model_sees_the_line_as_written():
 
 
 def test_given_an_allowlisted_fingerprint_when_scanning_then_the_finding_is_not_reported():
-	fp = fingerprint(PASS.path, mask("Winter2026!Admin"))
+	fp = fingerprint(PASS.path, PASS.text.replace("Winter2026!Admin", mask("Winter2026!Admin")))
 	assert scan([PASS], FakeDecider(lambda p, t: 0.99), allowlist={fp}).findings == []
 
 

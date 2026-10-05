@@ -16,7 +16,7 @@ def answers(*ps):
 	return {"answers": {f"item_{i}": {"type": "noul", "noul": p} for i, p in enumerate(ps)}}
 
 
-def test_given_two_items_when_judging_then_one_systemone_request_carries_noul_questions_with_only_instructions():
+def test_given_two_items_when_judging_then_one_systemone_request_carries_noul_questions():
 	calls = []
 	ps = make(answers(0.9, 0.1), calls).judge([("a.py", "X = 'k'"), ("b.py", "Y = 'v'")])
 	url, payload, timeout = calls[0]
@@ -24,7 +24,7 @@ def test_given_two_items_when_judging_then_one_systemone_request_carries_noul_qu
 	assert url == "http://localhost:11435/v1/systemone" and payload["model"] == "m"
 	qs = payload["questions"]
 	assert set(qs) == {"item_0", "item_1"}
-	assert all(q["type"] == "noul" and set(q) == {"type", "instructions"} for q in qs.values())
+	assert all(q["type"] == "noul" and set(q) <= {"type", "instructions", "criteria"} and q["instructions"] for q in qs.values())
 	assert payload["state"]["items"][0] == {"path": "a.py", "line": "X = 'k'"}
 
 
