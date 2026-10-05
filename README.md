@@ -17,19 +17,56 @@ pre-commit hook and as a CI step. Zero runtime dependencies, Python 3.12+.
 uv tool install smart-commit-guard      # or: pipx install smart-commit-guard
 ```
 
-## Quickstart
+Or install nothing and run it through [`uvx`](https://docs.astral.sh/uv/guides/tools/), which downloads and caches it
+on first use. `uvx` caches releases, so pin a range in hooks and CI:
 
 ```bash
-smart-commit-guard install-hook          # this clone only: writes .git/hooks/pre-commit
-smart-commit-guard doctor                # checks the hook, the rules and the model
+uvx --from 'smart-commit-guard>=0.1,<0.2' smart-commit-guard doctor
 ```
 
-To share the hook with everyone who clones the repo, see [Sharing the hook](#sharing-the-hook-with-your-team).
+## Quickstart
 
-Add a CI step too: it catches `git commit --no-verify` and cannot be bypassed with `SKIP_SECRET_GUARD`.
+Share the gate with everyone who clones the repo (a committed `.githooks/pre-commit`, see
+[Sharing the hook](#sharing-the-hook-with-your-team)). With `uvx` there is nothing to install:
 
 ```bash
-smart-commit-guard scan --diff origin/main...HEAD
+uvx smart-commit-guard install-hook --shared
+git add .githooks .gitattributes && git commit -m "Add the smart-commit-guard pre-commit hook"
+```
+
+The shared hook finds `smart-commit-guard` on `PATH`, then in the repo's `.venv`, then falls back to `uvx`. To pin the
+`uvx` fallback to a release range, edit the `uvx` line in `.githooks/pre-commit` to
+`uvx --from 'smart-commit-guard>=0.1,<0.2' smart-commit-guard scan --staged`.
+
+Or protect only your own clone: `smart-commit-guard install-hook`. Either way, check the result with
+`smart-commit-guard doctor`.
+
+### CI
+
+CI is the backstop: it catches `git commit --no-verify` and ignores `SKIP_SECRET_GUARD`. A GitHub Actions example
+(no model in CI: rule hits block, ambiguous candidates only warn):
+
+```yaml
+name: Secret scan
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  smart-commit-guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0          # the diff scan needs the base branch
+      - uses: astral-sh/setup-uv@v10
+      - name: Scan the pull request's added lines
+        if: github.event_name == 'pull_request'
+        run: uvx --from 'smart-commit-guard>=0.1,<0.2' smart-commit-guard scan --no-model --diff "origin/${{ github.base_ref }}...HEAD"
+      - name: Scan the whole tree
+        if: github.event_name == 'push'
+        run: uvx --from 'smart-commit-guard>=0.1,<0.2' smart-commit-guard scan --no-model --files $(git ls-files)
 ```
 
 ## How it works
