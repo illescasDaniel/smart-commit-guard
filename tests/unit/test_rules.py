@@ -33,7 +33,46 @@ def test_given_ordinary_code_or_env_references_when_scanning_then_nothing_is_fou
 	assert scan_line(line) is None
 
 
-@pytest.mark.parametrize("line", ["DSN: postgresql://user:password@host:5432/db", "url = 'postgresql://ci:ci-pass-1@localhost:5432/t'"])
-def test_given_a_url_with_a_placeholder_password_or_local_host_when_scanning_then_it_is_a_candidate_not_a_block(line):
-	hit = scan_line(line)
+def test_given_a_url_with_a_local_host_when_scanning_then_it_is_a_candidate_not_a_block():
+	hit = scan_line("url = 'postgresql://ci:ci-s3cure-Zq8@localhost:5432/t'")
 	assert hit and hit.kind == "candidate" and not hit.high_confidence
+
+
+def test_given_a_url_with_the_literal_word_password_when_scanning_then_it_is_a_placeholder():
+	assert scan_line("DSN: postgresql://user:password@host:5432/db") is None
+
+
+@pytest.mark.parametrize("line, value", [
+	("      POSTGRES_PASSWORD: Zk4!mQ9xLp27vRt", "Zk4!mQ9xLp27vRt"),
+	("the admin password is Hq7!zLm2Pr0dKx9", "Hq7!zLm2Pr0dKx9"),
+	('curl -H "Authorization: Bearer 9f8e7d6c5b4a39281706f5e4d3c2b1a0" https://x', "9f8e7d6c5b4a39281706f5e4d3c2b1a0"),
+	('cs = "Server=db;User Id=sa;Password=Hq7!zLm2Pr0d;"', "Hq7!zLm2Pr0d"),
+	("mysql -u root -pHq7zLm2Pr0d -e 'select 1'", "Hq7zLm2Pr0d")])
+def test_given_a_credential_in_yaml_prose_bearer_header_or_cli_when_scanning_then_it_is_a_candidate(line, value):
+	hit = scan_line(line)
+	assert hit and hit.kind == "candidate" and hit.value == value
+
+
+@pytest.mark.parametrize("line", ["https://hooks" + ".slack.com/services/T0A1B2C3D/B4E5F6G7H/Zq8Lm2Pr0dKx9Wv3TnHq7zLm",
+								  "https://discord" + ".com/api/webhooks/1122334455667788/Zq8Lm2Pr0dKx9Wv3TnHq7zLm2PrQ1abC"])
+def test_given_a_chat_webhook_url_when_scanning_then_it_is_a_high_confidence_rule_hit(line):
+	hit = scan_line(line)
+	assert hit and hit.kind == "rule" and hit.rule == "webhook URL" and hit.high_confidence
+
+
+@pytest.mark.parametrize("line", ["password: str", "token: Optional[str] = None", "  password: ${DB_PASSWORD}",
+								  "password: your-password", "Authorization: Bearer YOUR_TOKEN", "the password is required"])
+def test_given_type_hints_references_and_prose_when_scanning_then_the_new_patterns_stay_quiet(line):
+	assert scan_line(line) is None
+
+
+@pytest.mark.parametrize("line", ['API_KEY = "your-api-key-here"', 'TOKEN = "test-token-123"', 'DEMO_PASSWORD = "changeme"',
+								  'api_key = "REPLACE_ME"', "token: xxxx-xxxx-xxxx-xxxx", 'password = "<redacted>"',
+								  'MASKED_PASSWORD = "********"', 'client.post(json={"password": "wrong-password"})'])
+def test_given_an_obvious_placeholder_value_when_scanning_then_the_model_is_not_needed(line):
+	assert scan_line(line) is None
+
+
+def test_given_a_real_password_that_merely_contains_a_placeholder_word_when_scanning_then_it_is_still_a_candidate():
+	hit = scan_line('DB_PASS = "Contest2026!Admin"')
+	assert hit and hit.kind == "candidate"

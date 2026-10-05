@@ -6,19 +6,21 @@ import urllib.request
 from collections.abc import Callable, Sequence
 from typing import Protocol
 
-MAX_BATCH = 30
+MAX_BATCH = 1   # measured: jevk5:4b scores a line very differently by position in a batch (evals/), alone it is accurate
 MAX_ITEM_CHARS = 300
 
-_QUESTION = {
-	"type": "noul",
-	"instructions": ("Does the `line` of the item contain a real, unmasked credential (password, API key, token, "
-					 "private key or similar secret) that should not be committed to version control?"),
-	"criteria": {
-		"true": "A hardcoded live secret, key or credential value.",
-		"false": "A placeholder, mock or test value, an environment-variable or config reference, a masked value "
-				 "(runs of A/a/9/*), or a public identifier.",
-	},
-}
+def _question(i: int) -> dict:
+	"""One question per `items[i]`, so the model knows which item of the batch is meant."""
+	return {
+		"type": "noul",
+		"instructions": (f"Does `items[{i}].line` contain a real, unmasked credential (password, API key, token, private "
+						 "key or similar secret) that should not be committed to version control?"),
+		"criteria": {
+			"true": "A hardcoded live secret, key or credential value.",
+			"false": "A placeholder, mock or test value, an environment-variable or config reference, a masked value "
+					 "(runs of A/a/9/*), or a public identifier.",
+		},
+	}
 
 
 class DeciderUnavailable(Exception):
@@ -51,7 +53,7 @@ class HttpDecider:
 			return []
 		payload: dict = {
 			"state": {"items": [{"path": p, "line": t[:MAX_ITEM_CHARS]} for p, t in items]},
-			"questions": {f"item_{i}": dict(_QUESTION) for i in range(len(items))},
+			"questions": {f"item_{i}": _question(i) for i in range(len(items))},
 		}
 		if self._model:
 			payload["model"] = self._model

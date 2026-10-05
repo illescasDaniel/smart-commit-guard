@@ -25,6 +25,7 @@ def test_given_two_items_when_judging_then_one_systemone_request_carries_noul_qu
 	qs = payload["questions"]
 	assert set(qs) == {"item_0", "item_1"}
 	assert all(q["type"] == "noul" and set(q) <= {"type", "instructions", "criteria"} and q["instructions"] for q in qs.values())
+	assert "items[0]" in qs["item_0"]["instructions"] and "items[1]" in qs["item_1"]["instructions"]
 	assert payload["state"]["items"][0] == {"path": "a.py", "line": "X = 'k'"}
 
 

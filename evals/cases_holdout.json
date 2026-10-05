@@ -1,0 +1,212 @@
+[
+	{
+		"path": "src/billing.py",
+		"text": "BILLING_API_SECRET = \"bk_Zq8Lm2Pr0dKx9Wv3TnHq7zLm\"",
+		"label": "real"
+	},
+	{
+		"path": "config/db.toml",
+		"text": "password = \"Fall2025#Admin!x\"",
+		"label": "real"
+	},
+	{
+		"path": ".env.production",
+		"text": "REDIS_PASSWORD=Hq7!zLm2Pr0dKx9",
+		"label": "real"
+	},
+	{
+		"path": ".env.production",
+		"text": "SENTRY_AUTH_TOKEN=sntrys_eyJpYXQiOjE2ODk5NjQ3MDAuNzE5MDQ4fQ",
+		"label": "real"
+	},
+	{
+		"path": "src/sms.js",
+		"text": "const twilioToken = '8c1f4a2b7d9e0356ab12cd34ef567890';",
+		"label": "real"
+	},
+	{
+		"path": "src/sync.py",
+		"text": "headers = {\"X-Api-Key\": \"Hq7zLm2Pr0dKx9Wv3TnHq7zLm2PrQ\"}",
+		"label": "real"
+	},
+	{
+		"path": "ops/ansible/vars.yml",
+		"text": "vault_password: \"Wint3r-Is-Coming-2026\"",
+		"label": "real"
+	},
+	{
+		"path": "src/legacy.php",
+		"text": "$db_pass = 'Zk4!mQ9xLp27vRt';",
+		"label": "real"
+	},
+	{
+		"path": "src/cli.go",
+		"text": "const token = \"ghs_Hq7zLm2Pr0dKx9Wv3TnHq7zLm2PrQ1\"",
+		"label": "real"
+	},
+	{
+		"path": "keys/deploy_key",
+		"text": "-----BEGIN OPENSSH PRIVATE KEY-----",
+		"label": "real"
+	},
+	{
+		"path": "src/app.cs",
+		"text": "string connStr = \"Server=db.internal;User Id=sa;Password=Hq7!zLm2Pr0d;\";",
+		"label": "real"
+	},
+	{
+		"path": "src/aws_cfg.py",
+		"text": "AWS_ACCESS_KEY_ID = \"AKIAZQ8LM2PR0DKX9WV3\"",
+		"label": "real"
+	},
+	{
+		"path": "src/pg.py",
+		"text": "DSN = \"postgresql://report:Zk4mQ9xLp27vRt@10.0.4.12/analytics\"",
+		"label": "real"
+	},
+	{
+		"path": "src/hooks.py",
+		"text": "DISCORD = \"https://discord002ecom/api/webhooks/1122334455667788/Zq8Lm2Pr0dKx9Wv3TnHq7zLm2PrQ1abC\"",
+		"label": "real"
+	},
+	{
+		"path": "scripts/login.sh",
+		"text": "mysql -u root -pHq7zLm2Pr0d -e 'select 1'",
+		"label": "real"
+	},
+	{
+		"path": "src/svc.kt",
+		"text": "val apiToken = \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdmMifQ.Zq8Lm2Pr0dKx9Wv3TnHq7zLm\"",
+		"label": "real"
+	},
+	{
+		"path": "README.md",
+		"text": "Run `export GITHUB_TOKEN=ghp_xxxxxxxxxxxxxxxxxxxx` before deploying.",
+		"label": "ok"
+	},
+	{
+		"path": "docs/api.md",
+		"text": "curl -H \"Authorization: Bearer YOUR_TOKEN\" https://api.example.com",
+		"label": "ok"
+	},
+	{
+		"path": "tests/test_client.py",
+		"text": "client = Client(api_key=\"fake-key\")",
+		"label": "ok"
+	},
+	{
+		"path": "tests/fixtures/users.json",
+		"text": "\"password\": \"password123\"",
+		"label": "ok"
+	},
+	{
+		"path": "tests/test_hash.py",
+		"text": "EXPECTED = \"5f4dcc3b5aa765d61d8327deb882cf99\"",
+		"label": "ok"
+	},
+	{
+		"path": "src/config.py",
+		"text": "DB_PASSWORD = os.getenv(\"DB_PASSWORD\", \"\")",
+		"label": "ok"
+	},
+	{
+		"path": "src/config.ts",
+		"text": "const secret = process.env.JWT_SECRET!;",
+		"label": "ok"
+	},
+	{
+		"path": "chart/values.yaml",
+		"text": "  existingSecret: \"app-db-credentials\"",
+		"label": "ok"
+	},
+	{
+		"path": "chart/values.yaml",
+		"text": "  password: {{ .Values.db.password | quote }}",
+		"label": "ok"
+	},
+	{
+		"path": "src/ids.ts",
+		"text": "const BUILD_ID = \"a3f9c2e1b7d84056a1f9c3e87b2d5a10b7c9a1d4\";",
+		"label": "ok"
+	},
+	{
+		"path": "src/analytics.js",
+		"text": "ga('create', 'UA-12345678-1', 'auto');",
+		"label": "ok"
+	},
+	{
+		"path": "src/maps.js",
+		"text": "const MAPS_PUBLIC_KEY = 'pk.eyJ1IjoiZGVtbyIsImEiOiJwdWJsaWMifQ.demo';",
+		"label": "ok"
+	},
+	{
+		"path": "web/i18n/es.json",
+		"text": "\"reset_password\": \"Restablecer contrase\u00f1a\"",
+		"label": "ok"
+	},
+	{
+		"path": "src/forms.py",
+		"text": "SECRET_QUESTION_LABEL = \"Mother's maiden name\"",
+		"label": "ok"
+	},
+	{
+		"path": "src/tok.py",
+		"text": "token_type = \"Bearer\"",
+		"label": "ok"
+	},
+	{
+		"path": "src/tok.py",
+		"text": "REFRESH_TOKEN_TTL = \"86400\"",
+		"label": "ok"
+	},
+	{
+		"path": "src/hash.py",
+		"text": "salt_rounds = \"12\"",
+		"label": "ok"
+	},
+	{
+		"path": "src/demo.py",
+		"text": "password = \"<password>\"",
+		"label": "ok"
+	},
+	{
+		"path": "src/demo.py",
+		"text": "api_key = \"REPLACE_ME\"",
+		"label": "ok"
+	},
+	{
+		"path": "docs/setup.md",
+		"text": "token: xxxx-xxxx-xxxx-xxxx",
+		"label": "ok"
+	},
+	{
+		"path": "src/ci.yml",
+		"text": "  token: ${{ secrets.NPM_TOKEN }}",
+		"label": "ok"
+	},
+	{
+		"path": "src/cache.py",
+		"text": "key = \"session:abcdef0123456789abcdef0123456789\"",
+		"label": "ok"
+	},
+	{
+		"path": "src/a.py",
+		"text": "result = authenticate(user, password)",
+		"label": "ok"
+	},
+	{
+		"path": "src/a.py",
+		"text": "print('password updated')",
+		"label": "ok"
+	},
+	{
+		"path": "src/a.py",
+		"text": "for i in range(10): total += i",
+		"label": "ok"
+	},
+	{
+		"path": "src/a.py",
+		"text": "import secrets",
+		"label": "ok"
+	}
+]

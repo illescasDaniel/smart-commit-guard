@@ -25,12 +25,12 @@ def _float(env: Mapping[str, str], key: str, default: float) -> float:
 @dataclass(frozen=True)
 class Config:
 	base_url: str = "http://localhost:11435"
-	model: str | None = None
+	model: str | None = "jevk5:4b"   # the model the thresholds below were calibrated on
 	api_key: str | None = None
 	timeout: float = 10.0
 	allow_hosted: bool = False
-	block_at: float = 0.85
-	warn_at: float = 0.5
+	block_at: float = 0.5   # calibrated for jevk5:4b (evals/); rerun the eval before using another model
+	warn_at: float = 0.4
 
 	@property
 	def is_hosted(self) -> bool:
@@ -43,7 +43,7 @@ class Config:
 		d = cls()
 		c = cls(
 			base_url=env.get("SECRET_GUARD_BASE_URL") or d.base_url,
-			model=env.get("SECRET_GUARD_MODEL") or None,
+			model=env.get("SECRET_GUARD_MODEL") or d.model,
 			api_key=env.get("SECRET_GUARD_API_KEY") or None,
 			timeout=_float(env, "SECRET_GUARD_TIMEOUT", d.timeout),
 			allow_hosted=env.get("SECRET_GUARD_ALLOW_HOSTED") == "1",

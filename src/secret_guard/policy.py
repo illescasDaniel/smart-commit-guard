@@ -10,14 +10,14 @@ from .rules import scan_line
 from .skip import is_example_path, is_skipped
 from .types import AddedLine, Finding, LineHit, ScanResult
 
-MAX_CALLS = 5
+MAX_CALLS = 30   # one candidate per request (see decider.MAX_BATCH), so this is also the candidates judged per scan
 
 
 def _label(hit: LineHit) -> str:
 	return f"{hit.rule} pattern" if hit.kind == "rule" else "secret-looking value"
 
 
-def scan(lines: Sequence[AddedLine], decider: Decider | None, *, block_at: float = 0.85, warn_at: float = 0.5,
+def scan(lines: Sequence[AddedLine], decider: Decider | None, *, block_at: float = 0.5, warn_at: float = 0.4,
 		 hosted: bool = False, allowlist: AbstractSet[str] = frozenset()) -> ScanResult:
 	"""decider=None means rules only. With hosted=True the decider only ever receives masked text."""
 	result = ScanResult()

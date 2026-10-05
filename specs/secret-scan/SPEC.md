@@ -1,6 +1,7 @@
 # Spec: secret-scan (secret-guard CLI)
 
-Status: **Approved** (clarifications below approved 2026-10-05).
+Status: **Approved**, with two later amendments pending re-approval: one candidate per model request, and
+calibrated default thresholds (see the Eval results section).
 
 ## Goal
 Stop real secrets (API keys, passwords, private keys, tokens, connection strings with passwords) from being committed.
@@ -41,8 +42,10 @@ password) block without the model. Credential-assignment (`password = "..."`) an
 
 ### Performance and resource budget
 - Rules plus candidate extraction: O(added lines), single pass.
-- Model calls: at most 1 per 30 candidates (batched), candidate text capped at 300 characters, at most 5 calls per scan.
-  Beyond the cap the remainder is reported as "unjudged" (warn).
+- Model calls: **one candidate per request** (measured with `jevk5:4b`: the score of a line depends heavily on its
+  position in a batch, e.g. 0.87 as `items[0]` versus 0.37 as `items[1]`; alone it is accurate and not slower per item,
+  ~145 ms). Candidate text capped at 300 characters, at most 30 candidates judged per scan. Beyond the cap the remainder is
+  reported as "unjudged" (warn).
 - Per-call timeout default 10 s (`SECRET_GUARD_TIMEOUT`). Target median hook time <= 1 s with a local model.
 
 ### Configuration
@@ -82,3 +85,23 @@ Answers are read from `answers[<key>].noul`. A missing or non-noul answer is a f
 - An MCP server, a Claude Code `PreToolUse` wrapper, and any shared `decision-core` package (later, if wanted).
 - Auto-fixing or rewriting files.
 - Training or tuning the model.
+
+## Eval results (2026-10-05, `jevk5:4b` via ollaya, RTX 4070 laptop GPU)
+Data: `evals/cases_tune.json` (66 lines, 25 real) and `evals/cases_holdout.json` (42 lines, 16 real), synthetic only.
+Reproduce: `PYTHONPATH=src uv run python evals/run_eval.py` (needs `ollaya serve` with `jevk5:4b`).
+
+Findings that changed the design:
+- **Batching hurts this model.** The same line scored 0.87 as `items[0]` and 0.37 as `items[1]`; real secrets in a batch of
+  6 scored 0.74-0.96 versus 0.88-0.98 alone, with no per-item speed gain. Hence one candidate per request.
+- **Rule gaps capped recall.** The first rule set never surfaced 7 of 41 real secrets (unquoted YAML/compose values, prose,
+  `Bearer` headers, `Password=` in connection strings, `mysql -p`, chat webhook URLs). Fixed; 0 unsurfaced afterwards.
+- **Obvious placeholders** (`your-...`, `changeme`, `xxxx`, `test-...`) are dropped before the model.
+
+Defaults chosen: **block at p >= 0.5, warn at p >= 0.4**. At those thresholds: tuning set recall 1.00, precision 1.00;
+held-out set recall 1.00, precision 1.00 (0 false blocks, 0 missed). Model-judged scores: real secrets 0.68-0.98, placeholders
+0.02-0.36 (tuning set had one 0.80 placeholder before the URL fix). Median 70 ms per call.
+
+Caveats: the rules and placeholder filter were tuned on the tuning set and adjusted after seeing the first held-out gaps, so
+the held-out numbers are optimistic. The sets are small and synthetic. Other models must rerun the eval and pick their own
+thresholds. Real-repo check: SpaceMaker (whole tree) 0 findings; jev-mem 3 blocks and 1 warn, all deliberate fake secrets in
+its own tests, eval data and CI config (scores 0.54-0.78, i.e. close to the threshold).

@@ -1,5 +1,6 @@
 from conftest import AWS_KEY, FakeDecider
 
+from secret_guard.decider import MAX_BATCH
 from secret_guard.policy import MAX_CALLS, scan
 from secret_guard.redact import fingerprint, mask
 from secret_guard.types import AddedLine
@@ -33,7 +34,7 @@ def test_given_a_candidate_above_the_block_threshold_when_scanning_then_it_block
 
 
 def test_given_a_candidate_between_warn_and_block_when_scanning_then_it_warns_and_allows():
-	r = scan([PASS], FakeDecider(lambda p, t: 0.6))
+	r = scan([PASS], FakeDecider(lambda p, t: 0.45))
 	assert r.exit_code == 0 and [f.level for f in r.findings] == ["warn"]
 
 
@@ -78,12 +79,12 @@ def test_given_a_skipped_path_when_scanning_then_it_is_not_scanned():
 	assert scan([line], d).findings == [] and d.batches == []
 
 
-def test_given_many_candidates_when_scanning_then_calls_are_batched_and_capped_and_the_rest_is_warned_unjudged():
-	lines = [AddedLine("src/a.py", i, f'PASS_{i} = "Winter{i:04d}!Admin"') for i in range(1, 400)]
+def test_given_many_candidates_when_scanning_then_calls_are_capped_and_the_rest_is_warned_unjudged():
+	lines = [AddedLine("src/a.py", i, f'PASS_{i} = "Winter{i:04d}!Admin"') for i in range(1, 60)]
 	d = FakeDecider(lambda p, t: 0.0)
 	r = scan(lines, d)
-	assert len(d.batches) == MAX_CALLS and all(len(b) <= 30 for b in d.batches)
-	assert r.exit_code == 0 and sum(f.level == "warn" for f in r.findings) == len(lines) - MAX_CALLS * 30
+	assert len(d.batches) == MAX_CALLS and all(len(b) <= MAX_BATCH for b in d.batches)
+	assert r.exit_code == 0 and sum(f.level == "warn" for f in r.findings) == len(lines) - MAX_CALLS * MAX_BATCH
 
 
 def test_given_no_candidates_when_scanning_then_the_model_is_never_called():
