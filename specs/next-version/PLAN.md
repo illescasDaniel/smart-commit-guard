@@ -60,7 +60,7 @@ Done, with tests (630 unit and integration tests, ruff and ty clean):
    cache was not built: 91 % of commits make no call. The default budgets fit: 5 s is about 70 calls at 71 ms.
 7. **2.4 merge commits (measured, not implemented):** over 33 real merges, the first-parent diff had 11 candidates, the
    second-parent diff 40, and lines in neither parent 0. Scanning only lines that are in neither parent would have produced
-   no model calls and no false blocks; implement that next (staged mode with `MERGE_HEAD`, and `--diff` on merge commits).
+   no model calls and no false blocks. Implemented for staged merges (`MERGE_HEAD`, octopus too); `--diff` ranges are unchanged because CI already scans each branch commit.
 8. **0.1 big binaries:** on a staged change of 5,000 text files plus 450 MB of binaries with odd suffixes (`.dat`, `.bin`,
    `.safetensors`, an LFS pointer), `--text` made git emit 502 MB; the scan took 25 s. A `--numstat` pre-pass (about 0.07 s) now
    excludes binary files over 256 KiB: git output 7 MB. The rest of the scan time (17 s) is 600,000 added lines in the rules.
@@ -78,7 +78,6 @@ Done, with tests (630 unit and integration tests, ruff and ty clean):
   shared hook looking for `.venv/Scripts/smart-commit-guard.exe`; `_executable()` with `.exe`; CI `install-smoke` on macOS and
   Windows (needs `Scripts` vs `bin` handling). The CI matrix runs the unit tests on all three; read its results.
 - **4.2 / 4.3** the larger eval work in item 9 above.
-- **2.4** implement the "lines in neither parent" rule for merges.
 
 ### Done in the second pass (no model needed)
 3.2 richer `[[allow]]` entries, opt-in inline pragma, `--baseline` / `baseline create`, fingerprint v2 with `allowlist migrate`

@@ -21,6 +21,7 @@ update `.secret-guard.toml` if a previously allowlisted finding comes back.
 - `SECRET_GUARD_TIMEOUT=0` is refused.
 
 ### Changed
+- During a merge (`MERGE_HEAD` exists) the staged scan covers only lines that are new against every parent: conflict resolutions and hand edits are scanned, lines brought in from the other branch are not rescanned.
 - A weak password that merely starts with a placeholder word (`DB_PASSWORD = "Password123!"`) now goes to the model instead of being dropped; a bare `password` / `token` / `secret` / `key` (or `wrong-password`, `password123`) is still a placeholder.
 - `.svg`, Xcode scheme / test plan / project files and checksum lists (`*checksums*.json`, `SHA256SUMS`, `*.sha256`) get the rules only: replaying 486 real commits showed them as the top source of model calls (element ids, build ids, sha256 lists).
 - Files git calls binary and that are over 256 KiB are excluded from the diff up front (a `--numstat` pre-pass), whatever their suffix: a 5,000-file staged change with 450 MB of `.dat` / `.bin` blobs spent most of its time reading them. Small files marked `binary` in `.gitattributes` are still scanned.

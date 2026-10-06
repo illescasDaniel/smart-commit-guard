@@ -324,3 +324,39 @@ def test_given_a_binary_file_without_a_binary_suffix_when_scanning_files_then_it
 def test_given_version_flag_when_running_then_it_prints_the_version(capsys):
 	assert main(["--version"], env={}) == 0
 	assert "smart-commit-guard" in capsys.readouterr().out
+
+
+# --- 2.4 merge commits
+
+
+def _branch_with_secret(repo):
+	"""main has base.py; `feature` adds old.py with a secret (as if committed and scanned there)."""
+	stage(repo, "base.py", "x = 1\n")
+	run(repo, "commit", "-qm", "base")
+	run(repo, "branch", "-M", "main")
+	run(repo, "checkout", "-qb", "feature")
+	stage(repo, "old.py")
+	run(repo, "commit", "-qm", "feature")
+	run(repo, "checkout", "-q", "main")
+	stage(repo, "other.py", "y = 2\n")
+	run(repo, "commit", "-qm", "main work")
+
+
+def test_given_a_merge_in_progress_when_scanning_staged_then_lines_from_the_other_branch_are_not_rescanned(repo, capsys):
+	_branch_with_secret(repo)
+	subprocess.run(["git", "merge", "--no-commit", "--no-ff", "feature"], cwd=repo, check=True, capture_output=True)
+	assert git.merge_heads()
+	assert scan_staged(capsys)[0] == 0
+
+
+def test_given_a_merge_in_progress_when_a_secret_is_new_in_the_merge_then_it_is_still_found(repo, capsys):
+	_branch_with_secret(repo)
+	subprocess.run(["git", "merge", "--no-commit", "--no-ff", "feature"], cwd=repo, check=True, capture_output=True)
+	stage(repo, "resolution.py")   # typed by whoever resolves the merge
+	code, data = scan_staged(capsys)
+	assert code == 1 and [f["path"] for f in data["findings"]] == ["resolution.py"]
+
+
+def test_given_no_merge_in_progress_when_asking_for_merge_heads_then_there_are_none(repo):
+	stage(repo, "a.py", "x = 1\n")
+	assert git.merge_heads() == []

@@ -99,6 +99,17 @@ def diff_text(*revision_args: str) -> str:
 	return run(*_DIFF_CONFIG, *_DIFF_FLAGS, *revision_args, "--", ":/", *_BINARY_PATHSPEC, *big)
 
 
+def merge_heads() -> list[str]:
+	"""The commits being merged into the index (`MERGE_HEAD`, one per line for an octopus merge), empty when no merge is in progress."""
+	try:
+		path = Path(run("rev-parse", "--git-path", "MERGE_HEAD").strip())
+		if not path.is_absolute():
+			path = (repo_root() or Path.cwd()) / path
+		return path.read_text(encoding="ascii", errors="ignore").split() if path.is_file() else []
+	except (GitError, OSError):
+		return []
+
+
 def changed_paths(*revision_args: str) -> list[str]:
 	"""Added, modified or renamed files (binaries included), for the file-name rules. `-z`: names are never quoted."""
 	out = run(*_DIFF_CONFIG, "diff", "--no-renames", "--name-only", "--diff-filter=AMR", "-z", *revision_args)

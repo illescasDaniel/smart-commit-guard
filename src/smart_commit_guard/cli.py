@@ -192,7 +192,21 @@ def _input(args: argparse.Namespace, root: Path) -> tuple[list[AddedLine], list[
 				raise ToolError(f"{e}. In CI check out with fetch-depth: 0 (a shallow clone lacks the base), and after a force-push "
 								"the old `before` commit may be gone: scan the branch against its base instead.") from e
 			raise
-	return parse_added_lines(git.diff_text("--cached")), git.changed_paths("--cached"), []
+	return _staged_lines(), git.changed_paths("--cached"), []
+
+
+def _staged_lines() -> list[AddedLine]:
+	"""The lines this commit adds. During a merge the index also holds everything brought in from the other branch, which was
+	scanned (or deliberately skipped) when it was committed there: only lines that are new against every parent are scanned,
+	so conflict resolutions and hand edits are, and old findings do not come back."""
+	lines = parse_added_lines(git.diff_text("--cached"))
+	for head in git.merge_heads():
+		try:
+			theirs = {(l.path, l.text) for l in parse_added_lines(git.diff_text("--cached", head))}
+		except GitError:
+			continue   # an unreadable MERGE_HEAD must not hide lines: scan them all
+		lines = [l for l in lines if (l.path, l.text) in theirs]
+	return lines
 
 
 def _read_baseline(path: str) -> frozenset[str]:
