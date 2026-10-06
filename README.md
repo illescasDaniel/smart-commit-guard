@@ -197,6 +197,17 @@ crash is also `2`, with the details on stderr when `SMART_COMMIT_GUARD_DEBUG=1`)
 | `smart-commit-guard install-hook [--force]` | per-clone hook in the effective hooks directory |
 | `smart-commit-guard install-hook --shared` | committable `.githooks/pre-commit` plus `core.hooksPath` |
 | `smart-commit-guard doctor` | verify the hook, the rules and the model |
+| `smart-commit-guard config init` / `config path` | write a commented template of your per-user settings file / print where it is |
+
+## Choosing a model: your settings file
+
+Run `smart-commit-guard config init` once. It writes `~/.config/smart-commit-guard/config.json` (`$XDG_CONFIG_HOME` is honoured;
+`%APPDATA%` on Windows; `SECRET_GUARD_CONFIG` names another path) with the default, a local `jevk5:4b`, and the settings for a
+hosted model as comments (`//` and `/* */` are allowed in the file). The keys are `base_url`, `model`, `api_key`, `api_key_env`
+(the name of an environment variable that holds the key, so the key stays out of the file), `timeout`, `allow_hosted`,
+`hosted_scope`, `budget`, `block_at` and `warn_at`. Environment variables below override the file; the file overrides the
+repo's `[model]` table. It is your own file outside every repository, which is why it may name a server (the repo file never
+may). A `.env` file is never read.
 
 ## Environment variables
 

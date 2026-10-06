@@ -1,4 +1,4 @@
-"""Configuration: SECRET_GUARD_* environment variables and the repo's `.secret-guard.toml`."""
+"""Configuration: SECRET_GUARD_* environment variables, the user's `config.json` (user_config.py) and the repo's `.secret-guard.toml`."""
 from __future__ import annotations
 
 import tomllib
@@ -6,6 +6,8 @@ from collections.abc import Mapping
 from dataclasses import dataclass
 from pathlib import Path
 from urllib.parse import urlparse
+
+from .user_config import with_user_settings
 
 _LOOPBACK = {"localhost", "127.0.0.1", "::1"}
 CONFIG_NAME = ".secret-guard.toml"
@@ -159,6 +161,7 @@ class Config:
 	def from_env(cls, env: Mapping[str, str], repo: RepoSettings | None = None) -> Config:
 		"""Reads SECRET_GUARD_*. Raises ConfigError for a hosted base URL without SECRET_GUARD_ALLOW_HOSTED=1, or one that
 		is not https. The repo file can only narrow the hosted scope: the most restrictive of file and environment wins."""
+		env = with_user_settings(env)
 		d = cls()
 		scope = _scope(env.get("SECRET_GUARD_HOSTED_SCOPE") or d.hosted_scope, "SECRET_GUARD_HOSTED_SCOPE")
 		if repo and repo.hosted_scope == "ci":

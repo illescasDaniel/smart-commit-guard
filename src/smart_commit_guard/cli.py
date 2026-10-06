@@ -17,7 +17,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from urllib.parse import urlparse
 
-from . import __version__, git, report
+from . import __version__, git, report, user_config
 from .config import CONFIG_NAME, Config, ConfigError, RepoSettings
 from .decider import Decider, DeciderUnavailable, HttpDecider
 from .diff import parse_added_lines
@@ -426,6 +426,15 @@ def _tool_version(exe: str) -> str:
 	return r.stdout.strip() or "unknown version"
 
 
+def _user_config(action: str, force: bool, env: Mapping[str, str]) -> int:
+	if action == "path":
+		path = user_config.config_path(env)
+		print(path if path else "unknown: set SECRET_GUARD_CONFIG")
+		return 0
+	print(f"wrote {user_config.init(env, force=force)}")
+	return 0
+
+
 def _doctor(env: Mapping[str, str], decider: Decider | None) -> int:
 	"""Check the whole chain: hook installed and wired, rules working, model reachable. Exit 1 only for real failures."""
 	failed = False
@@ -480,6 +489,9 @@ def _doctor(env: Mapping[str, str], decider: Decider | None) -> int:
 	else:
 		say("FAIL", "rules", "a synthetic AWS key was not blocked")
 	try:
+		uc_path = user_config.config_path(env)
+		if uc_path and uc_path.is_file():
+			say("ok", "user config", str(uc_path))
 		cfg = Config.from_env(env, _load_settings(git.repo_root() or Path.cwd()))
 		if cfg.is_hosted:
 			host = urlparse(cfg.base_url).hostname
@@ -532,6 +544,9 @@ def main(argv: Sequence[str] | None = None, env: Mapping[str, str] | None = None
 	bl.add_argument("action", choices=["create"])
 	bl.add_argument("--output", "-o", default=".secret-guard-baseline.json", metavar="FILE")
 	bl.add_argument("--no-model", action="store_true", help="rules only: candidates are recorded as warnings")
+	uc = sub.add_parser("config", help="your per-user settings file (which model to use)")
+	uc.add_argument("action", choices=["init", "path"], help="init writes a commented template; path prints where the file is")
+	uc.add_argument("--force", action="store_true", help="with init: overwrite an existing file")
 	al = sub.add_parser("allowlist", help="maintain the allowlist in .secret-guard.toml")
 	al.add_argument("action", choices=["migrate"], help="rewrite v1 fingerprints to v2 (hash of the stripped line)")
 	try:
@@ -549,6 +564,8 @@ def main(argv: Sequence[str] | None = None, env: Mapping[str, str] | None = None
 			return _install_hook(args.force, args.shared, args.chain)
 		if args.command == "baseline":
 			return _baseline_create(args.output, args.no_model, env, decider)
+		if args.command == "config":
+			return _user_config(args.action, args.force, env)
 		if args.command == "allowlist":
 			return _allowlist_migrate(env)
 		return _doctor(env, decider)

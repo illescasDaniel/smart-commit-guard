@@ -72,6 +72,13 @@ All within noise of each other, so the shipped question stays. Context lines did
 also means the `/v1/systemone` input does not need to grow. (The generated lines have no file around them, so they got a fixed
 neighbour pair; the open-source lines got their real neighbours.)
 
+## Hosted check (TypeSafe Jev `jev-latest`; 60 lines: the 43 hand-written ones plus 17 random others; 34 real, 26 ok)
+
+`evals/hosted_check.py` scores the same lines with the hosted model and the local `jevk5:4b`: AUC 1.000 hosted against 0.997 local,
+recall 1.00 against 0.97 and 0 false blocks for both at 0.5. Scores differ by 0.10 on average (a different model, so expected;
+the input is the same unmasked line). Latency 242 ms median, 278 ms p95 (network included), about three times the local call.
+Sixty lines are too few for intervals: this confirms the hosted path works and ranks the same, nothing more.
+
 ## What this says
 
 1. **`jevk5:4b` stays the default.** It has the best AUC and the fewest false blocks on real-world lines (3 of 257 open-source

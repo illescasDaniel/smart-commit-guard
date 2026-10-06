@@ -12,8 +12,6 @@ silent bypasses, 1.x rules, 2.x CLI, 3.x adoption features, 4.x evals, P3 releas
   - `--files` with backslash paths.
   - The shared hook looking for `.venv/Scripts/smart-commit-guard.exe`, and `_executable()` with `.exe`.
   - CI `install-smoke` on macOS and Windows (`Scripts` vs `bin`).
-- **Hosted endpoint check (0.6)**: score the eval set against a hosted endpoint and compare with the local model. A hosted
-  model needs its own thresholds. The input is identical by construction, so this only confirms it.
 - **Dropped for now**: `my-jev-4b` / `Metask-Jev-4B` (BF16 safetensors only; they need a GGUF Q8 conversion and their own
   letter-readout adapter), and every model that does not fit in 6.5 GB of VRAM.
 - Candidates for later versions: see the end of `RESEARCH.md` (`pre-push` hook, global template-dir install, per-rule
@@ -49,7 +47,12 @@ sets).
 - **Doctor / hooks**: verified in a temp repo with the real hooks (pre-commit blocks, commit-msg blocks a token in a message,
   clean commit passes; `doctor` flags stale hooks). Actions are pinned by SHA and CI runs `scripts/pin_actions.py --check`.
 
+- **Hosted check (0.6)**: 60 lines scored with TypeSafe `jev-latest` against local `jevk5:4b`: AUC 1.000 vs 0.997, same ranking, 242 ms median
+  per call (`MODEL_COMPARISON.md`). A hosted model still needs its own thresholds if used for blocking at scale.
+
 ## Decisions worth remembering
+- Model choice lives in `~/.config/smart-commit-guard/config.json` (user-owned, may name a server and key); the repo file may only narrow;
+  a `.env` is never read by the tool.
 - A hosted backend receives the candidate line unmasked (the model must see the value); output stays masked. `hosted_scope = "ci"`
   keeps a hosted model out of the commit hook.
 - Loopback URLs bypass proxies and no redirects are followed.
