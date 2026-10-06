@@ -97,7 +97,7 @@ That also covers 4.2 / 4.3 except the experiments table (context lines, question
 - **10. Windows / macOS:** `text=True` code page crash is fixed by explicit UTF-8, but test it; `--files` backslash paths; the
   shared hook looking for `.venv/Scripts/smart-commit-guard.exe`; `_executable()` with `.exe`; CI `install-smoke` on macOS and
   Windows (needs `Scripts` vs `bin` handling). The CI matrix runs the unit tests on all three; read its results.
-- **4.2 / 4.3** the experiments table (context lines, question wording, `evals/thresholds.json`), `my-jev-4b` / `Metask-Jev-4B` after a GGUF conversion, and a rule for public key prefixes (`pk_live_`).
+- **4.2 / 4.3** the experiments table (context lines, question wording, `evals/thresholds.json`). Dropped for now: `my-jev-4b` / `Metask-Jev-4B` (need a GGUF conversion); the public-key-prefix rule (`pk_live_`) is done.
 
 ### Done in the second pass (no model needed)
 3.2 richer `[[allow]]` entries, opt-in inline pragma, `--baseline` / `baseline create`, fingerprint v2 with `allowlist migrate`
