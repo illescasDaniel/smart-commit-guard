@@ -18,7 +18,9 @@ import subprocess
 import sys
 import threading
 import time
+from functools import partial
 from pathlib import Path
+from typing import Any
 
 from smart_commit_guard.config import Config
 from smart_commit_guard.decider import HttpDecider
@@ -156,6 +158,10 @@ def bootstrap(rows: list[tuple[float, bool]], threshold: float, n: int = 1000) -
 	return {k: (sorted(v)[int(0.025 * len(v))], sorted(v)[int(0.975 * len(v)) - 1]) for k, v in draws.items() if v}
 
 
+def _rows(cases: list[dict], sc: dict, pred) -> list[tuple[float, bool]]:
+	return [(sc[f"{c['path']}|{c['text']}"], c["label"] == "real") for c in cases if pred(c)]
+
+
 def report(small: bool = False) -> None:
 	cases = load_cases(small)
 	files = sorted(OUT.glob("small_*.json" if small else "scores_*.json"))
@@ -168,11 +174,10 @@ def report(small: bool = False) -> None:
 	say(f"# Model comparison\n\n{len(cases)} lines that reach the model: {n_real} real, {len(cases) - n_real} ok "
 		f"({sum(c['set'] == 'oss' for c in cases)} from open-source packages, {sum(c['set'] == 'generated' for c in cases)} generated, "
 		f"{sum(c['family'] == 'hand-written' for c in cases)} hand-written).\n")
-	summary = []
+	summary: list[dict[str, Any]] = []
 	for run_ in runs:
 		sc = run_["scores"]
-		def rows_of(pred, sc=sc) -> list[tuple[float, bool]]:
-			return [(sc[f"{c['path']}|{c['text']}"], c["label"] == "real") for c in cases if pred(c)]
+		rows_of = partial(_rows, cases, sc)
 		tune, test, allr = rows_of(lambda c: c["split"] == "tune"), rows_of(lambda c: c["split"] == "test"), rows_of(lambda c: True)
 		thr = fit_threshold(tune)
 		m_test, ci = metrics(test, thr), bootstrap(test, thr)
