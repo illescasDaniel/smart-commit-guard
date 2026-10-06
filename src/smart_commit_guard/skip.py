@@ -1,13 +1,16 @@
 """Paths that are never scanned, and paths where findings are likely examples."""
 from __future__ import annotations
 
+import re
 from pathlib import PurePosixPath
 
 _LOCKFILES = {"package-lock.json", "yarn.lock", "pnpm-lock.yaml", "uv.lock", "poetry.lock", "pipfile.lock",
-			  "cargo.lock", "gemfile.lock", "composer.lock", "go.sum", "bun.lock", "bun.lockb"}
-_BINARY_SUFFIXES = {".png", ".jpg", ".jpeg", ".gif", ".webp", ".ico", ".pdf", ".zip", ".gz", ".tar", ".7z", ".woff",
+			  "cargo.lock", "gemfile.lock", "composer.lock", "go.sum", "bun.lock"}
+_BINARY_LOCKFILES = {"bun.lockb"}
+BINARY_SUFFIXES = {".png", ".jpg", ".jpeg", ".gif", ".webp", ".ico", ".pdf", ".zip", ".gz", ".tar", ".7z", ".woff",
 					".woff2", ".ttf", ".otf", ".mp3", ".mp4", ".mov", ".avif", ".heic", ".so", ".dll", ".exe", ".pyc"}
-_GENERATED_SUFFIXES = (".min.js", ".min.css", ".map")
+_GENERATED_SUFFIXES = (".min.js", ".min.css", ".map", ".svg", ".xcscheme", ".xctestplan", ".pbxproj")   # ids and hashes, no config
+_DIGEST_FILE = re.compile(r"(?:checksum|digest|hashes|sha\d*sums|\.sha\d+$|\.md5$)", re.IGNORECASE)   # `tessdata_checksums.json`, `SHA256SUMS`
 _EXAMPLE_DIRS = {"test", "tests", "fixtures", "fixture", "docs", "doc", "examples", "example", "samples", "sample"}
 _TEMPLATE_MARKERS = ("example", "sample", "template", ".dist", "defaults")
 _SSH_KEYS = {"id_rsa", "id_dsa", "id_ecdsa", "id_ed25519", "id_ecdsa_sk", "id_ed25519_sk"}
@@ -20,6 +23,7 @@ _SENSITIVE_NAMES = {
 	"terraform.tfstate": "Terraform state (holds secrets in plain text)",
 	"terraform.tfstate.backup": "Terraform state (holds secrets in plain text)",
 	"credentials.json": "service credentials", ".env.vault": "dotenv vault keys",
+	".vault-token": "HashiCorp Vault token", "credentials.tfrc.json": "Terraform Cloud API token",
 }
 _SENSITIVE_SUFFIXES = {
 	".p12": "PKCS#12 key store", ".pfx": "PKCS#12 key store", ".jks": "Java key store", ".keystore": "Java key store",
@@ -29,7 +33,10 @@ _SENSITIVE_SUFFIXES = {
 # (parent directory, basename)
 _SENSITIVE_PATHS = {(".aws", "credentials"): "AWS credentials", (".docker", "config.json"): "Docker registry credentials",
 					(".kube", "config"): "Kubernetes credentials", (".ssh", "config"): "SSH configuration",
-					(".gnupg", "secring.gpg"): "GPG secret keyring"}
+					(".gnupg", "secring.gpg"): "GPG secret keyring",
+					(".cargo", "credentials"): "crates.io API token", (".cargo", "credentials.toml"): "crates.io API token",
+					(".gem", "credentials"): "RubyGems API key", (".composer", "auth.json"): "Composer credentials",
+					("gh", "hosts.yml"): "GitHub CLI token"}
 _SENSITIVE_PREFIXES = (("client_secret", ".json", "OAuth client secret"), ("service-account", ".json", "service account key"),
 					   ("service_account", ".json", "service account key"), ("serviceaccount", ".json", "service account key"))
 ENV_REASON = "environment file should not be committed (add it to .gitignore, commit a .env.example instead)"
@@ -46,10 +53,16 @@ def _parts(path: str) -> tuple[str, ...]:
 
 
 def is_skipped(path: str) -> bool:
-	"""Lockfiles, generated files, binaries by extension, and `.env.example`."""
+	"""Binaries by extension and `.env.example`: never scanned."""
 	name = PurePosixPath(_norm(path)).name.lower()
-	return (name in _LOCKFILES or name == ".env.example" or name.endswith(_GENERATED_SUFFIXES)
-			or PurePosixPath(name).suffix in _BINARY_SUFFIXES)
+	return name == ".env.example" or PurePosixPath(name).suffix in BINARY_SUFFIXES or name in _BINARY_LOCKFILES
+
+
+def is_rules_only(path: str) -> bool:
+	"""Lockfiles, generated files (`.min.js`, `.map`, `.svg`, Xcode schemes) and checksum lists: too noisy for candidates, but they can carry real keys
+	(inlined in frontend builds, `user:token@` in `resolved` URLs), so the high-confidence rules still run."""
+	name = PurePosixPath(_norm(path)).name.lower()
+	return name in _LOCKFILES or name.endswith(_GENERATED_SUFFIXES) or bool(_DIGEST_FILE.search(name))
 
 
 def is_env_file(path: str) -> bool:

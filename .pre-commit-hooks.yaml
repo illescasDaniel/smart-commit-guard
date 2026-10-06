@@ -1,0 +1,8 @@
+- id: smart-commit-guard
+  name: smart-commit-guard
+  description: Block commits that add secrets (deterministic rules, plus an optional local decision model for ambiguous cases)
+  entry: smart-commit-guard scan --staged
+  language: python
+  pass_filenames: false
+  always_run: true
+  stages: [pre-commit]

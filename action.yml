@@ -1,0 +1,23 @@
+name: smart-commit-guard
+description: Scan a repository or a pull request for committed secrets (rules, plus an optional decision model)
+branding:
+  icon: shield
+  color: gray-dark
+inputs:
+  args:
+    description: Arguments for smart-commit-guard, for example `scan --no-model --all` or `scan --no-model --diff origin/main...HEAD --config-from origin/main`
+    default: scan --no-model --all
+  version:
+    description: PyPI version specifier for smart-commit-guard
+    default: ">=0.2,<0.3"
+runs:
+  using: composite
+  steps:
+    - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+    - name: Run smart-commit-guard
+      shell: bash
+      env:
+        SCG_ARGS: ${{ inputs.args }}
+        SCG_VERSION: ${{ inputs.version }}
+      # inputs go through the environment, never into the script text, so they cannot inject shell commands
+      run: uvx --from "smart-commit-guard${SCG_VERSION}" smart-commit-guard $SCG_ARGS

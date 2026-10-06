@@ -1,6 +1,6 @@
 [project]
 name = "smart-commit-guard"
-version = "0.1.0"
+version = "0.2.0"
 description = "Pre-commit and CI secret gate: deterministic rules plus a small decision model for ambiguous cases"
 requires-python = ">=3.12"
 readme = "README.md"
@@ -13,6 +13,8 @@ classifiers = [
 	"Environment :: Console",
 	"Intended Audience :: Developers",
 	"Programming Language :: Python :: 3.12",
+	"Programming Language :: Python :: 3.13",
+	"Programming Language :: Python :: 3.14",
 	"Topic :: Security",
 	"Topic :: Software Development :: Version Control :: Git",
 	"Typing :: Typed",
@@ -31,7 +33,7 @@ requires = ["uv_build>=0.12.20,<0.13.0"]
 build-backend = "uv_build"
 
 [dependency-groups]
-dev = ["pytest>=9.1.1", "ruff>=0.15", "ty>=0.0.1", "taskipy>=1.14.1"]
+dev = ["pytest>=9.1.1", "ruff>=0.15", "ty>=0.0.1", "taskipy>=1.14.1", "hypothesis>=6"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

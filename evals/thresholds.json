@@ -1,0 +1,15 @@
+{
+	"fitted_on": "tune half of the 1056-line set, <= 2 % false blocks",
+	"question_version": 1,
+	"models": {
+		"jevk5:4b": {
+			"block_at": 0.45
+		},
+		"jeb:4b": {
+			"block_at": 0.47
+		},
+		"snap:2b": {
+			"block_at": 0.24
+		}
+	}
+}

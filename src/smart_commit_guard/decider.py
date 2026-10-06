@@ -1,13 +1,18 @@
 """Decision-model client for the `/v1/systemone` protocol."""
 from __future__ import annotations
 
+import http.client
 import json
 import urllib.request
 from collections.abc import Callable, Sequence
 from typing import Protocol
+from urllib.parse import urlparse
+
+from .config import is_loopback_host
 
 MAX_BATCH = 1   # measured: jevk5:4b scores a line very differently by position in a batch (evals/), alone it is accurate
-MAX_ITEM_CHARS = 300
+QUESTION_VERSION = 1   # bump when `_question` changes: scores from different versions are not comparable
+MAX_ITEM_CHARS = 1000   # safety cap only: policy sends a window of about 300 characters centred on the candidate
 
 def _question(i: int) -> dict:
 	"""One question per `items[i]`, so the model knows which item of the batch is meant."""
@@ -33,10 +38,26 @@ class Decider(Protocol):
 		...
 
 
+class _NoRedirect(urllib.request.HTTPRedirectHandler):
+	"""A server must not be able to bounce the payload (candidate lines, API key) to another host."""
+
+	def redirect_request(self, req, fp, code, msg, headers, newurl):
+		return None   # urllib then raises HTTPError, an OSError: the decider reports "unavailable"
+
+
+def build_opener(url: str) -> urllib.request.OpenerDirector:
+	"""Loopback URLs bypass every proxy: `HTTP_PROXY` would otherwise route the unmasked candidate line through it (urllib
+	has no loopback exemption of its own). Hosted URLs keep proxy support, because corporate networks need it."""
+	handlers: list = [_NoRedirect()]
+	if is_loopback_host(urlparse(url).hostname or ""):
+		handlers.append(urllib.request.ProxyHandler({}))
+	return urllib.request.build_opener(*handlers)
+
+
 def _urllib_post(url: str, payload: dict, timeout: float, headers: dict[str, str]) -> dict:
 	req = urllib.request.Request(url, data=json.dumps(payload).encode(), method="POST",
 								 headers={"Content-Type": "application/json", **headers})
-	with urllib.request.urlopen(req, timeout=timeout) as resp:
+	with build_opener(url).open(req, timeout=timeout) as resp:
 		return json.loads(resp.read())
 
 
@@ -68,5 +89,5 @@ class HttpDecider:
 			return out
 		except DeciderUnavailable:
 			raise
-		except (OSError, TimeoutError, KeyError, TypeError, ValueError) as e:  # urllib/socket errors are OSError
+		except (OSError, TimeoutError, KeyError, TypeError, ValueError, http.client.HTTPException) as e:  # urllib/socket errors are OSError
 			raise DeciderUnavailable(f"{type(e).__name__}: {e}") from e
