@@ -139,7 +139,7 @@
 	},
 	{
 		"path": "src/slack.py",
-		"text": "WEBHOOK = \"https://hooks\u002eslack.com/services/A1/B2/Zq8Lm2Pr0dKx9Wv3TnHq7zLm\"",
+		"text": "WEBHOOK = \"https://hooks.slack.com/services/A1/B2/Zq8Lm2Pr0dKx9Wv3TnHq7zLm\"",
 		"label": "real",
 		"stage": "rule-block"
 	},
@@ -429,6 +429,24 @@
 		"path": "tests/test_jwt.py",
 		"text": "TOKEN = \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.dBjftJeZ4CVPmB92K27uhbUJU1p1r\"",
 		"label": "ok",
+		"stage": "model"
+	},
+	{
+		"path": "src/settings.py",
+		"text": "DB_PASSWORD = \"Password123!\"",
+		"label": "real",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.py",
+		"text": "ADMIN_PASSWORD = \"Password1!\"",
+		"label": "real",
+		"stage": "model"
+	},
+	{
+		"path": "src/auth.py",
+		"text": "password = \"Passw0rd!2024\"",
+		"label": "real",
 		"stage": "model"
 	}
 ]

@@ -91,7 +91,11 @@ def entropy(s: str) -> float:
 
 
 _PLACEHOLDER = re.compile(r"(?i)(?:^|[-_. ])(?:your|my|example|sample|dummy|fake|mock|test|demo|changeme|replace(?:me)?|placeholder|"
-						  r"redacted|todo|none|null|secret|password|passwd|token|key)(?:$|[-_. 0-9]|here)|^x{4,}$|^\*+$|\.\.\.|^[-_.x*]+$")
+						  r"redacted|todo|none|null)(?:$|[-_. 0-9]|here)|^x{4,}$|^\*+$|\.\.\.|^[-_.x*]+$")
+# a bare word like `password` or `token` marks a placeholder only when the rest is plain words (`wrong-password`, `password123`,
+# `prod/db-password`): `Password123!` is a real, weak password
+_WEAK_WORD = re.compile(r"(?i)(?<![a-z])(?:secret|password|passwd|token|key)(?![a-z])")
+_PLAIN_REST = re.compile(r"[a-z_./ -]*[0-9]{0,4}")
 
 
 _RUNS = ("0123456789" * 3, "abcdefghijklmnopqrstuvwxyz" * 2, "0123456789abcdefghijklmnopqrstuvwxyz")   # digits and letters wrap
@@ -104,9 +108,13 @@ def _is_sequential(v: str) -> bool:
 	return len(low) >= 6 and (bool(_REPEATED.fullmatch(low)) or any(low in run or low[::-1] in run for run in _RUNS))
 
 
+def _is_weak_word_only(v: str) -> bool:
+	return bool(_WEAK_WORD.search(v)) and _PLAIN_REST.fullmatch(_WEAK_WORD.sub("", v).lower()) is not None
+
+
 def _is_placeholder(v: str) -> bool:
 	"""Obvious dummy values (`your-api-key-here`, `changeme`, `xxxxxxxx`, `test-token-123`, `abcdef123456`) never need a model."""
-	return bool(_PLACEHOLDER.search(v)) or _is_sequential(v)
+	return bool(_PLACEHOLDER.search(v) or _is_weak_word_only(v)) or _is_sequential(v)
 
 
 def has_digit_and_letter(v: str) -> bool:

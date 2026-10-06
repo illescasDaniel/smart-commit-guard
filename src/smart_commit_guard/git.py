@@ -60,9 +60,43 @@ def normalize_range(revision_range: str) -> str:
 	return revision_range
 
 
+BIG_BINARY_BYTES = 256 * 1024   # a file git calls binary and that is bigger than this is never read as text
+
+
+def _new_side(revision_args: tuple[str, ...]) -> str | None:
+	"""The tree-ish that holds the new version of each file (`:0` is the index), or None when it cannot be told."""
+	if "--cached" in revision_args:
+		return ":0"
+	if len(revision_args) == 1 and (m := _RANGE.match(revision_args[0])):
+		return m["right"] or "HEAD"
+	return None
+
+
+def _big_binaries(revision_args: tuple[str, ...]) -> list[str]:
+	"""Paths git itself calls binary (a NUL byte, or a `binary` attribute) with a new version over BIG_BINARY_BYTES. `--text`
+	would stream all of their bytes through the diff (a 450 MB model checkpoint named `.dat` took 25 s), so they are excluded
+	up front. A small file marked binary stays in: the attribute must not hide a secret."""
+	side = _new_side(revision_args)
+	if side is None:
+		return []
+	numstat = run(*_DIFF_CONFIG, "diff", "--no-renames", "--no-ext-diff", "--no-textconv", "--numstat", "-z", *revision_args)
+	binary = [rec[4:] for rec in numstat.split("\0") if rec.startswith("-\t-\t")]
+	if not binary:
+		return []
+	names = "".join(f"{side}:{p}\n" for p in binary if "\n" not in p)   # a newline in a name cannot be sent to cat-file
+	try:
+		r = subprocess.run(["git", "cat-file", "--batch-check=%(objectsize) %(rest)"], input=names.encode("utf-8"),
+						   capture_output=True, check=False)
+	except OSError:
+		return []
+	sizes = r.stdout.decode("utf-8", "replace").split("\n")
+	return [p for p, row in zip((p for p in binary if "\n" not in p), sizes) if row.split(" ")[0].isdigit() and int(row.split(" ")[0]) > BIG_BINARY_BYTES]
+
+
 def diff_text(*revision_args: str) -> str:
 	"""The unified diff (`-U0`) of a revision range, or of `--cached`, with every user-configurable diff option pinned."""
-	return run(*_DIFF_CONFIG, *_DIFF_FLAGS, *revision_args, "--", ":/", *_BINARY_PATHSPEC)
+	big = tuple(f":(exclude,literal){p}" for p in _big_binaries(revision_args))
+	return run(*_DIFF_CONFIG, *_DIFF_FLAGS, *revision_args, "--", ":/", *_BINARY_PATHSPEC, *big)
 
 
 def changed_paths(*revision_args: str) -> list[str]:

@@ -1,6 +1,7 @@
 """Paths that are never scanned, and paths where findings are likely examples."""
 from __future__ import annotations
 
+import re
 from pathlib import PurePosixPath
 
 _LOCKFILES = {"package-lock.json", "yarn.lock", "pnpm-lock.yaml", "uv.lock", "poetry.lock", "pipfile.lock",
@@ -8,7 +9,8 @@ _LOCKFILES = {"package-lock.json", "yarn.lock", "pnpm-lock.yaml", "uv.lock", "po
 _BINARY_LOCKFILES = {"bun.lockb"}
 BINARY_SUFFIXES = {".png", ".jpg", ".jpeg", ".gif", ".webp", ".ico", ".pdf", ".zip", ".gz", ".tar", ".7z", ".woff",
 					".woff2", ".ttf", ".otf", ".mp3", ".mp4", ".mov", ".avif", ".heic", ".so", ".dll", ".exe", ".pyc"}
-_GENERATED_SUFFIXES = (".min.js", ".min.css", ".map")
+_GENERATED_SUFFIXES = (".min.js", ".min.css", ".map", ".svg", ".xcscheme", ".xctestplan", ".pbxproj")   # ids and hashes, no config
+_DIGEST_FILE = re.compile(r"(?:checksum|digest|hashes|sha\d*sums|\.sha\d+$|\.md5$)", re.IGNORECASE)   # `tessdata_checksums.json`, `SHA256SUMS`
 _EXAMPLE_DIRS = {"test", "tests", "fixtures", "fixture", "docs", "doc", "examples", "example", "samples", "sample"}
 _TEMPLATE_MARKERS = ("example", "sample", "template", ".dist", "defaults")
 _SSH_KEYS = {"id_rsa", "id_dsa", "id_ecdsa", "id_ed25519", "id_ecdsa_sk", "id_ed25519_sk"}
@@ -57,10 +59,10 @@ def is_skipped(path: str) -> bool:
 
 
 def is_rules_only(path: str) -> bool:
-	"""Lockfiles and generated files (`.min.js`, `.map`): too noisy for candidates, but they can carry real keys
+	"""Lockfiles, generated files (`.min.js`, `.map`, `.svg`, Xcode schemes) and checksum lists: too noisy for candidates, but they can carry real keys
 	(inlined in frontend builds, `user:token@` in `resolved` URLs), so the high-confidence rules still run."""
 	name = PurePosixPath(_norm(path)).name.lower()
-	return name in _LOCKFILES or name.endswith(_GENERATED_SUFFIXES)
+	return name in _LOCKFILES or name.endswith(_GENERATED_SUFFIXES) or bool(_DIGEST_FILE.search(name))
 
 
 def is_env_file(path: str) -> bool:

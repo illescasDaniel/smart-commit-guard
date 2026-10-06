@@ -94,6 +94,28 @@ def test_given_a_large_binary_next_to_text_when_scanning_staged_then_the_text_is
 	assert code == 1 and [f["path"] for f in data["findings"]] == ["app.py"]
 
 
+def test_given_a_big_binary_with_an_odd_suffix_when_reading_the_diff_then_its_bytes_are_never_read(repo):
+	stage(repo, "weights.dat", b"\0" + AWS_KEY.encode() + bytes(range(256)) * 2000)   # over BIG_BINARY_BYTES, no binary suffix
+	stage(repo, "small.dat", b"\0" + AWS_KEY.encode())   # small: stays in, the parser drops it for its NUL
+	stage(repo, "notes.txt", "hello\n")
+	assert git._big_binaries(("--cached",)) == ["weights.dat"]
+	assert "weights.dat" not in git.diff_text("--cached") and "notes.txt" in git.diff_text("--cached")
+
+
+def test_given_a_big_binary_in_a_commit_range_when_reading_the_diff_then_it_is_excluded_too(repo):
+	run(repo, "commit", "--allow-empty", "-qm", "base")
+	stage(repo, "weights.dat", b"\0" + bytes(range(256)) * 2000)
+	run(repo, "commit", "-qm", "add")
+	assert git._big_binaries(("HEAD~1..HEAD",)) == ["weights.dat"]
+
+
+def test_given_a_small_file_marked_binary_when_scanning_staged_then_it_is_still_scanned(repo, capsys):
+	(repo / ".gitattributes").write_text("*.cfg binary\n")
+	stage(repo, "app.cfg")   # small, marked binary: the secret must still be found
+	code, _ = scan_staged(capsys)
+	assert code == 1
+
+
 # --- 0.2 non-ASCII and special file names
 
 

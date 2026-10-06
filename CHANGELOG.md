@@ -21,6 +21,9 @@ update `.secret-guard.toml` if a previously allowlisted finding comes back.
 - `SECRET_GUARD_TIMEOUT=0` is refused.
 
 ### Changed
+- A weak password that merely starts with a placeholder word (`DB_PASSWORD = "Password123!"`) now goes to the model instead of being dropped; a bare `password` / `token` / `secret` / `key` (or `wrong-password`, `password123`) is still a placeholder.
+- `.svg`, Xcode scheme / test plan / project files and checksum lists (`*checksums*.json`, `SHA256SUMS`, `*.sha256`) get the rules only: replaying 486 real commits showed them as the top source of model calls (element ids, build ids, sha256 lists).
+- Files git calls binary and that are over 256 KiB are excluded from the diff up front (a `--numstat` pre-pass), whatever their suffix: a 5,000-file staged change with 450 MB of `.dat` / `.bin` blobs spent most of its time reading them. Small files marked `binary` in `.gitattributes` are still scanned.
 - **The model receives the unmasked candidate line in every mode** (masked text told it every input was a non-secret). Masking stays for everything printed or logged. A hosted backend therefore receives candidate lines: use one you trust with the secrets themselves. Hosted URLs must be `https`.
 - Lockfiles and generated files (`.min.js`, `.map`) get the high-confidence rules instead of being skipped entirely.
 - `--diff` takes a revision range (`A..B` or `A...B`); a single revision is rejected.

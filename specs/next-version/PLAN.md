@@ -12,7 +12,7 @@ Legend:
 
 ## Progress (implemented without a model; see `CHANGELOG.md`)
 
-Done, with tests (529 unit and integration tests, ruff and ty clean):
+Done, with tests (630 unit and integration tests, ruff and ty clean):
 - **0.1** safe diff invocation (`git.py`): pinned config, `--no-ext-diff --no-textconv --text --no-renames`, binary suffixes
   excluded from the pathspec, NUL-byte files dropped. Integration tests for every row of the table.
 - **0.2** C-quoted path decoding in the parser and `-z` name lists (the `--raw -z` matching idea was not needed).
@@ -39,38 +39,51 @@ Done, with tests (529 unit and integration tests, ruff and ty clean):
 - **P3 (part)** `git.py`, rule table, Python 3.14 in the CI matrix and classifiers, coverage in CI, Dependabot for actions and uv,
   `CHANGELOG.md`.
 
-### TODO(local): needs the decision model, macOS or Windows
-These were deliberately left out because they cannot be validated without a model or another OS. Do them in the local environment:
-1. **Run the eval** (`PYTHONPATH=src uv run python evals/run_eval.py`) on the updated rules and case sets, and commit the new
-   `evals/last_run.json`. The rule changes (1.1, 1.2) moved some cases between stages; the stage test keeps the deterministic
-   part honest, but recall, precision and the thresholds (block 0.5 / warn 0.4) must be re-checked with the model.
-2. **0.6 check:** run the eval against a hosted endpoint and confirm the scores match the local run for the same model (the
-   input is now identical). A different hosted model needs its own thresholds.
-3. **0.9 check:** does the centred window change scores for short lines (it should not: short lines are sent whole)?
-4. **1.2 measure:** replay the last 500 commits of 5 to 10 real repos (`scan --diff C~1..C --json`), count model calls per
-   commit (target: under 1 on average) and add skip rules for the top 20 boring candidate shapes. The new `--no-renames` also
-   rescans moved files: count how many extra candidates that adds.
-5. **1.3:** the placeholder filter still drops `DB_PASSWORD = "Password123!"`. Change it (drop only when the rest is low entropy
-   or a known pattern), add those as `real` cases, and check the false-block rate on the `ok` cases does not rise.
-6. **2.2 measure:** parallel model calls (2 to 4 workers: does ollaya serve them concurrently, are scores identical, p95 hook time);
-   the optional verdict cache (keyed by `sha256(model, question version, line text)`, storing only `p`); and check that the
-   default budgets (5 s hook, 120 s CI) fit the real latency.
-7. **2.4 merge commits:** compare the options on a real merge of two branches (scan only lines in neither parent, or rules only).
-8. **0.1 measure:** `--text` (current) versus a `--numstat` second pass on a 5,000-file staged change and on a repo with large
-   real binaries or LFS pointers. Current code excludes binary suffixes from the pathspec and drops NUL files after reading.
-9. **4.2 / 4.3:** template-generated cases split by template, a real-world `ok` corpus mined from OSS repos, per-family recall and
-   precision with bootstrap confidence intervals, and the experiments table (context lines, question wording, other models,
-   hook latency, `evals/thresholds.json`).
-10. **Windows:** `text=True` code page crash is fixed by explicit UTF-8, but test it; `--files` backslash paths; the shared hook
-    looking for `.venv/Scripts/smart-commit-guard.exe`; `_executable()` with `.exe` (changed, untested); CI `install-smoke` on macOS
-    and Windows (needs `Scripts` vs `bin` handling).
-11. **3.3 doctor:** run the hook the way git does, report the version it finds, warn when `.githooks` is stale.
+### Done locally (2026-10-06, jevk5:4b via ollaya, RTX 4070 laptop, Linux)
+1. **Eval re-run** on the updated rules and cases (tuning 75 lines / 32 real, held-out 42 / 16). At block 0.5 / warn 0.4: tuning
+   recall 0.97, precision 1.00 (the one miss is the AWS documentation example secret, p 0.36, which still warns); held-out recall
+   1.00, precision 1.00. Thresholds unchanged. `evals/last_run.json` committed. Median 71 ms per call.
+2. **0.6 hosted check: not done.** No hosted endpoint was available; the input is identical by construction.
+3. **0.9 window:** lines up to 300 characters are sent whole (asserted for every model-stage case). For 69 long variants of the
+   eval lines (secret at the start, middle or end of a 300+ character line) the window moved the score by 0.09 on average and
+   crossed 0.5 in 6 cases; sending the first 1,000 characters moved it by 0.09 and crossed 0.5 in 10. Keep the window.
+4. **1.2 real-repo replay** (486 non-merge commits of 7 local repos; no repo has 500 commits, so this is smaller than planned):
+   1.11 model calls per commit on average, 440 of 486 commits (91 %) need none. The top sources were boring shapes: `.svg`
+   element ids (186), a `*_checksums.json` of sha256 values (166), Xcode scheme / test plan ids (14), all now rules-only
+   by path. Without them the average is about 0.2. `--no-renames` added 6 candidates over the whole replay.
+   The remaining top-scoring lines were synthetic fixtures in this repo's and jev-mem's own tests.
+5. **1.3 done:** a bare `password` / `token` / `secret` / `key` (and `wrong-password`, `password123`) is still a placeholder, but
+   `Password123!` goes to the model. Three `real` cases added to the tuning set; the model scores them 0.60-0.89 and the ok-case
+   false-block rate did not rise (0 at block 0.5). End to end: `git commit` of `DB_PASSWORD = "Password123!"` is blocked.
+6. **2.2 parallel calls: do not add them.** 2 and 4 workers gave identical scores but no speed-up (44 calls: 2.99 s
+   sequential, 2.72 s with 2 or 4 workers; p95 per call 129 ms and 253 ms) because the server serialises them. A verdict
+   cache was not built: 91 % of commits make no call. The default budgets fit: 5 s is about 70 calls at 71 ms.
+7. **2.4 merge commits (measured, not implemented):** over 33 real merges, the first-parent diff had 11 candidates, the
+   second-parent diff 40, and lines in neither parent 0. Scanning only lines that are in neither parent would have produced
+   no model calls and no false blocks; implement that next (staged mode with `MERGE_HEAD`, and `--diff` on merge commits).
+8. **0.1 big binaries:** on a staged change of 5,000 text files plus 450 MB of binaries with odd suffixes (`.dat`, `.bin`,
+   `.safetensors`, an LFS pointer), `--text` made git emit 502 MB; the scan took 25 s. A `--numstat` pre-pass (about 0.07 s) now
+   excludes binary files over 256 KiB: git output 7 MB. The rest of the scan time (17 s) is 600,000 added lines in the rules.
+   Small files marked `binary` are still scanned. LFS pointers are plain text and are scanned normally.
+9. **4.2 / 4.3: not done** (template-split cases, an OSS `ok` corpus, bootstrap intervals, the experiments table).
+11. **3.3 doctor:** verified in a temp repo with the real hooks: the pre-commit hook blocks, the commit-msg hook blocks a token
+    in a message, a clean commit passes; `doctor` reports the tool version and flagged this repo's own stale `.githooks`
+    (refreshed and committed with the new `commit-msg`). The commit messages of 6 local repos (460 messages): 2 warnings
+    (merge subjects with long branch slugs, 0.4 %), 0 blocks.
+12. **Pinned actions:** `scripts/pin_actions.py` ran (3 workflow files and `action.yml`); `--check` is a step in CI.
+
+### Still TODO(local): needs macOS or Windows, or a hosted model
+- **0.6** run the eval against a hosted endpoint (a different hosted model needs its own thresholds).
+- **10. Windows / macOS:** `text=True` code page crash is fixed by explicit UTF-8, but test it; `--files` backslash paths; the
+  shared hook looking for `.venv/Scripts/smart-commit-guard.exe`; `_executable()` with `.exe`; CI `install-smoke` on macOS and
+  Windows (needs `Scripts` vs `bin` handling). The CI matrix runs the unit tests on all three; read its results.
+- **4.2 / 4.3** the larger eval work in item 9 above.
+- **2.4** implement the "lines in neither parent" rule for merges.
 
 ### Done in the second pass (no model needed)
 3.2 richer `[[allow]]` entries, opt-in inline pragma, `--baseline` / `baseline create`, fingerprint v2 with `allowlist migrate`
 (v1 and v2 both accepted for this release); 3.3 `install-hook --chain`; P3 `scripts/pin_actions.py` (and the version bump to 0.2.0).
-**TODO(local):** run `python scripts/pin_actions.py` with network access and commit the result (SHAs were not resolved in the
-cloud session because it may only read this repository); then add `--check` to CI.
+Done locally: the actions are pinned and CI runs `--check`.
 
 ### Done in the third pass
 3.1 push-event ranges (all-zero `before`, `fetch-depth` hint), 3.2 repo-level `[model]` name and thresholds, 3.3 pinned `uvx`
@@ -83,7 +96,7 @@ Commit-message scanning (see `RESEARCH.md`): `commit-msg` hook, `scan --message`
 writes both hooks, `doctor` checks the second one.
 
 ### Still not done
-Everything left is in the TODO(local) list above, plus the candidates at the end of `RESEARCH.md` (`pre-push` hook, global template-dir install, per-rule stopwords, severity levels, BPE-based randomness test).
+Everything left is in the "Still TODO(local)" list above, plus the candidates at the end of `RESEARCH.md` (`pre-push` hook, global template-dir install, per-rule stopwords, severity levels, BPE-based randomness test).
 
 ---
 

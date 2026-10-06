@@ -179,8 +179,8 @@ Answers are read from `answers[<key>].noul`. A missing or non-noul answer is a f
 - Auto-fixing or rewriting files.
 - Training or tuning the model.
 
-## Eval results (2026-10-05, `jevk5:4b` via ollaya, RTX 4070 laptop GPU)
-Data: `evals/cases_tune.json` (66 lines, 25 real) and `evals/cases_holdout.json` (42 lines, 16 real), synthetic only.
+## Eval results (2026-10-06, `jevk5:4b` via ollaya, RTX 4070 laptop GPU)
+Data: `evals/cases_tune.json` (75 lines, 32 real) and `evals/cases_holdout.json` (42 lines, 16 real), synthetic only.
 Reproduce: `PYTHONPATH=src uv run python evals/run_eval.py` (needs `ollaya serve` with `jevk5:4b`).
 
 Findings that changed the design:
@@ -190,7 +190,7 @@ Findings that changed the design:
   `Bearer` headers, `Password=` in connection strings, `mysql -p`, chat webhook URLs). Fixed; 0 unsurfaced afterwards.
 - **Obvious placeholders** (`your-...`, `changeme`, `xxxx`, `test-...`) are dropped before the model.
 
-Defaults chosen: **block at p >= 0.5, warn at p >= 0.4**. At those thresholds: tuning set recall 1.00, precision 1.00;
+Defaults chosen: **block at p >= 0.5, warn at p >= 0.4**. At those thresholds: tuning set recall 0.97 (the one miss, p 0.36, is the AWS documentation example secret, which the model reasonably treats as an example; it still warns), precision 1.00;
 held-out set recall 1.00, precision 1.00 (0 false blocks, 0 missed). Model-judged scores: real secrets 0.68-0.98, placeholders
 0.02-0.36 (tuning set had one 0.80 placeholder before the URL fix). Median 70 ms per call.
 

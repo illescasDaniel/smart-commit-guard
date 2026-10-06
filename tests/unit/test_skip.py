@@ -15,7 +15,8 @@ def test_given_a_binary_or_template_path_when_checking_then_it_is_skipped(path):
 
 
 @pytest.mark.parametrize("path", ["package-lock.json", "web/yarn.lock", "uv.lock", "a/poetry.lock", "dist/app.min.js",
-									 "dist/app.js.map", "static/site.min.css"])
+									 "dist/app.js.map", "static/site.min.css", "docs/tui.svg", "App.xcodeproj/xcshareddata/xcschemes/App.xcscheme",
+									 "App.xctestplan", "src/installer/tessdata_checksums.json", "SHA256SUMS", "release.tar.gz.sha256"])
 def test_given_a_lockfile_or_generated_path_when_checking_then_only_the_rules_run_on_it(path):
 	assert is_rules_only(path) and not is_skipped(path)
 

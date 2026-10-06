@@ -376,7 +376,7 @@ about 70 ms per candidate. Commits with no candidates never call the model.
 ### Other models
 
 Thresholds are calibrated per model. The defaults come from `evals/` (tuning and held-out sets, synthetic only):
-recall and precision 1.00 at block 0.5 / warn 0.4 for `jevk5:4b`. Those sets are small and the rules were adjusted
+recall 0.97 / 1.00 (tuning / held-out) and precision 1.00 at block 0.5 / warn 0.4 for `jevk5:4b`. Those sets are small and the rules were adjusted
 after seeing the first held-out misses, so treat the numbers as optimistic. For another model, rerun the eval and
 choose your own thresholds:
 

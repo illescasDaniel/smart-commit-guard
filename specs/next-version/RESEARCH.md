@@ -34,7 +34,7 @@ sorted by what we did with them.
 ## Done since
 - **`commit-msg` scanning** (git-secrets installs `commit-msg` and `prepare-commit-msg` hooks): `scan --message`, the
   `commit-msg` hook, `--diff --messages` and `--text -` for CI. Rule hits block, candidates only warn.
-  **TODO(local):** measure the false-warning rate on the messages of real repositories before considering a model for messages.
+  Measured on 460 messages of 6 local repos: 2 warnings (0.4 %, merge subjects with long branch slugs), 0 blocks. No model for messages.
 
 ## Ideas worth doing next (need a decision)
 1. **Global install through the git template directory** (git-secrets `init.templateDir`): every new clone gets the hook with no

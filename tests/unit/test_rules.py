@@ -255,3 +255,9 @@ def test_given_base64_that_is_not_a_secret_when_scanning_then_nothing_is_found(l
 								  'password = "aaaaaaaa"', 'token = "ZYXWVUTSRQ"'])
 def test_given_a_sequential_or_repeated_value_when_scanning_then_it_is_a_placeholder(line):
 	assert scan_line(line) == []
+
+
+@pytest.mark.parametrize("line", ['DB_PASSWORD = "Password123!"', 'ADMIN_PASSWORD = "Password1!"', 'password = "Passw0rd!2024"'])
+def test_given_a_weak_but_real_password_that_starts_with_a_placeholder_word_when_scanning_then_it_is_still_a_candidate(line):
+	hit = first(line)
+	assert hit and hit.kind == "candidate"
