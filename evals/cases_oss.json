@@ -1,0 +1,4104 @@
+[
+	{
+		"path": "sklearn/datasets/_base.py",
+		"text": "        \"od280/od315_of_diluted_wines\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "sklearn"
+	},
+	{
+		"path": "pdfplumber/display.py",
+		"text": "        pdfium_doc = pypdfium2.PdfDocument(src, password=password)",
+		"label": "ok",
+		"stage": "model",
+		"source": "pdfplumber"
+	},
+	{
+		"path": "orjson-3.12.0.dist-info/sboms/orjson.cyclonedx.json",
+		"text": "          \"content\": \"9028f49264629065d057f340a86acb84867925865f73bbf8d47b4d149a7e88b8\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "orjson"
+	},
+	{
+		"path": "lancedb/embeddings/watsonx.py",
+		"text": "        ``\"ibm/granite-embedding-278m-multilingual\"`` is recommended.",
+		"label": "ok",
+		"stage": "model",
+		"source": "lancedb"
+	},
+	{
+		"path": "starlette/status.py",
+		"text": "    \"HTTP_422_UNPROCESSABLE_CONTENT\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "starlette"
+	},
+	{
+		"path": "lutris/runners/fsuae.py",
+		"text": "            \"c39bd9094d4e5f4e28c1411f3086950406062e87\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "lutris"
+	},
+	{
+		"path": "keyring/backends/fail.py",
+		"text": "    def get_password(self, service, username, password=None):",
+		"label": "ok",
+		"stage": "model",
+		"source": "keyring"
+	},
+	{
+		"path": "pygments/lexers/lisp.py",
+		"text": "        'w32-get-valid-keyboard-layouts', 'w32-get-valid-locale-ids',",
+		"label": "ok",
+		"stage": "model",
+		"source": "pygments"
+	},
+	{
+		"path": "markdown_it/rules_inline/autolink.py",
+		"text": "            token.markup = \"autolink\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "markdown_it"
+	},
+	{
+		"path": "pygments/lexers/igor.py",
+		"text": "        'MCC_SelectMultiClamp700B', 'MCC_SetBridgeBalEnable', 'MCC_SetBridgeBalResist',",
+		"label": "ok",
+		"stage": "model",
+		"source": "pygments"
+	},
+	{
+		"path": "ordlookup/ws2_32.py",
+		"text": "    149: b\"WSCInstallProviderAndChains64_32\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "ordlookup"
+	},
+	{
+		"path": "pydantic/types.py",
+		"text": "    #> {\"password\":\"IAmSensitive\",\"password_bytes\":\"IAmSensitiveBytes\"}",
+		"label": "ok",
+		"stage": "model",
+		"source": "pydantic"
+	},
+	{
+		"path": "curl_cffi/requests/impersonate.py",
+		"text": "    0xCCA9: \"TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "curl_cffi"
+	},
+	{
+		"path": "pydantic/v1/networks.py",
+		"text": "                password=parts['password'],",
+		"label": "ok",
+		"stage": "model",
+		"source": "pydantic"
+	},
+	{
+		"path": "lancedb/__init__.py",
+		"text": "    base_tokenizer: BaseTokenizerType = \"simple\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "lancedb"
+	},
+	{
+		"path": "pandas/_version_meson.py",
+		"text": "__git_version__=\"2905718b126579d2cf0fe5bae05bd75facb67d77\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "pandas"
+	},
+	{
+		"path": "tokenizers-0.23.2.dist-info/sboms/tokenizers-python.cyclonedx.json",
+		"text": "          \"content\": \"fb39b166781f92d482534ef4b4b1b2568f42613b53e5b6c160e24cfbfa30926d\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "tokenizers"
+	},
+	{
+		"path": "pdfminer/high_level.py",
+		"text": "        password=password,",
+		"label": "ok",
+		"stage": "model",
+		"source": "pdfminer"
+	},
+	{
+		"path": "cryptography-50.0.2.dist-info/sboms/cryptography-rust.cyclonedx.json",
+		"text": "          \"content\": \"f6f339eb8adc052cd2ca78910fda869aefa38d22d5cb648e6485e4d3fc06f3b1\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "cryptography"
+	},
+	{
+		"path": "srxy/adapters/inbound/installer/catalog.py",
+		"text": "\t_brew_bottle(\"lz4\", \"1.10.0\", \"6590245dc4a919c46afa16366914cd4b5c0c4a8f4fb35a4f6ab89053f289ae5d\"),",
+		"label": "ok",
+		"stage": "model",
+		"source": "srxy"
+	},
+	{
+		"path": "aaf2/model/datadefs.py",
+		"text": "\"0d010301-0202-6302-060e-2b3404010101\" : (\"ContainerDef_MXFGC_Clipwrapped_DVbased_720x50P_100Mbps\", \"\"),",
+		"label": "ok",
+		"stage": "model",
+		"source": "aaf2"
+	},
+	{
+		"path": "pydantic_core-2.46.5.dist-info/sboms/pydantic-core.cyclonedx.json",
+		"text": "          \"content\": \"df6e520eff47c45997d2fc7dd8214b25dd1310918bbb2642156ef66a67f29813\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "pydantic_core"
+	},
+	{
+		"path": "lib/python3.13/site-packages/cyclonedx/schema/_res/spdx.SNAPSHOT.schema.json",
+		"text": "    \"BSD-3-Clause-No-Nuclear-Warranty\": \"BSD 3-Clause No Nuclear Warranty\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "lib"
+	},
+	{
+		"path": "glances/plugins/vms/engines/multipass.py",
+		"text": "MULTIPASS_PATH = '/snap/bin/multipass'",
+		"label": "ok",
+		"stage": "model",
+		"source": "glances"
+	},
+	{
+		"path": "faster_whisper/utils.py",
+		"text": "    \"distil-large-v2\": \"Systran/faster-distil-whisper-large-v2\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "faster_whisper"
+	},
+	{
+		"path": "setuptools/config/_validate_pyproject/fastjsonschema_validations.py",
+		"text": "                        if not custom_formats[\"pep517-backend-reference\"](data__buildsystem__buildbackend):",
+		"label": "ok",
+		"stage": "model",
+		"source": "setuptools"
+	},
+	{
+		"path": "ruff-0.15.14.dist-info/sboms/ruff.cyclonedx.json",
+		"text": "          \"content\": \"488016bfae457b036d996092f6cb448677611ce4449e970ceaf42695203f218a\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "ruff"
+	},
+	{
+		"path": "dns/dnssecalgs/cryptography.py",
+		"text": "        key = serialization.load_pem_private_key(private_pem, password=password)",
+		"label": "ok",
+		"stage": "model",
+		"source": "dns"
+	},
+	{
+		"path": "sentry_sdk/integrations/anthropic.py",
+		"text": "    cache_read_input_tokens: \"Optional[int]\" = 0",
+		"label": "ok",
+		"stage": "model",
+		"source": "sentry_sdk"
+	},
+	{
+		"path": "scipy/version.py",
+		"text": "git_revision = \"54ef5423f2e4376230ec3bfda6912a07a50958e3\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "scipy"
+	},
+	{
+		"path": "jinja2/lexer.py",
+		"text": "        TOKEN_LINESTATEMENT_BEGIN: \"begin of line statement\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "jinja2"
+	},
+	{
+		"path": "baidubce/services/bcm/bcm_model.py",
+		"text": "                 response_check=None, username=None, password=None, input_type=None,",
+		"label": "ok",
+		"stage": "model",
+		"source": "baidubce"
+	},
+	{
+		"path": "ctranslate2/converters/transformers.py",
+		"text": "        return \"T5ForConditionalGeneration\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "ctranslate2"
+	},
+	{
+		"path": "sqlalchemy/engine/interfaces.py",
+		"text": "            \"mysql+pymysql://scott:tiger@localhost/test\", plugins=[\"myplugin\"]",
+		"label": "ok",
+		"stage": "model",
+		"source": "sqlalchemy"
+	},
+	{
+		"path": "fastar-0.11.0.dist-info/sboms/fastar.cyclonedx.json",
+		"text": "          \"content\": \"e91ee311a569c327171651566e07972200e76fcfe2242a4fa446149a3881c08a\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "fastar"
+	},
+	{
+		"path": "scipy/signal/_filter_design.py",
+		"text": "             'bandpass': 'bandpass',",
+		"label": "ok",
+		"stage": "model",
+		"source": "scipy"
+	},
+	{
+		"path": "ctranslate2/converters/transformers.py",
+		"text": "        return \"T5Gemma2ForConditionalGeneration\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "ctranslate2"
+	},
+	{
+		"path": "fontTools/ufoLib/__init__.py",
+		"text": "    \"openTypeOS2SuperscriptYOffset\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "fontTools"
+	},
+	{
+		"path": "watchfiles-1.2.0.dist-info/sboms/watchfiles_rust_notify.cyclonedx.json",
+		"text": "          \"content\": \"29790946404f91d9c5d06f9874efddea1dc06c5efe94541a7d6863108e3a5e4b\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "watchfiles"
+	},
+	{
+		"path": "pyparsing/tools/cvt_pyparsing_pep8_names.py",
+		"text": "    \"opAssoc\": \"OpAssoc\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "pyparsing"
+	},
+	{
+		"path": "hf_xet-1.6.0.dist-info/sboms/hf_xet.cyclonedx.json",
+		"text": "          \"content\": \"c673075a2e0e5f4a1dde27ce9dee1ea4558c7ffe648f576438a20ca1d2acc4b0\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "hf_xet"
+	},
+	{
+		"path": "cryptography-50.0.2.dist-info/sboms/cryptography-rust.cyclonedx.json",
+		"text": "          \"content\": \"00b0228411908ca8685dba7fc2cdd70ec9990a6e753e89b6ac91a84c40fbaf4b\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "cryptography"
+	},
+	{
+		"path": "pip/_internal/network/auth.py",
+		"text": "                    password=password,",
+		"label": "ok",
+		"stage": "model",
+		"source": "pip"
+	},
+	{
+		"path": "setuptools/_vendor/zipp/__init__.py",
+		"text": "        stream = self.root.open(self.at, zip_mode, pwd=pwd)",
+		"label": "ok",
+		"stage": "model",
+		"source": "setuptools"
+	},
+	{
+		"path": "fontTools/ufoLib/__init__.py",
+		"text": "    \"openTypeOS2SubscriptXOffset\": dict(type=(int, float)),",
+		"label": "ok",
+		"stage": "model",
+		"source": "fontTools"
+	},
+	{
+		"path": "hf_xet-1.6.0.dist-info/sboms/hf_xet.cyclonedx.json",
+		"text": "          \"content\": \"ef99362319c782aa4639ad3a306b64c3bb90e12874e99b8df124cb679d988611\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "hf_xet"
+	},
+	{
+		"path": "jiter-0.15.0.dist-info/sboms/jiter-python.cyclonedx.json",
+		"text": "          \"content\": \"1ebf944e87a7c253233ad6766e082e3cd714b5d03812acc24c318f549614536e\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "jiter"
+	},
+	{
+		"path": "coverage/html.py",
+		"text": "                \"z_7b071bdc2a35fa80___init___py\": {",
+		"label": "ok",
+		"stage": "model",
+		"source": "coverage"
+	},
+	{
+		"path": "dateutil/tz/win.py",
+		"text": "        TZKEYNAME = TZKEYNAME9X",
+		"label": "ok",
+		"stage": "model",
+		"source": "dateutil"
+	},
+	{
+		"path": "curl_cffi/requests/impersonate.py",
+		"text": "    0xC02C: \"TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "curl_cffi"
+	},
+	{
+		"path": "markdown_it/rules_core/text_join.py",
+		"text": "                        next_token.type = \"text\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "markdown_it"
+	},
+	{
+		"path": "watchfiles-1.2.0.dist-info/sboms/watchfiles_rust_notify.cyclonedx.json",
+		"text": "          \"content\": \"e05c02b5e89bff3b946cedeca278abc628fe811e604f027c45a8aa3cf793d0eb\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "watchfiles"
+	},
+	{
+		"path": "argcomplete/packages/_shlex.py",
+		"text": "        self.wordchars = 'abcdfeghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_'",
+		"label": "ok",
+		"stage": "model",
+		"source": "argcomplete"
+	},
+	{
+		"path": "fastar-0.11.0.dist-info/sboms/fastar.cyclonedx.json",
+		"text": "          \"content\": \"32e45ad4206f6d2479085147f02bc2ef834ac85886624a23575ae137c8aa8156\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "fastar"
+	},
+	{
+		"path": "torchvision/datasets/stl10.py",
+		"text": "        [\"train_X.bin\", \"918c2871b30a85fa023e0c44e0bee87f\"],",
+		"label": "ok",
+		"stage": "model",
+		"source": "torchvision"
+	},
+	{
+		"path": "audiosr/utilities/tools.py",
+		"text": "    \"vggishish_mean_std_melspec_10s_22050hz\": \"f449c6fd0e248936c16f6d22492bb625\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "audiosr"
+	},
+	{
+		"path": "orjson-3.12.0.dist-info/sboms/orjson.cyclonedx.json",
+		"text": "          \"content\": \"adb6935a6f5c20170eeceb1a3835a49e12e19d792f6dd344ccc76a985ca5a6ca\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "orjson"
+	},
+	{
+		"path": "audiosr/utilities/tools.py",
+		"text": "    \"melception\": \"a71a41041e945b457c7d3d814bbcf72d\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "audiosr"
+	},
+	{
+		"path": "openai/resources/beta/realtime/sessions.py",
+		"text": "            \"gpt-4o-mini-realtime-preview-2024-12-17\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "openai"
+	},
+	{
+		"path": "pycriu/images/core_loongarch64_pb2.py",
+		"text": "  _globals['_USER_LOONGARCH64_FPREGS_ENTRY']._serialized_start=97",
+		"label": "ok",
+		"stage": "model",
+		"source": "pycriu"
+	},
+	{
+		"path": "pypdfium2_raw/bindings.py",
+		"text": "FWL_VKEYCODE = enum_anon_9",
+		"label": "ok",
+		"stage": "model",
+		"source": "pypdfium2_raw"
+	},
+	{
+		"path": "srxy/adapters/inbound/installer/catalog.py",
+		"text": "\t_brew_bottle(\"giflib\", \"6.1.3\", \"513c620b8bcf0f74370b4852fa823f1e29761b843540abfb6b9fa9cd9517994b\"),",
+		"label": "ok",
+		"stage": "model",
+		"source": "srxy"
+	},
+	{
+		"path": "shapely/_version.py",
+		"text": " \"full-revisionid\": \"5fb639d1056888d135fe56bfaf750c9648addeec\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "shapely"
+	},
+	{
+		"path": "curl_cffi/requests/impersonate.py",
+		"text": "    0xC02F: \"TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "curl_cffi"
+	},
+	{
+		"path": "baidubce/services/sms/sms_client.py",
+		"text": "              \"signature_file_base64\": \"test-string-base64encoded\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "baidubce"
+	},
+	{
+		"path": "pydantic/networks.py",
+		"text": "        e.g. `[('foo', 'bar')]` in `https://user:pass@host:port/path?foo=bar#fragment`",
+		"label": "ok",
+		"stage": "model",
+		"source": "pydantic"
+	},
+	{
+		"path": "fastar-0.11.0.dist-info/sboms/fastar.cyclonedx.json",
+		"text": "          \"content\": \"843fba2746e448b37e26a819579957415c8cef339bf08564fe8b7ddbd959573c\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "fastar"
+	},
+	{
+		"path": "jinja2/compiler.py",
+		"text": "            _PassArg.context: \"context\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "jinja2"
+	},
+	{
+		"path": "glances/outputs/glances_restful_api.py",
+		"text": "            \"access_token\": \"string\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "glances"
+	},
+	{
+		"path": "uvicorn/config.py",
+		"text": "                password=self.ssl_keyfile_password,",
+		"label": "ok",
+		"stage": "model",
+		"source": "uvicorn"
+	},
+	{
+		"path": "starlette/status.py",
+		"text": "    \"HTTP_422_UNPROCESSABLE_ENTITY\": 422,",
+		"label": "ok",
+		"stage": "model",
+		"source": "starlette"
+	},
+	{
+		"path": "cryptography/hazmat/primitives/serialization/pkcs12.py",
+		"text": "    \"PKCS12KeyAndCertificates\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "cryptography"
+	},
+	{
+		"path": "srxy/application/matching/semantic.py",
+		"text": "DEFAULT_MODEL_ID = \"sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "srxy"
+	},
+	{
+		"path": "markdown_it/rules_inline/emphasis.py",
+		"text": "        token.type = \"strong_close\" if isStrong else \"em_close\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "markdown_it"
+	},
+	{
+		"path": "baidubce/services/vpn/vpn_client.py",
+		"text": "    def update_vpn_ssl_user(self, vpn_id, ssluser_id, password=None, description=None, client_token=None, config=None):",
+		"label": "ok",
+		"stage": "model",
+		"source": "baidubce"
+	},
+	{
+		"path": "httpx2/_client.py",
+		"text": "            return BasicAuth(username=username, password=password)",
+		"label": "ok",
+		"stage": "model",
+		"source": "httpx2"
+	},
+	{
+		"path": "gradio/tunneling.py",
+		"text": "    \"https://cdn-media.huggingface.co/frpc-gradio-0.3/frpc_linux_arm\": \"4b563beb2e36c448cc688174e20b53af38dc1ff2b5e362d4ddd1401f2affbfb7\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "gradio"
+	},
+	{
+		"path": "magika-1.0.3.dist-info/sboms/magika-cli.cyclonedx.json",
+		"text": "          \"content\": \"60b4531c118335662134346048ddb0e54cc86bd7e81866757873055f0e38f5d2\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "magika"
+	},
+	{
+		"path": "openai/resources/realtime/calls.py",
+		"text": "                \"gpt-4o-realtime-preview-2024-12-17\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "openai"
+	},
+	{
+		"path": "starlette/templating.py",
+		"text": "        pass_context = jinja2.pass_context",
+		"label": "ok",
+		"stage": "model",
+		"source": "starlette"
+	},
+	{
+		"path": "pycriu/images/core_s390_pb2.py",
+		"text": "  _globals['_USER_S390_VXRS_LOW_ENTRY']._serialized_start=159",
+		"label": "ok",
+		"stage": "model",
+		"source": "pycriu"
+	},
+	{
+		"path": "pydantic/__init__.py",
+		"text": "    'PydanticDeprecatedSince210': (__spec__.parent, '.warnings'),",
+		"label": "ok",
+		"stage": "model",
+		"source": "pydantic"
+	},
+	{
+		"path": "orjson-3.12.0.dist-info/sboms/orjson.cyclonedx.json",
+		"text": "          \"content\": \"29666d0abbfad1e3dc4dcf6144730dd3a3ab225bbbdac83319345b1b44ccfc1b\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "orjson"
+	},
+	{
+		"path": "lib/python3.13/site-packages/cyclonedx/schema/_res/cryptography-defs.SNAPSHOT.schema.json",
+		"text": "        \"gost/id-tc26-gost-3410-12-512-paramSetB\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "lib"
+	},
+	{
+		"path": "packaging/licenses/_spdx.py",
+		"text": "    'ps-or-pdf-font-exception-20170817': {'id': 'PS-or-PDF-font-exception-20170817', 'deprecated': False},",
+		"label": "ok",
+		"stage": "model",
+		"source": "packaging"
+	},
+	{
+		"path": "srxy/adapters/inbound/installer/catalog.py",
+		"text": "\t_brew_bottle(\"tesseract\", \"5.5.3\", \"5a992bfcbb16e0dd15250c490bb0df82545eb9113713b3bfea3ca273a36fe649\"),",
+		"label": "ok",
+		"stage": "model",
+		"source": "srxy"
+	},
+	{
+		"path": "gradio_client/CHANGELOG.md",
+		"text": "grc.Client(\"ysharma/Explore_llamav2_with_TGI\").deploy_discord(to_id=\"llama2-70b-discord-bot\")",
+		"label": "ok",
+		"stage": "model",
+		"source": "gradio_client"
+	},
+	{
+		"path": "PySide6/Qt/metatypes/qt63dquickrender_metatypes.json",
+		"text": "                \"className\": \"Quick3DRenderTargetOutput\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "PySide6"
+	},
+	{
+		"path": "packaging/licenses/_spdx.py",
+		"text": "    'latex2e-translated-notice': {'id': 'Latex2e-translated-notice', 'deprecated': False},",
+		"label": "ok",
+		"stage": "model",
+		"source": "packaging"
+	},
+	{
+		"path": "srxy/adapters/inbound/installer/catalog.py",
+		"text": "\t_brew_bottle(\"libb2\", \"0.98.1\", \"52cef2730b3520e99f75f1478f2b953dc46e362a8dbf90f2c6a9028b47bbb8bd\"),",
+		"label": "ok",
+		"stage": "model",
+		"source": "srxy"
+	},
+	{
+		"path": "lutris/util/retroarch/core_config.py",
+		"text": "                \"md5sum\": \"1477bda80dc33731a65468c1f5bcbee9\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "lutris"
+	},
+	{
+		"path": "gradio/pipelines_utils.py",
+		"text": "    if is_diffusers_pipeline_type(pipeline, \"StableDiffusionDepth2ImgPipeline\"):",
+		"label": "ok",
+		"stage": "model",
+		"source": "gradio"
+	},
+	{
+		"path": "sentry_sdk/integrations/cloud_resource_context.py",
+		"text": "AWS_TOKEN_URL = \"http://{}/latest/api/token\".format(AWS_METADATA_HOST)",
+		"label": "ok",
+		"stage": "model",
+		"source": "sentry_sdk"
+	},
+	{
+		"path": "magika-1.0.3.dist-info/sboms/magika-cli.cyclonedx.json",
+		"text": "          \"content\": \"784e0ac535deb450455cbfa28a6f0df145ea1bb7ae51b821cf5e7927fdcfbdd0\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "magika"
+	},
+	{
+		"path": "pycriu/images/cpuinfo_pb2.py",
+		"text": "  _globals['_CPUINFO_X86_ENTRY_VENDOR']._serialized_start=268",
+		"label": "ok",
+		"stage": "model",
+		"source": "pycriu"
+	},
+	{
+		"path": "numpy/_core/_string_helpers.py",
+		"text": "    >>> english_lower('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_')",
+		"label": "ok",
+		"stage": "model",
+		"source": "numpy"
+	},
+	{
+		"path": "PySide6/Qt/metatypes/qt6quick3dhelpers_metatypes.json",
+		"text": "                        \"name\": \"QQuick3DTextureProviderExtension\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "PySide6"
+	},
+	{
+		"path": "fontTools/ufoLib/__init__.py",
+		"text": "    \"fontInfoAttributesVersion3\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "fontTools"
+	},
+	{
+		"path": "lib/python3.13/site-packages/fastembed/late_interaction/colbert.py",
+		"text": "        sources=ModelSource(hf=\"answerdotai/answerai-colbert-small-v1\"),",
+		"label": "ok",
+		"stage": "model",
+		"source": "lib"
+	},
+	{
+		"path": "cv2/__init__.py",
+		"text": "    if hasattr(sys, 'OpenCV_REPLACE_SYS_PATH_0'):",
+		"label": "ok",
+		"stage": "model",
+		"source": "cv2"
+	},
+	{
+		"path": "jiter-0.15.0.dist-info/sboms/jiter-python.cyclonedx.json",
+		"text": "          \"content\": \"2604dd126bb14f13fb5d1bd6a66155079cb9fa655b37f875b3a742c705dbed17\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "jiter"
+	},
+	{
+		"path": "jinja2/compiler.py",
+		"text": "                _PassArg.context: \"context\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "jinja2"
+	},
+	{
+		"path": "sqlalchemy/dialects/oracle/cx_oracle.py",
+		"text": "            \"password\": \"tiger\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "sqlalchemy"
+	},
+	{
+		"path": "numpy/version.py",
+		"text": "git_revision = \"5e1d03ffac5f2c0a9c39bfcaa9fc853b2b83151e\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "numpy"
+	},
+	{
+		"path": "openai/resources/realtime/calls.py",
+		"text": "                \"gpt-4o-realtime-preview-2024-10-01\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "openai"
+	},
+	{
+		"path": "magika-1.0.3.dist-info/sboms/magika-cli.cyclonedx.json",
+		"text": "          \"content\": \"e7c1832837b905bbfb5101e07cc24c8deddf52f93225eee6ead5f4d63d53ddcb\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "magika"
+	},
+	{
+		"path": "_pytest/terminal.py",
+		"text": "    \"subtests passed\": \"green\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "_pytest"
+	},
+	{
+		"path": "pip/_vendor/pygments/lexers/_mapping.py",
+		"text": "    'Python2TracebackLexer': ('pip._vendor.pygments.lexers.python', 'Python 2.x Traceback', ('py2tb',), ('*.py2tb',), ('text/x-python2-traceback',)),",
+		"label": "ok",
+		"stage": "model",
+		"source": "pip"
+	},
+	{
+		"path": "hf_xet-1.6.0.dist-info/sboms/hf_xet.cyclonedx.json",
+		"text": "          \"content\": \"8df9b6e13f2d32c91b9bd719c00d1958837bc7dec474d94952798cc8e69eeec3\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "hf_xet"
+	},
+	{
+		"path": "PySide6/Qt/metatypes/qt6networkauth_metatypes.json",
+		"text": "                \"qualifiedClassName\": \"QOAuth2AuthorizationCodeFlow\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "PySide6"
+	},
+	{
+		"path": "jiter-0.15.0.dist-info/sboms/jiter-python.cyclonedx.json",
+		"text": "          \"content\": \"eed437bf9d6692032087e337407a86f04cd8d6a16a37199ed57949d415bd68e9\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "jiter"
+	},
+	{
+		"path": "pypdfium2_raw/bindings.py",
+		"text": "FPDFText_LoadCidType2Font = _libs['pdfium']['FPDFText_LoadCidType2Font']",
+		"label": "ok",
+		"stage": "model",
+		"source": "pypdfium2_raw"
+	},
+	{
+		"path": "packaging/licenses/_spdx.py",
+		"text": "    'x11vnc-openssl-exception': {'id': 'x11vnc-openssl-exception', 'deprecated': False},",
+		"label": "ok",
+		"stage": "model",
+		"source": "packaging"
+	},
+	{
+		"path": "torchvision/models/detection/faster_rcnn.py",
+		"text": "    \"FasterRCNN_ResNet50_FPN_Weights\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "torchvision"
+	},
+	{
+		"path": "torch/_inductor/codegen/rocm/ck_universal_gemm_template.py",
+		"text": "            \"DeviceBatchedGemmMultiD_Xdl_CShuffle_V3\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "torch"
+	},
+	{
+		"path": "magika-1.0.3.dist-info/sboms/magika-cli.cyclonedx.json",
+		"text": "          \"content\": \"2621685985a2ebf1c516881c026032ac7deafcda1a2c9b7850dc81e3dfcb64c1\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "magika"
+	},
+	{
+		"path": "rich/protocol.py",
+		"text": "_GIBBERISH = \"\"\"aihwerij235234ljsdnp34ksodfipwoe234234jlskjdf\"\"\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "rich"
+	},
+	{
+		"path": "tokenizers-0.23.2.dist-info/sboms/tokenizers-python.cyclonedx.json",
+		"text": "          \"content\": \"3341a273f6c9d5bef1908f17b7267bbab0e95c9bf69a0d4dcf8e9e1b2c76ef67\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "tokenizers"
+	},
+	{
+		"path": "hf_xet-1.6.0.dist-info/sboms/hf_xet.cyclonedx.json",
+		"text": "          \"content\": \"a68d3c8f01c0cfa54a75291d83601161799e4a89a39e0929f4b0354d88757a37\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "hf_xet"
+	},
+	{
+		"path": "markdown_it/rules_core/text_join.py",
+		"text": "                child_token.type = \"text\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "markdown_it"
+	},
+	{
+		"path": "orjson-3.12.0.dist-info/sboms/orjson.cyclonedx.json",
+		"text": "          \"content\": \"7feca88439efe53da3754500c1851dedf3cb36c524dd5cf8225cc0794de95d09\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "orjson"
+	},
+	{
+		"path": "curl_cffi/requests/impersonate.py",
+		"text": "    0xC009: \"TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "curl_cffi"
+	},
+	{
+		"path": "pydantic/__init__.py",
+		"text": "    'PydanticDeprecatedSince212': (__spec__.parent, '.warnings'),",
+		"label": "ok",
+		"stage": "model",
+		"source": "pydantic"
+	},
+	{
+		"path": "torch/utils/hipify/cuda_to_hip_mappings.py",
+		"text": "    (\"cudaResViewFormatUnsignedShort1\", \"hipResViewFormatUnsignedShort1\"),",
+		"label": "ok",
+		"stage": "model",
+		"source": "torch"
+	},
+	{
+		"path": "sqlalchemy/dialects/mssql/pyodbc.py",
+		"text": "    TOKEN_URL = \"https://database.windows.net/\"  # The token URL for any Azure SQL database",
+		"label": "ok",
+		"stage": "model",
+		"source": "sqlalchemy"
+	},
+	{
+		"path": "markdown_it/rules_inline/escape.py",
+		"text": "        token.info = \"escape\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "markdown_it"
+	},
+	{
+		"path": "glances/outputs/glances_restful_api.py",
+		"text": "                \"token_type\": \"bearer\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "glances"
+	},
+	{
+		"path": "mcp/shared/_httpx_utils.py",
+		"text": "        auth = BasicAuth(username=\"user\", password=\"pass\")",
+		"label": "ok",
+		"stage": "model",
+		"source": "mcp"
+	},
+	{
+		"path": "sentry_sdk/consts.py",
+		"text": "    GEN_AI_USAGE_INPUT_TOKENS_CACHE_WRITE = \"gen_ai.usage.input_tokens.cache_write\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "sentry_sdk"
+	},
+	{
+		"path": "sentry_sdk/utils.py",
+		"text": "        secret_key: \"Optional[str]\" = None,",
+		"label": "ok",
+		"stage": "model",
+		"source": "sentry_sdk"
+	},
+	{
+		"path": "pygments/styles/lilypond.py",
+		"text": "        Token.Name.Builtin.Clef: \"bold #08547A\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "pygments"
+	},
+	{
+		"path": "srxy/adapters/inbound/installer/catalog.py",
+		"text": "\t_brew_bottle(\"webp\", \"1.6.0\", \"2c0172632efa4d17103aad0d82dd27addce7db290b5cf52cd9afcbff3c39a497\"),",
+		"label": "ok",
+		"stage": "model",
+		"source": "srxy"
+	},
+	{
+		"path": "gradio/cli/commands/components/publish.py",
+		"text": "                \":closed_lock_with_key: Enter your pypi API token\", password=True",
+		"label": "ok",
+		"stage": "model",
+		"source": "gradio"
+	},
+	{
+		"path": "aaf2/model/datadefs.py",
+		"text": "\"04010202-0102-0104-060e-2b3404010101\" : (\"CompressionDef_SMPTE_D10_40Mbps_525x5994I\", \"\"),",
+		"label": "ok",
+		"stage": "model",
+		"source": "aaf2"
+	},
+	{
+		"path": "cryptography/hazmat/primitives/serialization/pkcs7.py",
+		"text": "        \"application/x-pkcs7-mime\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "cryptography"
+	},
+	{
+		"path": "packaging/licenses/_spdx.py",
+		"text": "    'x11-distribute-modifications-variant': {'id': 'X11-distribute-modifications-variant', 'deprecated': False},",
+		"label": "ok",
+		"stage": "model",
+		"source": "packaging"
+	},
+	{
+		"path": "ordlookup/oleaut32.py",
+		"text": "    351: b\"LPSAFEARRAY_UserUnmarshal64\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "ordlookup"
+	},
+	{
+		"path": "tokenizers-0.23.2.dist-info/sboms/tokenizers-python.cyclonedx.json",
+		"text": "          \"content\": \"05c8b63e8d9609db387f0324918f81d68fe27748f084ef092fb35954d0539a85\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "tokenizers"
+	},
+	{
+		"path": "ctranslate2/converters/transformers.py",
+		"text": "            # models forked from \"Salesforce/codegen2-1B\" and \"Salesforce/codegen2-3_7B\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "ctranslate2"
+	},
+	{
+		"path": "ruff-0.15.14.dist-info/sboms/ruff.cyclonedx.json",
+		"text": "          \"content\": \"9dd111b7b7f7d55b72c0a6ae361660ee5853c9af73f70c3c2ef6858b950e2e51\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "ruff"
+	},
+	{
+		"path": "jiter-0.15.0.dist-info/sboms/jiter-python.cyclonedx.json",
+		"text": "          \"content\": \"69cdb34c158ceb288df11e18b4bd39de994f6657d83847bdffdbd7f346754b0f\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "jiter"
+	},
+	{
+		"path": "pytest/__init__.py",
+		"text": "    \"PytestRemovedIn10Warning\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "pytest"
+	},
+	{
+		"path": "hf_xet-1.6.0.dist-info/sboms/hf_xet.cyclonedx.json",
+		"text": "          \"content\": \"bfa7760aed19e106de2c7c0b581b509f2f25d3dacaf737cb82ac61bc6d760b0e\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "hf_xet"
+	},
+	{
+		"path": "fastapi_cloud_cli/commands/env/set.py",
+		"text": "        return _input(toolkit, \"Enter the secret value:\", password=True)",
+		"label": "ok",
+		"stage": "model",
+		"source": "fastapi_cloud_cli"
+	},
+	{
+		"path": "faster_whisper/utils.py",
+		"text": "    \"turbo\": \"mobiuslabsgmbh/faster-whisper-large-v3-turbo\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "faster_whisper"
+	},
+	{
+		"path": "google/protobuf/descriptor_pb2.py",
+		"text": "  _globals['_FEATURESET_UTF8VALIDATION']._serialized_start=11984",
+		"label": "ok",
+		"stage": "model",
+		"source": "google"
+	},
+	{
+		"path": "xlsxwriter/worksheet.py",
+		"text": "                    token = \"blanks\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "xlsxwriter"
+	},
+	{
+		"path": "torch/utils/hipify/cuda_to_hip_mappings.py",
+		"text": "    (\"cudaDevAttrMaxSurface2DLayeredLayers\", \"hipDeviceAttributeMaxSurface2DLayeredLayers\"),",
+		"label": "ok",
+		"stage": "model",
+		"source": "torch"
+	},
+	{
+		"path": "baidubce/services/cfc/cfc_client.py",
+		"text": "                    \"RelationId\" : \"00457f0b-20d8-4f3d-8555-c2u121f38313\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "baidubce"
+	},
+	{
+		"path": "torchvision/datasets/cifar.py",
+		"text": "        [\"data_batch_3\", \"54ebc095f3ab1f0389bbae665268c751\"],",
+		"label": "ok",
+		"stage": "model",
+		"source": "torchvision"
+	},
+	{
+		"path": "faugus/utils.py",
+		"text": "        parts.append(\"LSFGVK_PERFORMANCE_MODE=1\")",
+		"label": "ok",
+		"stage": "model",
+		"source": "faugus"
+	},
+	{
+		"path": "ruff-0.15.14.dist-info/sboms/ruff.cyclonedx.json",
+		"text": "          \"content\": \"36f64beae40a84da1b4b26ff2761a5b895c12adc41dc25aaee1c4f2bbfe97a6e\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "ruff"
+	},
+	{
+		"path": "lancedb/embeddings/watsonx.py",
+		"text": "    name: str = \"ibm/slate-125m-english-rtrvr\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "lancedb"
+	},
+	{
+		"path": "PySide6/Qt/metatypes/qt6quick3dparticles_metatypes.json",
+		"text": "                \"className\": \"QQuick3DParticleSpriteParticle\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "PySide6"
+	},
+	{
+		"path": "watchfiles-1.2.0.dist-info/sboms/watchfiles_rust_notify.cyclonedx.json",
+		"text": "          \"content\": \"2fee8403b3d66ac7b26aee6e40a897d85dc5ce26f44da36b8b73e987cc52e943\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "watchfiles"
+	},
+	{
+		"path": "fastapi/security/oauth2.py",
+		"text": "            password=cast(",
+		"label": "ok",
+		"stage": "model",
+		"source": "fastapi"
+	},
+	{
+		"path": "numpy/_core/numeric.py",
+		"text": "    digits = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'",
+		"label": "ok",
+		"stage": "model",
+		"source": "numpy"
+	},
+	{
+		"path": "lib/python3.13/site-packages/onnxruntime/transformers/models/stable_diffusion/benchmark.py",
+		"text": "    \"2.0\": \"stabilityai/stable-diffusion-2\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "lib"
+	},
+	{
+		"path": "packaging/licenses/_spdx.py",
+		"text": "    'bsd-3-clause-no-nuclear-warranty': {'id': 'BSD-3-Clause-No-Nuclear-Warranty', 'deprecated': False},",
+		"label": "ok",
+		"stage": "model",
+		"source": "packaging"
+	},
+	{
+		"path": "pycriu/images/core_ppc64_pb2.py",
+		"text": "  _globals['_USER_PPC64_TM_REGS_ENTRY']._serialized_end=580",
+		"label": "ok",
+		"stage": "model",
+		"source": "pycriu"
+	},
+	{
+		"path": "jiter-0.15.0.dist-info/sboms/jiter-python.cyclonedx.json",
+		"text": "          \"content\": \"a1dce859f0832a7d088c4f1119888ab94ef4b5d6795d1ce05afb7fe159d79f98\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "jiter"
+	},
+	{
+		"path": "pip/_vendor/pygments/lexers/_mapping.py",
+		"text": "    'PythonTracebackLexer': ('pip._vendor.pygments.lexers.python', 'Python Traceback', ('pytb', 'py3tb'), ('*.pytb', '*.py3tb'), ('text/x-python-traceback', 'text/x-python3-traceback')),",
+		"label": "ok",
+		"stage": "model",
+		"source": "pip"
+	},
+	{
+		"path": "jinja2/compiler.py",
+		"text": "                _PassArg.eval_context: \"context.eval_ctx\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "jinja2"
+	},
+	{
+		"path": "lib/python3.13/site-packages/cyclonedx/schema/_res/spdx.SNAPSHOT.schema.json",
+		"text": "    \"GStreamer-exception-2008\": \"GStreamer Exception (2008)\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "lib"
+	},
+	{
+		"path": "pydantic/networks.py",
+		"text": "        e.g. `query` in `https://user:pass@host:port/path?query#fragment`",
+		"label": "ok",
+		"stage": "model",
+		"source": "pydantic"
+	},
+	{
+		"path": "dns/dnssec.py",
+		"text": "        \"ABCDEFGHIJKLMNOPQRSTUVWXYZ234567\", \"0123456789ABCDEFGHIJKLMNOPQRSTUV\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "dns"
+	},
+	{
+		"path": "setuptools/_normalization.py",
+		"text": "    '__editable___myns_pkg_78_9_3_local'",
+		"label": "ok",
+		"stage": "model",
+		"source": "setuptools"
+	},
+	{
+		"path": "lib/python3.13/site-packages/cyclonedx/schema/_res/cryptography-defs.SNAPSHOT.schema.json",
+		"text": "        \"wtls/wap-wsg-idm-ecid-wtls6\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "lib"
+	},
+	{
+		"path": "markdown_it/rules_inline/strikethrough.py",
+		"text": "        token.type = \"s_open\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "markdown_it"
+	},
+	{
+		"path": "orjson-3.12.0.dist-info/sboms/orjson.cyclonedx.json",
+		"text": "          \"content\": \"3eaf3ede3fee6db1a4c2ee091bf8a8b4dccdc6d17f656fb07896ee72867612f2\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "orjson"
+	},
+	{
+		"path": "numpy/version.py",
+		"text": "git_revision = \"dd88c0c19b54ad9ed3533224221285bf0873249a\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "numpy"
+	},
+	{
+		"path": "baidubce/services/bcc/bcc_client.py",
+		"text": "            'interfaceName': 'apiV2_reservedInstancePrice'",
+		"label": "ok",
+		"stage": "model",
+		"source": "baidubce"
+	},
+	{
+		"path": "lutris/util/retroarch/core_config.py",
+		"text": "                \"md5sum\": \"cf11bbb5a16d7af9875cca9de9a15e09\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "lutris"
+	},
+	{
+		"path": "glances/plugins/ip/__init__.py",
+		"text": "                password=self.public_password,",
+		"label": "ok",
+		"stage": "model",
+		"source": "glances"
+	},
+	{
+		"path": "faster_whisper/utils.py",
+		"text": "    \"distil-large-v3\": \"Systran/faster-distil-whisper-large-v3\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "faster_whisper"
+	},
+	{
+		"path": "magika-1.0.3.dist-info/sboms/magika-cli.cyclonedx.json",
+		"text": "          \"content\": \"2261d10cca569e4643e526d8dc2e62e433cc8aba21ab764233731f8d369bf394\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "magika"
+	},
+	{
+		"path": "twine/auth.py",
+		"text": "            password=token,",
+		"label": "ok",
+		"stage": "model",
+		"source": "twine"
+	},
+	{
+		"path": "ordlookup/oleaut32.py",
+		"text": "    328: b\"LPSAFEARRAY_UserMarshal64\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "ordlookup"
+	},
+	{
+		"path": "scipy/interpolate/interpnd.py",
+		"text": "    'CloughTocher2DInterpolator',",
+		"label": "ok",
+		"stage": "model",
+		"source": "scipy"
+	},
+	{
+		"path": "pygments/styles/coffee.py",
+		"text": "        Token: \"#ddd0c0\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "pygments"
+	},
+	{
+		"path": "pip/_internal/utils/misc.py",
+		"text": "        password = \":****\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "pip"
+	},
+	{
+		"path": "scipy/version.py",
+		"text": "git_revision = \"e29dcb65a2040f04819b426a04b60d44a8f69c04\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "scipy"
+	},
+	{
+		"path": "pooch/downloaders.py",
+		"text": "    >>> password = \"goodboy\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "pooch"
+	},
+	{
+		"path": "pip/_vendor/pygments/lexers/_mapping.py",
+		"text": "    'HtmlPhpLexer': ('pip._vendor.pygments.lexers.templates', 'HTML+PHP', ('html+php',), ('*.phtml',), ('application/x-php', 'application/x-httpd-php', 'application/x-httpd-php3', 'application/x-httpd-php4', 'application/x-httpd-php5')),",
+		"label": "ok",
+		"stage": "model",
+		"source": "pip"
+	},
+	{
+		"path": "hf_xet-1.6.0.dist-info/sboms/hf_xet.cyclonedx.json",
+		"text": "          \"content\": \"53010ccb100b96a67bc32c0175f0ed1426b31b655d562898e57325f81c023ac0\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "hf_xet"
+	},
+	{
+		"path": "sqlalchemy/dialects/postgresql/psycopg.py",
+		"text": "        \"postgresql+psycopg://scott:tiger@localhost/test\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "sqlalchemy"
+	},
+	{
+		"path": "lib/python3.13/site-packages/onnxruntime/transformers/models/whisper/benchmark_all.py",
+		"text": "    token_length_pattern = \"Generated token length: \"",
+		"label": "ok",
+		"stage": "model",
+		"source": "lib"
+	},
+	{
+		"path": "PyQt6/uic/enum_map.py",
+		"text": "    'QLineEdit::Password':              'QLineEdit::EchoMode::Password',",
+		"label": "ok",
+		"stage": "model",
+		"source": "PyQt6"
+	},
+	{
+		"path": "curl_cffi/requests/impersonate.py",
+		"text": "    0xC024: \"TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "curl_cffi"
+	},
+	{
+		"path": "pooch/downloaders.py",
+		"text": "            connection.connect(username=self.username, password=self.password)",
+		"label": "ok",
+		"stage": "model",
+		"source": "pooch"
+	},
+	{
+		"path": "openai/resources/realtime/calls.py",
+		"text": "                \"gpt-4o-mini-realtime-preview-2024-12-17\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "openai"
+	},
+	{
+		"path": "lancedb/embeddings/siglip.py",
+		"text": "    model_name: str = \"google/siglip-base-patch16-224\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "lancedb"
+	},
+	{
+		"path": "baidubce/http/http_headers.py",
+		"text": "BOS_SERVER_SIDE_ENCRYPTION_CUSTOMER_KEY_MD5 = b\"x-bce-server-side-encryption-customer-key-md5\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "baidubce"
+	},
+	{
+		"path": "packaging/licenses/_spdx.py",
+		"text": "    'bsd-3-clause-attribution': {'id': 'BSD-3-Clause-Attribution', 'deprecated': False},",
+		"label": "ok",
+		"stage": "model",
+		"source": "packaging"
+	},
+	{
+		"path": "PyQt6/uic/enum_map.py",
+		"text": "    'QLineEdit::PasswordEchoOnEdit':    'QLineEdit::EchoMode::PasswordEchoOnEdit',",
+		"label": "ok",
+		"stage": "model",
+		"source": "PyQt6"
+	},
+	{
+		"path": "lancedb/remote/header.py",
+		"text": "            \"x-lancedb-credential-type\": \"oidc\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "lancedb"
+	},
+	{
+		"path": "Xlib/ext/nvcontrol.py",
+		"text": "# display device.  e.g. \"DP-GUID-f16a5bde-79f3-11e1-b2ae-8b5a8969ba9c\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "Xlib"
+	},
+	{
+		"path": "torch/utils/hipify/cuda_to_hip_mappings.py",
+		"text": "    (\"curandGetDirectionVectors32\", \"hiprandGetDirectionVectors32\"),",
+		"label": "ok",
+		"stage": "model",
+		"source": "torch"
+	},
+	{
+		"path": "pydantic_core-2.46.5.dist-info/sboms/pydantic-core.cyclonedx.json",
+		"text": "          \"content\": \"b6c140620e7ffbb22c2dee59cafe6084a59b5ffc27a8859a5f0d494b5d52b6be\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "pydantic_core"
+	},
+	{
+		"path": "starlette/status.py",
+		"text": "    \"HTTP_300_MULTIPLE_CHOICES\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "starlette"
+	},
+	{
+		"path": "glances/exports/glances_mqtt/__init__.py",
+		"text": "            client.username_pw_set(username=self.user, password=self.password)",
+		"label": "ok",
+		"stage": "model",
+		"source": "glances"
+	},
+	{
+		"path": "magika-1.0.3.dist-info/sboms/magika-cli.cyclonedx.json",
+		"text": "          \"content\": \"f38d5652c16fde515bb1ecef450ab0f6a219d619a7274976324d5e377f7dceba\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "magika"
+	},
+	{
+		"path": "openai/resources/beta/realtime/sessions.py",
+		"text": "            \"gpt-4o-realtime-preview-2024-10-01\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "openai"
+	},
+	{
+		"path": "_pytest/terminal.py",
+		"text": "    \"passed\": \"green\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "_pytest"
+	},
+	{
+		"path": "torchvision/datasets/pcam.py",
+		"text": "                \"1Ka0XfEMiwgCYPdTI-vv6eUElOBnKFKQ2\",  # Google Drive ID",
+		"label": "ok",
+		"stage": "model",
+		"source": "torchvision"
+	},
+	{
+		"path": "ordlookup/ws2_32.py",
+		"text": "    158: b\"WSCUnInstallNameSpaceEx2\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "ordlookup"
+	},
+	{
+		"path": "lit/TestingConfig.py",
+		"text": "            \"SANITIZER_IGNORE_CVE_2016_2143\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "lit"
+	},
+	{
+		"path": "scipy/interpolate/_ndgriddata.py",
+		"text": "           'CloughTocher2DInterpolator']",
+		"label": "ok",
+		"stage": "model",
+		"source": "scipy"
+	},
+	{
+		"path": "pydantic_core-2.46.5.dist-info/sboms/pydantic-core.cyclonedx.json",
+		"text": "          \"content\": \"26145e563e54f2cadc477553f1ec5ee650b00862f0a58bcd12cbdc5f0ea2d2f4\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "pydantic_core"
+	},
+	{
+		"path": "gradio/tunneling.py",
+		"text": "    \"https://cdn-media.huggingface.co/frpc-gradio-0.3/frpc_windows_amd64.exe\": \"14bc0ea470be5d67d79a07412bd21de8a0a179c6ac1116d7764f68e942dc9ceb\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "gradio"
+	},
+	{
+		"path": "PySide6/Qt/metatypes/qt6webenginequick_metatypes.json",
+		"text": "                        \"notify\": \"accelerated2dCanvasEnabledChanged\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "PySide6"
+	},
+	{
+		"path": "pyparsing/core.py",
+		"text": "            source = \"sldjf123lsdjjkf345sldkjf879lkjsfd987\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "pyparsing"
+	},
+	{
+		"path": "markdown_it/rules_inline/linkify.py",
+		"text": "        token.markup = \"linkify\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "markdown_it"
+	},
+	{
+		"path": "openai/resources/beta/realtime/sessions.py",
+		"text": "            \"gpt-4o-realtime-preview-2025-06-03\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "openai"
+	},
+	{
+		"path": "lutris/util/retroarch/core_config.py",
+		"text": "                \"md5sum\": \"35fa1a1ebaaeea286dc5cd15487c13ea\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "lutris"
+	},
+	{
+		"path": "coverage/html.py",
+		"text": "            \"globals\": \"540ee119c15d52a68a53fe6f0897346d\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "coverage"
+	},
+	{
+		"path": "fontTools/ufoLib/__init__.py",
+		"text": "    \"openTypeOS2SuperscriptXOffset\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "fontTools"
+	},
+	{
+		"path": "safetensors-0.8.0.dist-info/sboms/safetensors-python.cyclonedx.json",
+		"text": "          \"content\": \"e8014e44b4736ed0538adeecded0fce2a272f22dc9578a7eb6b2d9993c74cfb9\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "safetensors"
+	},
+	{
+		"path": "packaging/licenses/_spdx.py",
+		"text": "    'bsd-2-clause-pkgconf-disclaimer': {'id': 'BSD-2-Clause-pkgconf-disclaimer', 'deprecated': False},",
+		"label": "ok",
+		"stage": "model",
+		"source": "packaging"
+	},
+	{
+		"path": "tokenizers-0.23.2.dist-info/sboms/tokenizers-python.cyclonedx.json",
+		"text": "          \"content\": \"9433806cd6b4ec1aba79c021c7e4c58fb4c3b9977c085062e611ac929998fb0c\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "tokenizers"
+	},
+	{
+		"path": "orjson-3.12.0.dist-info/sboms/orjson.cyclonedx.json",
+		"text": "          \"content\": \"f8fadd59c855ef2080decdef8ff161eb6661b86933c9d82e5ba29dc602a55aba\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "orjson"
+	},
+	{
+		"path": "fastar-0.11.0.dist-info/sboms/fastar.cyclonedx.json",
+		"text": "          \"content\": \"f98844151eee8917efc50bd9e8318cb963ae8b297431495d3f758616ea5c57db\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "fastar"
+	},
+	{
+		"path": "pycriu/images/core_loongarch64_pb2.py",
+		"text": "  _globals['_USER_LOONGARCH64_GPREGS_ENTRY']._serialized_start=38",
+		"label": "ok",
+		"stage": "model",
+		"source": "pycriu"
+	},
+	{
+		"path": "tokenizers-0.23.2.dist-info/sboms/tokenizers-python.cyclonedx.json",
+		"text": "          \"content\": \"4148590afebada386688f18773da617792bf2ef03ffc1e4cbd2b1d45b023e0ba\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "tokenizers"
+	},
+	{
+		"path": "uvicorn/config.py",
+		"text": "                    password=self.ssl_keyfile_password,",
+		"label": "ok",
+		"stage": "model",
+		"source": "uvicorn"
+	},
+	{
+		"path": "baidubce/services/cfc/cfc_client.py",
+		"text": "                  \"Sid\": \"cfc-dfbd5359-1afb-49e7-81d7-16554056c79d\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "baidubce"
+	},
+	{
+		"path": "packaging/licenses/_spdx.py",
+		"text": "    'gstreamer-exception-2005': {'id': 'GStreamer-exception-2005', 'deprecated': False},",
+		"label": "ok",
+		"stage": "model",
+		"source": "packaging"
+	},
+	{
+		"path": "pydantic_core-2.46.5.dist-info/sboms/pydantic-core.cyclonedx.json",
+		"text": "          \"content\": \"a5e44f723f1133c9deac646763579fdb3ac745e418f2a7af9cd0c431da1f20b9\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "pydantic_core"
+	},
+	{
+		"path": "openai/types/beta/realtime/session_create_params.py",
+		"text": "        \"gpt-4o-mini-realtime-preview-2024-12-17\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "openai"
+	},
+	{
+		"path": "watchfiles-1.2.0.dist-info/sboms/watchfiles_rust_notify.cyclonedx.json",
+		"text": "          \"content\": \"3d1597b0c024618f09a9c3b8655b7e430397a36d23fdafec26d6965e9eec3eba\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "watchfiles"
+	},
+	{
+		"path": "rich/prompt.py",
+		"text": "        return console.input(prompt, password=password, stream=stream)",
+		"label": "ok",
+		"stage": "model",
+		"source": "rich"
+	},
+	{
+		"path": "openai/types/audio_model.py",
+		"text": "    \"gpt-4o-transcribe-diarize\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "openai"
+	},
+	{
+		"path": "gradio/tunneling.py",
+		"text": "    \"https://cdn-media.huggingface.co/frpc-gradio-0.3/frpc_windows_386.exe\": \"721b90550195a83e15f2176d8f85a48d5a25822757cb872e9723d4bccc4e5bb6\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "gradio"
+	},
+	{
+		"path": "curl_cffi/requests/impersonate.py",
+		"text": "    0x009F: \"TLS_DHE_RSA_WITH_AES_256_GCM_SHA384\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "curl_cffi"
+	},
+	{
+		"path": "tokenizers-0.23.2.dist-info/sboms/tokenizers-python.cyclonedx.json",
+		"text": "          \"content\": \"fc34b93ccb385b40dc71c6fceac4b2ad23662c7eeb248cf10d529b7e055b6ead\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "tokenizers"
+	},
+	{
+		"path": "torch/utils/hipify/cuda_to_hip_mappings.py",
+		"text": "    (\"CUmemGenericAllocationHandle_v1\", \"hipMemGenericAllocationHandle_t\"),",
+		"label": "ok",
+		"stage": "model",
+		"source": "torch"
+	},
+	{
+		"path": "pillow-12.3.0.dist-info/sboms/pillow-12.3.0.cdx.json",
+		"text": "          \"content\": \"97b0e62657965bd01a783b93422a6f7138d64c48546657feacc218ec8319ee0b\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "pillow"
+	},
+	{
+		"path": "faster_whisper/utils.py",
+		"text": "    \"large\": \"Systran/faster-whisper-large-v3\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "faster_whisper"
+	},
+	{
+		"path": "watchfiles-1.2.0.dist-info/sboms/watchfiles_rust_notify.cyclonedx.json",
+		"text": "          \"content\": \"909518bc7b1c9b779f1bbf07f2929d35af9f0f37e47c6e9ef7f9dddc1e1821f3\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "watchfiles"
+	},
+	{
+		"path": "sqlalchemy/engine/create.py",
+		"text": "            \"mysql+mysqldb://scott:tiger@hostname/dbname\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "sqlalchemy"
+	},
+	{
+		"path": "lutris/runners/fsuae.py",
+		"text": "            \"90933936cce43ca9bc6bf375662c076b27e3c458\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "lutris"
+	},
+	{
+		"path": "markdown_it/rules_core/linkify.py",
+		"text": "                    token.info = \"auto\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "markdown_it"
+	},
+	{
+		"path": "torch/utils/hipify/cuda_to_hip_mappings.py",
+		"text": "    (\"CU_DEVICE_ATTRIBUTE_MAXIMUM_TEXTURE2D_ARRAY_WIDTH\", \"hipDeviceAttributeMaxTexture2DLayeredWidth\"),",
+		"label": "ok",
+		"stage": "model",
+		"source": "torch"
+	},
+	{
+		"path": "pydantic_core-2.46.5.dist-info/sboms/pydantic-core.cyclonedx.json",
+		"text": "          \"content\": \"6c5b1314b079b0930c31e3af543d8ee1757b1951ae1e1565ec704403a7240ca5\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "pydantic_core"
+	},
+	{
+		"path": "scipy/stats/_hypotests.py",
+		"text": "Epps_Singleton_2sampResult = namedtuple('Epps_Singleton_2sampResult',",
+		"label": "ok",
+		"stage": "model",
+		"source": "scipy"
+	},
+	{
+		"path": "torch/_export/utils.py",
+		"text": "        _DISABLE_ATEN_TO_ASSERTION_PASS = orig_val",
+		"label": "ok",
+		"stage": "model",
+		"source": "torch"
+	},
+	{
+		"path": "lit/BooleanExpression.py",
+		"text": "                expr1, {\"linux\", \"target=i386-unknown-linux-gnu\"}",
+		"label": "ok",
+		"stage": "model",
+		"source": "lit"
+	},
+	{
+		"path": "gradio_client/client.py",
+		"text": "        client = Client(\"abidlabs/whisper-large-v2\")  # connecting to a Hugging Face Space",
+		"label": "ok",
+		"stage": "model",
+		"source": "gradio_client"
+	},
+	{
+		"path": "scipy/io/wavfile.py",
+		"text": "    GENERIC_PASSTHRU = 0x0249",
+		"label": "ok",
+		"stage": "model",
+		"source": "scipy"
+	},
+	{
+		"path": "google/protobuf/descriptor_pb2.py",
+		"text": "  _globals['_FEATURESET_UTF8VALIDATION']._serialized_end=12057",
+		"label": "ok",
+		"stage": "model",
+		"source": "google"
+	},
+	{
+		"path": "pydantic_core-2.46.5.dist-info/sboms/pydantic-core.cyclonedx.json",
+		"text": "          \"content\": \"41d385c7d4ca58e59fc732af25c3983b67ac852c1a25000afe1175de458b67ad\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "pydantic_core"
+	},
+	{
+		"path": "PySide6/Qt/metatypes/qt63dcore_metatypes.json",
+		"text": "                        \"read\": \"defaultTextureCoordinate2AttributeName\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "PySide6"
+	},
+	{
+		"path": "markdown_it/rules_inline/emphasis.py",
+		"text": "        token.type = \"strong_open\" if isStrong else \"em_open\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "markdown_it"
+	},
+	{
+		"path": "cryptography/hazmat/primitives/serialization/pkcs7.py",
+		"text": "        protocol=\"application/x-pkcs7-signature\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "cryptography"
+	},
+	{
+		"path": "glances/outputs/glances_restful_api.py",
+		"text": "            \"password\": \"string\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "glances"
+	},
+	{
+		"path": "jinja2/lexer.py",
+		"text": "        TOKEN_LINECOMMENT: \"comment\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "jinja2"
+	},
+	{
+		"path": "pefile.py",
+		"text": "    (\"IMAGE_FILE_MACHINE_MIPS16\", 0x0266),",
+		"label": "ok",
+		"stage": "model",
+		"source": "pefile.py"
+	},
+	{
+		"path": "sentry_sdk/integrations/openai.py",
+		"text": "    output_tokens: \"Optional[int]\" = 0",
+		"label": "ok",
+		"stage": "model",
+		"source": "sentry_sdk"
+	},
+	{
+		"path": "fontTools/ufoLib/__init__.py",
+		"text": "        \"openTypeOS2SubscriptYSize\": dict(type=int),",
+		"label": "ok",
+		"stage": "model",
+		"source": "fontTools"
+	},
+	{
+		"path": "pydantic_core-2.46.5.dist-info/sboms/pydantic-core.cyclonedx.json",
+		"text": "          \"content\": \"841d1cc9bed7f9236f321df977030373f4a4163ae1a7dbfe1a51a2c1a51d9100\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "pydantic_core"
+	},
+	{
+		"path": "sqlalchemy/ext/asyncio/engine.py",
+		"text": "        engine = create_async_engine(\"postgresql+asyncpg://user:pass@host/dbname\")",
+		"label": "ok",
+		"stage": "model",
+		"source": "sqlalchemy"
+	},
+	{
+		"path": "torchvision/datasets/mnist.py",
+		"text": "        (\"train-images-idx3-ubyte.gz\", \"f68b3c2dcbeaaa9fbdd348bbdeb94873\"),",
+		"label": "ok",
+		"stage": "model",
+		"source": "torchvision"
+	},
+	{
+		"path": "ruff-0.15.14.dist-info/sboms/ruff.cyclonedx.json",
+		"text": "          \"content\": \"46fce34d199b78b6e6073abf984c9cf5fd3e9330145a93ee0738a7443e371495\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "ruff"
+	},
+	{
+		"path": "hf_xet-1.6.0.dist-info/sboms/hf_xet.cyclonedx.json",
+		"text": "          \"content\": \"b659052874eb698efe5b9e8cf382204678a0086ebf46982b79d6ca3182927e5d\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "hf_xet"
+	},
+	{
+		"path": "pygments/styles/lilypond.py",
+		"text": "        Token.String.Escape: \"#C46C6C\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "pygments"
+	},
+	{
+		"path": "cryptography-50.0.2.dist-info/sboms/cryptography-rust.cyclonedx.json",
+		"text": "          \"content\": \"5add81bb678e6cb321aff7fa0dc7689ad82b112dbc032cea19f91d6b8e3582b9\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "cryptography"
+	},
+	{
+		"path": "paddleocr/_models/textline_orientation_classification.py",
+		"text": "        return \"PP-LCNet_x0_25_textline_ori\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "paddleocr"
+	},
+	{
+		"path": "fastar-0.11.0.dist-info/sboms/fastar.cyclonedx.json",
+		"text": "          \"content\": \"b6fe4565b9518b83ef4f91bb47ce29620ca828bd32cb7e408f0062e9930ba190\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "fastar"
+	},
+	{
+		"path": "jinja2/lexer.py",
+		"text": "        TOKEN_EOF: \"end of template\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "jinja2"
+	},
+	{
+		"path": "gradio/templates/frontend/assets/copyTexture3DLayerToTexture.fragment-CciFKovc.js",
+		"text": "import{S as r}from\"./index-BQMxljwW.js\";import\"./index-CTFdGFMX.js\";const e=\"copyTexture3DLayerToTexturePixelShader\",t=`var textureSampler: texture_3d<f32>;uniform layerNum: i32;varying vUV: vec2f;@fragment",
+		"label": "ok",
+		"stage": "model",
+		"source": "gradio"
+	},
+	{
+		"path": "curl_cffi/requests/impersonate.py",
+		"text": "    0x0039: \"TLS_DHE_RSA_WITH_AES_256_CBC_SHA\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "curl_cffi"
+	},
+	{
+		"path": "jiter-0.15.0.dist-info/sboms/jiter-python.cyclonedx.json",
+		"text": "          \"content\": \"9a7a039f8fb9c19c996cd7b2fcce303c1b2874fe1aca544edc85c4a5f8489b34\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "jiter"
+	},
+	{
+		"path": "sklearn/conftest.py",
+		"text": "    environ.get(\"SKLEARN_RUN_FLOAT32_TESTS\", \"0\") != \"1\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "sklearn"
+	},
+	{
+		"path": "PySide6/Qt/metatypes/qt6datavisualizationqml_metatypes.json",
+		"text": "                \"qualifiedClassName\": \"QTouch3DInputHandlerDataVisForeign\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "PySide6"
+	},
+	{
+		"path": "pycriu/images/cpuinfo_pb2.py",
+		"text": "  _globals['_CPUINFO_X86_ENTRY_VENDOR']._serialized_end=309",
+		"label": "ok",
+		"stage": "model",
+		"source": "pycriu"
+	},
+	{
+		"path": "baidubce/http/http_headers.py",
+		"text": "BCE_CONTENT_CRC32C_FLAG = b\"x-bce-content-crc32c-flag\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "baidubce"
+	},
+	{
+		"path": "pygments/lexers/lisp.py",
+		"text": "        'w32-set-keyboard-layout', 'w32-set-process-priority',",
+		"label": "ok",
+		"stage": "model",
+		"source": "pygments"
+	},
+	{
+		"path": "tokenizers-0.23.2.dist-info/sboms/tokenizers-python.cyclonedx.json",
+		"text": "          \"content\": \"e7a5d71263a5a7d47b41f6b3f06ba276f10cc18b0931f1799f710578e2309348\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "tokenizers"
+	},
+	{
+		"path": "pygments/lexers/_sourcemod_builtins.py",
+		"text": "    'TF2_OnWaitingForPlayersEnd',",
+		"label": "ok",
+		"stage": "model",
+		"source": "pygments"
+	},
+	{
+		"path": "sqlalchemy/dialects/postgresql/base.py",
+		"text": "        \"postgresql+psycopg2://scott:tiger@hostname/dbname\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "sqlalchemy"
+	},
+	{
+		"path": "pooch/downloaders.py",
+		"text": "        to indicate no password is required.",
+		"label": "ok",
+		"stage": "model",
+		"source": "pooch"
+	},
+	{
+		"path": "PySide6/Qt/metatypes/qt6datavisualizationqml_metatypes.json",
+		"text": "                \"className\": \"QScatter3DSeriesDataVisForeign\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "PySide6"
+	},
+	{
+		"path": "hf_xet-1.6.0.dist-info/sboms/hf_xet.cyclonedx.json",
+		"text": "          \"content\": \"a4689e6c2294d81e88dc6261c768b63bc4fcdb852be6d1352498b114f61383b7\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "hf_xet"
+	},
+	{
+		"path": "safetensors-0.8.0.dist-info/sboms/safetensors-python.cyclonedx.json",
+		"text": "          \"content\": \"9f1f227452a390804cdb637b74a86990f2a7d7ba4b7d5693aac9b4dd6defd8d6\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "safetensors"
+	},
+	{
+		"path": "fastar-0.11.0.dist-info/sboms/fastar.cyclonedx.json",
+		"text": "          \"content\": \"703d5c7ef118737c72f1af64ad2f6f8c5e1921f818cdcb97b8fe6fc69bf66214\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "fastar"
+	},
+	{
+		"path": "opentelemetry/semconv/_incubating/attributes/test_attributes.py",
+		"text": "    PASS = \"pass\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "opentelemetry"
+	},
+	{
+		"path": "sqlalchemy/dialects/sqlite/pysqlcipher.py",
+		"text": "        plain_url = url._replace(password=None)",
+		"label": "ok",
+		"stage": "model",
+		"source": "sqlalchemy"
+	},
+	{
+		"path": "scipy/signal/_filter_design.py",
+		"text": "             'pass': 'bandpass',",
+		"label": "ok",
+		"stage": "model",
+		"source": "scipy"
+	},
+	{
+		"path": "cryptography-50.0.2.dist-info/sboms/cryptography-rust.cyclonedx.json",
+		"text": "          \"content\": \"accd4ea62f7bb7a82fe23066fb0957d48ef677f6eeb8215f372f52e48bb32426\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "cryptography"
+	},
+	{
+		"path": "glances/outputs/glances_restful_api.py",
+		"text": "        # If no password is configured, the MCP endpoint is open (same as REST API).",
+		"label": "ok",
+		"stage": "model",
+		"source": "glances"
+	},
+	{
+		"path": "pygments/lexers/ncl.py",
+		"text": "                'gsnTickMarksOn', 'gsnXAxisIrregular2Linear', 'gsnXAxisIrregular2Log',",
+		"label": "ok",
+		"stage": "model",
+		"source": "pygments"
+	},
+	{
+		"path": "hf_xet-1.5.2.dist-info/sboms/hf_xet.cyclonedx.json",
+		"text": "          \"content\": \"78c8292055d1c1df0cce5d180393dc8cce0abec0a7102adb6c7b1eef6016d60a\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "hf_xet"
+	},
+	{
+		"path": "baidubce/services/cfc/models.py",
+		"text": "HTTP_TRIGGER = 'cfc-http-trigger/v1/CFCAPI'",
+		"label": "ok",
+		"stage": "model",
+		"source": "baidubce"
+	},
+	{
+		"path": "lutris/util/graphics/vkquery.py",
+		"text": "        (\"residencyStandard2DBlockShape\", VkBool32),",
+		"label": "ok",
+		"stage": "model",
+		"source": "lutris"
+	},
+	{
+		"path": "srxy/adapters/inbound/installer/catalog.py",
+		"text": "\t_brew_bottle(\"jpeg-turbo\", \"3.2.0\", \"0d248d272a2e9d4f3442ce8d82c2df322079e77a76011cf75cb18d7114e78655\"),",
+		"label": "ok",
+		"stage": "model",
+		"source": "srxy"
+	},
+	{
+		"path": "PySide6/Qt/metatypes/qt6quick3dxr_metatypes.json",
+		"text": "                \"qualifiedClassName\": \"QQuick3DOpenXRThreadWorker\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "PySide6"
+	},
+	{
+		"path": "aaf2/model/typedefs.py",
+		"text": "   5  : \"SignalStandard_SMPTE296M\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "aaf2"
+	},
+	{
+		"path": "baidubce/services/sms/sms_client.py",
+		"text": "                  \"message_id\": \"e325ea68-02c1-47ad-8844-c7b93cafaeba_13800138000\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "baidubce"
+	},
+	{
+		"path": "uvicorn/main.py",
+		"text": "    \"--h11-max-incomplete-event-size\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "uvicorn"
+	},
+	{
+		"path": "pdfminer/glyphlist.py",
+		"text": "    \"ideographicsecretcircle\": \"\\u3299\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "pdfminer"
+	},
+	{
+		"path": "sqlalchemy/engine/url.py",
+		"text": "            ...     \"postgresql+psycopg2://user:pass@host/dbname?alt_host=host1&alt_host=host2&ssl_cipher=%2Fpath%2Fto%2Fcrt\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "sqlalchemy"
+	},
+	{
+		"path": "jinja2/lexer.py",
+		"text": "        TOKEN_VARIABLE_END: \"end of print statement\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "jinja2"
+	},
+	{
+		"path": "rich/_emoji_codes.py",
+		"text": "    \"emoji_modifier_fitzpatrick_type__5\": \"🏾\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "rich"
+	},
+	{
+		"path": "llvmlite/_version.py",
+		"text": "version_full = 'de6d534f0b331f4c1a6f4d524b0a7a09ec19e7ea'",
+		"label": "ok",
+		"stage": "model",
+		"source": "llvmlite"
+	},
+	{
+		"path": "urwid/display/_win32.py",
+		"text": "    KEY_EVENT = 0x0001",
+		"label": "ok",
+		"stage": "model",
+		"source": "urwid"
+	},
+	{
+		"path": "hf_xet-1.6.0.dist-info/sboms/hf_xet.cyclonedx.json",
+		"text": "          \"content\": \"7957b9740744892f114936ab4a57b3f487491bbeafaf8083688b16841a4240e5\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "hf_xet"
+	},
+	{
+		"path": "ruff-0.15.14.dist-info/sboms/ruff.cyclonedx.json",
+		"text": "          \"content\": \"d4ea810f0692f9f51b382fff5893887bb4580f5fa246fde546e0b13e7fcee662\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "ruff"
+	},
+	{
+		"path": "pyparsing/core.py",
+		"text": "alphanums: str = \"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "pyparsing"
+	},
+	{
+		"path": "lib/python3.13/site-packages/cyclonedx/schema/_res/cryptography-defs.SNAPSHOT.schema.json",
+		"text": "        \"brainpool/brainpoolP224t1\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "lib"
+	},
+	{
+		"path": "gradio/tunneling.py",
+		"text": "    \"https://cdn-media.huggingface.co/frpc-gradio-0.3/frpc_freebsd_amd64\": \"516d9e6903513869a011ddcd1ec206167ad1eb5dd6640d21057acc258edecbbb\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "gradio"
+	},
+	{
+		"path": "torch/_inductor/fx_passes/b2b_gemm.py",
+		"text": "    pass_name=\"b2b_gemm_pass\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "torch"
+	},
+	{
+		"path": "fastar-0.11.0.dist-info/sboms/fastar.cyclonedx.json",
+		"text": "          \"content\": \"91e19ebc2adc8f83e43039e79776e3fda8ca919132d68a1fed6a5faca2683748\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "fastar"
+	},
+	{
+		"path": "torch/utils/hipify/cuda_to_hip_mappings.py",
+		"text": "    (\"CU_D3D9_MAPRESOURCE_FLAGS_WRITEDISCARD\", \"HIP_D3D9_MAPRESOURCE_FLAGS_WRITEDISCARD\"),",
+		"label": "ok",
+		"stage": "model",
+		"source": "torch"
+	},
+	{
+		"path": "pydantic/networks.py",
+		"text": "    Assuming an input URL of `http://samuel:pass@example.com:8000/the/path/?query=here#fragment=is;this=bit`,",
+		"label": "ok",
+		"stage": "model",
+		"source": "pydantic"
+	},
+	{
+		"path": "torchvision/datasets/mnist.py",
+		"text": "        (\"train-images-idx3-ubyte.gz\", \"8d4fb7e6c68d591d4c3dfef9ec88bf0d\"),",
+		"label": "ok",
+		"stage": "model",
+		"source": "torchvision"
+	},
+	{
+		"path": "pooch/downloaders.py",
+		"text": "        string to indicate no password is required.",
+		"label": "ok",
+		"stage": "model",
+		"source": "pooch"
+	},
+	{
+		"path": "packaging/licenses/_spdx.py",
+		"text": "    'bsd-2-clause-first-lines': {'id': 'BSD-2-Clause-first-lines', 'deprecated': False},",
+		"label": "ok",
+		"stage": "model",
+		"source": "packaging"
+	},
+	{
+		"path": "pypdfium2/_helpers/document.py",
+		"text": "    def __init__(self, input, password=None, autoclose=False):",
+		"label": "ok",
+		"stage": "model",
+		"source": "pypdfium2"
+	},
+	{
+		"path": "jinja2/lexer.py",
+		"text": "        TOKEN_BLOCK_END: \"end of statement block\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "jinja2"
+	},
+	{
+		"path": "PySide6/Qt/metatypes/qt6quick3dparticles_metatypes.json",
+		"text": "                \"className\": \"QQuick3DParticleSystemLogging\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "PySide6"
+	},
+	{
+		"path": "starlette/status.py",
+		"text": "    \"HTTP_203_NON_AUTHORITATIVE_INFORMATION\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "starlette"
+	},
+	{
+		"path": "sqlalchemy/dialects/mysql/aiomysql.py",
+		"text": "        \"mysql+aiomysql://user:pass@hostname/dbname?charset=utf8mb4\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "sqlalchemy"
+	},
+	{
+		"path": "pydantic_core-2.46.5.dist-info/sboms/pydantic-core.cyclonedx.json",
+		"text": "          \"content\": \"daca1df1c957320b2cf139ac61e7bd64fed304c5040df000a745aa1de3b4ef71\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "pydantic_core"
+	},
+	{
+		"path": "safetensors-0.8.0.dist-info/sboms/safetensors-python.cyclonedx.json",
+		"text": "          \"content\": \"b4388bee8683e3d04af747c73422af53102d2bd24d9eadb6cbc100baef4b43f8\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "safetensors"
+	},
+	{
+		"path": "sentry_sdk/ai/monitoring.py",
+		"text": "    total_tokens: \"Optional[int]\" = None,",
+		"label": "ok",
+		"stage": "model",
+		"source": "sentry_sdk"
+	},
+	{
+		"path": "ordlookup/ws2_32.py",
+		"text": "    132: b\"WSCEnumNameSpaceProvidersEx32\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "ordlookup"
+	},
+	{
+		"path": "ruff-0.15.14.dist-info/sboms/ruff.cyclonedx.json",
+		"text": "          \"content\": \"28d3b2b1366ec20994f1fd18c3c594f05c5dd4bc44d8bb0c1c632c8d6829481f\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "ruff"
+	},
+	{
+		"path": "sentry_sdk/integrations/openai.py",
+		"text": "    input_tokens: \"Optional[int]\" = 0",
+		"label": "ok",
+		"stage": "model",
+		"source": "sentry_sdk"
+	},
+	{
+		"path": "tokenizers-0.23.2.dist-info/sboms/tokenizers-python.cyclonedx.json",
+		"text": "          \"content\": \"7ce2d95d4b3734dc35aa2f45e1aa22cd416814592a4f9d9205e11affd5b8e10b\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "tokenizers"
+	},
+	{
+		"path": "networkx/algorithms/graph_hashing.py",
+		"text": "    'c045439172215f49e0bef8c3d26c6b61'",
+		"label": "ok",
+		"stage": "model",
+		"source": "networkx"
+	},
+	{
+		"path": "cryptography/hazmat/primitives/serialization/pkcs7.py",
+		"text": "        private_key: PKCS7PrivateKeyTypes,",
+		"label": "ok",
+		"stage": "model",
+		"source": "cryptography"
+	},
+	{
+		"path": "rich/_emoji_codes.py",
+		"text": "    \"emoji_modifier_fitzpatrick_type__4\": \"🏽\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "rich"
+	},
+	{
+		"path": "hf_xet-1.6.0.dist-info/sboms/hf_xet.cyclonedx.json",
+		"text": "          \"content\": \"8b147ee9d1f6d097cef9ce628cd2ee62288d963e16fb287bd9286455b241382d\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "hf_xet"
+	},
+	{
+		"path": "pydantic_core-2.46.5.dist-info/sboms/pydantic-core.cyclonedx.json",
+		"text": "          \"content\": \"6f42320e61fe2cfd34354ecb597f86f413484a798ba44a8ca1165c58d42da6c1\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "pydantic_core"
+	},
+	{
+		"path": "nvidia/cuda_cccl/.metadata/baseGuardwords.txt",
+		"text": "IGNORE {\"qPPy0uFR3Gbb06WznT/3tIJXAT239R0dBtoVW02QI65q9eHfYT9UTqFmLdlN\"}                   #false positive for t239 on fb_reaction_wow.svg. Bug 200741094",
+		"label": "ok",
+		"stage": "model",
+		"source": "nvidia"
+	},
+	{
+		"path": "openai/types/shared/all_models.py",
+		"text": "        \"o3-deep-research-2025-06-26\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "openai"
+	},
+	{
+		"path": "curl_cffi/requests/impersonate.py",
+		"text": "    0x1303: \"TLS_CHACHA20_POLY1305_SHA256\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "curl_cffi"
+	},
+	{
+		"path": "pdfminer/glyphlist.py",
+		"text": "    \"compass\": \"\\u263c\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "pdfminer"
+	},
+	{
+		"path": "gradio/tunneling.py",
+		"text": "    \"https://cdn-media.huggingface.co/frpc-gradio-0.3/frpc_linux_386\": \"4c2f2a48cd71571498c0ac8a4d42a055f22cb7f14b4b5a2b0d584220fd60a283\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "gradio"
+	},
+	{
+		"path": "sentry_sdk/consts.py",
+		"text": "    GEN_AI_REQUEST_MAX_TOKENS = \"gen_ai.request.max_tokens\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "sentry_sdk"
+	},
+	{
+		"path": "starlette/status.py",
+		"text": "    \"HTTP_503_SERVICE_UNAVAILABLE\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "starlette"
+	},
+	{
+		"path": "curl_cffi/fingerprints.py",
+		"text": "    \"api_key\": \"imp_xxxxxx\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "curl_cffi"
+	},
+	{
+		"path": "lib/python3.13/site-packages/rpds_py-2026.9.1.dist-info/sboms/rpds-py.cyclonedx.json",
+		"text": "          \"content\": \"700d18fa267b73b9b521fd7e13580e2f446916f176cacee1ab63fcc8191f1655\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "lib"
+	},
+	{
+		"path": "magika-1.0.3.dist-info/sboms/magika-cli.cyclonedx.json",
+		"text": "          \"content\": \"e2134bb3ea021b78629caa971416385309e0131b351b25e01dc16fb54e1b5fae\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "magika"
+	},
+	{
+		"path": "PySide6/Qt/metatypes/qt6datavisualizationqml_metatypes.json",
+		"text": "                \"qualifiedClassName\": \"QSurface3DSeriesDataVisForeign\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "PySide6"
+	},
+	{
+		"path": "fontTools/ufoLib/__init__.py",
+		"text": "    \"openTypeOS2UnicodeRanges\": dict(",
+		"label": "ok",
+		"stage": "model",
+		"source": "fontTools"
+	},
+	{
+		"path": "fontTools/ufoLib/__init__.py",
+		"text": "        \"openTypeOS2SubscriptXSize\": dict(type=int),",
+		"label": "ok",
+		"stage": "model",
+		"source": "fontTools"
+	},
+	{
+		"path": "urwid/numedit.py",
+		"text": "    ALLOWED = \"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "urwid"
+	},
+	{
+		"path": "pypdfium2_cli/render.py",
+		"text": "    pdf = pdfium.PdfDocument(input, password=password, autoclose=True)",
+		"label": "ok",
+		"stage": "model",
+		"source": "pypdfium2_cli"
+	},
+	{
+		"path": "lutris/runners/o2em.py",
+		"text": "        \"g7400\": \"79008e4a0db2dc5f1c048853b033828\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "lutris"
+	},
+	{
+		"path": "starlette/status.py",
+		"text": "    \"HTTP_301_MOVED_PERMANENTLY\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "starlette"
+	},
+	{
+		"path": "curl_cffi/requests/impersonate.py",
+		"text": "    0x009C: \"TLS_RSA_WITH_AES_128_GCM_SHA256\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "curl_cffi"
+	},
+	{
+		"path": "rich/_emoji_codes.py",
+		"text": "    \"emoji_modifier_fitzpatrick_type__1__2\": \"🏻\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "rich"
+	},
+	{
+		"path": "packaging/licenses/_spdx.py",
+		"text": "    'bsd-3-clause-modification': {'id': 'BSD-3-Clause-Modification', 'deprecated': False},",
+		"label": "ok",
+		"stage": "model",
+		"source": "packaging"
+	},
+	{
+		"path": "fastar-0.11.0.dist-info/sboms/fastar.cyclonedx.json",
+		"text": "          \"content\": \"8fd00f0bb2e90d81d1044c2b32617f68fcb9fa3bb7640c23e9c748e53fb30934\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "fastar"
+	},
+	{
+		"path": "caca/common.py",
+		"text": "EVENT_KEY_RELEASE = 0x0002",
+		"label": "ok",
+		"stage": "model",
+		"source": "caca"
+	},
+	{
+		"path": "lancedb/embeddings/watsonx.py",
+		"text": "    \"sentence-transformers/all-minilm-l6-v2\": 384,",
+		"label": "ok",
+		"stage": "model",
+		"source": "lancedb"
+	},
+	{
+		"path": "httpx2/_client.py",
+		"text": "            return BasicAuth(username=auth[0], password=auth[1])",
+		"label": "ok",
+		"stage": "model",
+		"source": "httpx2"
+	},
+	{
+		"path": "jinja2/lexer.py",
+		"text": "        TOKEN_BLOCK_BEGIN: \"begin of statement block\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "jinja2"
+	},
+	{
+		"path": "dns/rdtypes/ANY/NSEC3.py",
+		"text": "    b\"0123456789ABCDEFGHIJKLMNOPQRSTUV\", b\"ABCDEFGHIJKLMNOPQRSTUVWXYZ234567\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "dns"
+	},
+	{
+		"path": "aaf2/model/classdefs.py",
+		"text": "    \"MPEG4VisualProfileAndLevel\": (\"04010602-020a-0000-060e-2b340101010d\", None, \"01010100-0000-0000-060e-2b3401040101\", True, False),",
+		"label": "ok",
+		"stage": "model",
+		"source": "aaf2"
+	},
+	{
+		"path": "sentry_sdk/consts.py",
+		"text": "    GEN_AI_USAGE_TOTAL_TOKENS = \"gen_ai.usage.total_tokens\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "sentry_sdk"
+	},
+	{
+		"path": "starlette/status.py",
+		"text": "    \"HTTP_413_CONTENT_TOO_LARGE\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "starlette"
+	},
+	{
+		"path": "mpmath/libmp/libintmath.py",
+		"text": "stddigits = '0123456789abcdefghijklmnopqrstuvwxyz'",
+		"label": "ok",
+		"stage": "model",
+		"source": "mpmath"
+	},
+	{
+		"path": "fontTools/ufoLib/__init__.py",
+		"text": "    \"validateFontInfoVersion3ValueForAttribute\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "fontTools"
+	},
+	{
+		"path": "rich/_emoji_codes.py",
+		"text": "    \"emoji_modifier_fitzpatrick_type__3\": \"🏼\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "rich"
+	},
+	{
+		"path": "dns/rdtypes/ANY/NSEC3.py",
+		"text": "    b\"ABCDEFGHIJKLMNOPQRSTUVWXYZ234567\", b\"0123456789ABCDEFGHIJKLMNOPQRSTUV\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "dns"
+	},
+	{
+		"path": "networkx/algorithms/graph_hashing.py",
+		"text": "    '3dcd84af1ca855d0eff3c978d88e7ec7'",
+		"label": "ok",
+		"stage": "model",
+		"source": "networkx"
+	},
+	{
+		"path": "fastapi/.agents/skills/fastapi/references/responses.md",
+		"text": "        name=\"Foo\", description=\"A very nice Item\", secret_key=\"supersecret\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "fastapi"
+	},
+	{
+		"path": "glances/plugins/vms/engines/multipass.py",
+		"text": "        #     \"multipass\": \"1.13.1\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "glances"
+	},
+	{
+		"path": "numpy/_core/_string_helpers.py",
+		"text": "    >>> english_upper('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_')",
+		"label": "ok",
+		"stage": "model",
+		"source": "numpy"
+	},
+	{
+		"path": "watchfiles-1.2.0.dist-info/sboms/watchfiles_rust_notify.cyclonedx.json",
+		"text": "          \"content\": \"a7a70ba024b9dc04c27ea2f0c0548feb474ec5c54bba33a7f72f873a39d07b24\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "watchfiles"
+	},
+	{
+		"path": "aaf2/ama.py",
+		"text": "            key = 'AVCHigh422IntraUnconstrained'",
+		"label": "ok",
+		"stage": "model",
+		"source": "aaf2"
+	},
+	{
+		"path": "fastar-0.11.0.dist-info/sboms/fastar.cyclonedx.json",
+		"text": "          \"content\": \"5baebc0774151f905a1a2cc41989300b1e6fbb29aff0ceffa1064fdd3088d582\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "fastar"
+	},
+	{
+		"path": "watchfiles-1.2.0.dist-info/sboms/watchfiles_rust_notify.cyclonedx.json",
+		"text": "          \"content\": \"1be3f42a67d6d345ecd59f675f3f012d6974981560836e938c22b424b85ce1be\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "watchfiles"
+	},
+	{
+		"path": "ctranslate2/converters/transformers.py",
+		"text": "        return \"MT5ForConditionalGeneration\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "ctranslate2"
+	},
+	{
+		"path": "magika-1.0.3.dist-info/sboms/magika-cli.cyclonedx.json",
+		"text": "          \"content\": \"89e49afdadebb872d3145a5638b59eb0691ea23e46ca484037cfab3b76b95038\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "magika"
+	},
+	{
+		"path": "pdfminer_six-20260107.data/scripts/dumppdf.py",
+		"text": "                    fname, password=password, extractdir=args.extract_embedded",
+		"label": "ok",
+		"stage": "model",
+		"source": "pdfminer_six"
+	},
+	{
+		"path": "lancedb/rerankers/cross_encoder.py",
+		"text": "    model_name : str, default \"cross-encoder/ms-marco-TinyBERT-L-6\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "lancedb"
+	},
+	{
+		"path": "faster_whisper/utils.py",
+		"text": "    \"large-v1\": \"Systran/faster-whisper-large-v1\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "faster_whisper"
+	},
+	{
+		"path": "pefile.py",
+		"text": "    (\"IMAGE_FILE_32BIT_MACHINE\", 0x0100),",
+		"label": "ok",
+		"stage": "model",
+		"source": "pefile.py"
+	},
+	{
+		"path": "sentry_sdk/integrations/openai.py",
+		"text": "    total_tokens: \"Optional[int]\" = 0",
+		"label": "ok",
+		"stage": "model",
+		"source": "sentry_sdk"
+	},
+	{
+		"path": "aaf2/model/classdefs.py",
+		"text": "    \"MPEG4VisualCodedContentType\": (\"04010602-0204-0000-060e-2b340101010d\", None, \"0201012d-0000-0000-060e-2b3401040101\", True, False),",
+		"label": "ok",
+		"stage": "model",
+		"source": "aaf2"
+	},
+	{
+		"path": "magika-1.0.3.dist-info/sboms/magika-cli.cyclonedx.json",
+		"text": "          \"content\": \"c2ba64afa3c0a6df7fa517765e31314e983f51dda798ffba27b988194fb65dc9\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "magika"
+	},
+	{
+		"path": "lib/python3.13/site-packages/onnxruntime/transformers/huggingface_models.py",
+		"text": "    \"microsoft/swin-tiny-patch4-window7-224\": ([\"pixel_values\"], 16, False, \"swin\"),",
+		"label": "ok",
+		"stage": "model",
+		"source": "lib"
+	},
+	{
+		"path": "orjson-3.12.0.dist-info/sboms/orjson.cyclonedx.json",
+		"text": "          \"content\": \"aee1b19627c7c60102ab80d3a9cbe18de90bfe03bfa6c3715447681f0e8c8af6\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "orjson"
+	},
+	{
+		"path": "scipy/datasets/_registry.py",
+		"text": "    \"ecg.dat\": \"f20ad3365fb9b7f845d0e5c48b6fe67081377ee466c3a220b7f69f35c8958baf\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "scipy"
+	},
+	{
+		"path": "watchfiles-1.2.0.dist-info/sboms/watchfiles_rust_notify.cyclonedx.json",
+		"text": "          \"content\": \"2886843bf800fba2e3377cff24abf6379b4c4d5c6681eaf9ea5b0d15090450bd\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "watchfiles"
+	},
+	{
+		"path": "ruff-0.15.14.dist-info/sboms/ruff.cyclonedx.json",
+		"text": "          \"content\": \"ddd74a9687298c6858e9b88ec8935ec45d22e8fd5e6394fa1bd4e99a87789c76\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "ruff"
+	},
+	{
+		"path": "magika-1.0.3.dist-info/sboms/magika-cli.cyclonedx.json",
+		"text": "          \"content\": \"f38c4372413cdaaf3cc79dd92d29d7d9f5ab09b51b10dded508fb90bb70b9222\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "magika"
+	},
+	{
+		"path": "pefile.py",
+		"text": "    (\"IMAGE_FILE_MACHINE_WCEMIPSV2\", 0x0169),",
+		"label": "ok",
+		"stage": "model",
+		"source": "pefile.py"
+	},
+	{
+		"path": "httpx/_auth.py",
+		"text": "                username=auth_info[0], password=auth_info[2]",
+		"label": "ok",
+		"stage": "model",
+		"source": "httpx"
+	},
+	{
+		"path": "lib/python3.13/site-packages/huggingface_hub/_oidc.py",
+		"text": "        `{\"access_token\": \"hf_jwt_…\", \"token_type\": \"bearer\", \"expires_in\": 3600, ...}`.",
+		"label": "ok",
+		"stage": "model",
+		"source": "lib"
+	},
+	{
+		"path": "tokenizers-0.23.2.dist-info/sboms/tokenizers-python.cyclonedx.json",
+		"text": "          \"content\": \"0d00b9596d185e565c2207a0b01f8bd1a135483d02d9b7b0a54b11da8d53412e\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "tokenizers"
+	},
+	{
+		"path": "pypdf/_reader.py",
+		"text": "        password is correct.",
+		"label": "ok",
+		"stage": "model",
+		"source": "pypdf"
+	},
+	{
+		"path": "caca/common.py",
+		"text": "EVENT_KEY_PRESS = 0x0001",
+		"label": "ok",
+		"stage": "model",
+		"source": "caca"
+	},
+	{
+		"path": "markdown_it/rules_inline/emphasis.py",
+		"text": "        token.tag = \"strong\" if isStrong else \"em\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "markdown_it"
+	},
+	{
+		"path": "google/protobuf/descriptor_pb2.py",
+		"text": "  _globals['_FEATURESET_UTF8VALIDATION']._serialized_start=11180",
+		"label": "ok",
+		"stage": "model",
+		"source": "google"
+	},
+	{
+		"path": "faugus/utils.py",
+		"text": "        parts.append(\"LSFGVK_PERFORMANCE_MODE=0\")",
+		"label": "ok",
+		"stage": "model",
+		"source": "faugus"
+	},
+	{
+		"path": "orjson-3.12.0.dist-info/sboms/orjson.cyclonedx.json",
+		"text": "          \"content\": \"d45db016d36b838f563236e9193d0ee6ce38f3f68b6c94e914b4929c96bbb890\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "orjson"
+	},
+	{
+		"path": "pycriu/images/core_ppc64_pb2.py",
+		"text": "  _globals['_USER_PPC64_VRSTATE_ENTRY']._serialized_end=331",
+		"label": "ok",
+		"stage": "model",
+		"source": "pycriu"
+	},
+	{
+		"path": "torchvision/datasets/stl10.py",
+		"text": "        [\"train_y.bin\", \"5a34089d4802c674881badbb80307741\"],",
+		"label": "ok",
+		"stage": "model",
+		"source": "torchvision"
+	},
+	{
+		"path": "pycriu/images/core_s390_pb2.py",
+		"text": "  _globals['_USER_S390_VXRS_LOW_ENTRY']._serialized_end=199",
+		"label": "ok",
+		"stage": "model",
+		"source": "pycriu"
+	},
+	{
+		"path": "pefile.py",
+		"text": "    (\"IMAGE_FILE_MACHINE_RISCV128\", 0x5128),",
+		"label": "ok",
+		"stage": "model",
+		"source": "pefile.py"
+	},
+	{
+		"path": "torch/utils/hipify/cuda_to_hip_mappings.py",
+		"text": "    (\"cudaResViewFormatSignedShort1\", \"hipResViewFormatSignedShort1\"),",
+		"label": "ok",
+		"stage": "model",
+		"source": "torch"
+	},
+	{
+		"path": "baidubce/services/cfc/cfc_client.py",
+		"text": "                  \"Source\": \"cfc-http-trigger/v1/CFCAPI\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "baidubce"
+	},
+	{
+		"path": "pycriu/images/cpuinfo_pb2.py",
+		"text": "  _globals['_CPUINFO_PPC64_ENTRY_ENDIANNESS']._serialized_start=399",
+		"label": "ok",
+		"stage": "model",
+		"source": "pycriu"
+	},
+	{
+		"path": "httpx2/_config.py",
+		"text": "            url = url.copy_with(username=None, password=None)",
+		"label": "ok",
+		"stage": "model",
+		"source": "httpx2"
+	},
+	{
+		"path": "pygments/styles/lilypond.py",
+		"text": "        Token.Name.Builtin.Scale: \"bold #08547A\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "pygments"
+	},
+	{
+		"path": "faster_whisper/utils.py",
+		"text": "    \"large-v3\": \"Systran/faster-whisper-large-v3\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "faster_whisper"
+	},
+	{
+		"path": "torchvision/models/detection/faster_rcnn.py",
+		"text": "    \"FasterRCNN_MobileNet_V3_Large_320_FPN_Weights\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "torchvision"
+	},
+	{
+		"path": "pydantic_core-2.46.5.dist-info/sboms/pydantic-core.cyclonedx.json",
+		"text": "          \"content\": \"fdc8ff3388f852bede6b579ad4e978ab004f139284d7b28715f773507b946f6e\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "pydantic_core"
+	},
+	{
+		"path": "aaf2/model/typedefs.py",
+		"text": "   1  : \"UserDataMode_192BitBlockStructure\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "aaf2"
+	},
+	{
+		"path": "cryptography/hazmat/primitives/hpke.py",
+		"text": "    \"MLKEM768X25519PrivateKey\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "cryptography"
+	},
+	{
+		"path": "pefile.py",
+		"text": "        \"IMAGE_DYNAMIC_RELOCATION64_V2\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "pefile.py"
+	},
+	{
+		"path": "tokenizers-0.23.2.dist-info/sboms/tokenizers-python.cyclonedx.json",
+		"text": "          \"content\": \"4688ddedf473e32662b9b067670129a8afb8c18e351482c70d62ba4a88171e8b\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "tokenizers"
+	},
+	{
+		"path": "aaf2/model/datadefs.py",
+		"text": "\"04010202-0102-0105-060e-2b3404010101\" : (\"CompressionDef_SMPTE_D10_30Mbps_625x50I\", \"\"),",
+		"label": "ok",
+		"stage": "model",
+		"source": "aaf2"
+	},
+	{
+		"path": "pefile.py",
+		"text": "        \"IMAGE_DYNAMIC_RELOCATION64\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "pefile.py"
+	},
+	{
+		"path": "ordlookup/ws2_32.py",
+		"text": "    163: b\"WSCWriteNameSpaceOrder32\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "ordlookup"
+	},
+	{
+		"path": "openai/resources/responses/responses.py",
+		"text": "                \"gpt-4o-mini-audio-preview-2024-12-17\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "openai"
+	},
+	{
+		"path": "aaf2/model/datadefs.py",
+		"text": "\"0d010301-0202-5002-060e-2b3404010101\" : (\"ContainerDef_MXFGC_Clipwrapped_DVbased_525x5994I_50Mbps\", \"\"),",
+		"label": "ok",
+		"stage": "model",
+		"source": "aaf2"
+	},
+	{
+		"path": "google/protobuf/descriptor_pb2.py",
+		"text": "  _globals['_FEATURESET_UTF8VALIDATION']._serialized_end=11253",
+		"label": "ok",
+		"stage": "model",
+		"source": "google"
+	},
+	{
+		"path": "paddleocr/_models/seal_text_detection.py",
+		"text": "        return \"PP-OCRv4_mobile_seal_det\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "paddleocr"
+	},
+	{
+		"path": "pydantic/networks.py",
+		"text": "        e.g. `user` in `https://user:pass@host:port/path?query#fragment`",
+		"label": "ok",
+		"stage": "model",
+		"source": "pydantic"
+	},
+	{
+		"path": "pydantic/networks.py",
+		"text": "        e.g. `https` in `https://user:pass@host:port/path?query#fragment`",
+		"label": "ok",
+		"stage": "model",
+		"source": "pydantic"
+	},
+	{
+		"path": "cryptography-50.0.2.dist-info/sboms/sbom.json",
+		"text": "          \"content\": \"325b5c806167c13b40b1ffeadfe0248197c00eccc4cf123ec1e28d2d2fd216d9\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "cryptography"
+	},
+	{
+		"path": "PyQt6/uic/enum_map.py",
+		"text": "    'QListView::SinglePass':    'QListView::LayoutMode::SinglePass',",
+		"label": "ok",
+		"stage": "model",
+		"source": "PyQt6"
+	},
+	{
+		"path": "httpx2/_auth.py",
+		"text": "            request.headers[\"Authorization\"] = self._build_auth_header(username=auth_info[0], password=auth_info[2])",
+		"label": "ok",
+		"stage": "model",
+		"source": "httpx2"
+	},
+	{
+		"path": "openai/resources/realtime/calls.py",
+		"text": "                \"gpt-4o-realtime-preview-2025-06-03\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "openai"
+	},
+	{
+		"path": "pefile.py",
+		"text": "            self.FILE_HEADER.Machine != MACHINE_TYPE[\"IMAGE_FILE_MACHINE_AMD64\"]",
+		"label": "ok",
+		"stage": "model",
+		"source": "pefile.py"
+	},
+	{
+		"path": "xlsxwriter/worksheet.py",
+		"text": "        xmlns_mc = schema + \"markup-compatibility/2006\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "xlsxwriter"
+	},
+	{
+		"path": "langcodes/build_data.py",
+		"text": "        write_python_dict(outfile, 'LANGUAGE_ALPHA3_BIBLIOGRAPHIC', alpha3_biblio)",
+		"label": "ok",
+		"stage": "model",
+		"source": "langcodes"
+	},
+	{
+		"path": "torchvision/datasets/oxford_iiit_pet.py",
+		"text": "        (\"https://www.robots.ox.ac.uk/~vgg/data/pets/data/annotations.tar.gz\", \"95a8c909bbe2e81eed6a22bccdf3f68f\"),",
+		"label": "ok",
+		"stage": "model",
+		"source": "torchvision"
+	},
+	{
+		"path": "markdown_it/rules_inline/strikethrough.py",
+		"text": "        token.type = \"s_close\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "markdown_it"
+	},
+	{
+		"path": "srxy/adapters/inbound/installer/catalog.py",
+		"text": "\t_brew_bottle(\"libarchive\", \"3.8.9\", \"4561e7a6d54788627a8e50f188a5f8bddcba31ad1676423b84a8723282e77d2e\"),",
+		"label": "ok",
+		"stage": "model",
+		"source": "srxy"
+	},
+	{
+		"path": "magika-1.0.3.dist-info/sboms/magika-cli.cyclonedx.json",
+		"text": "          \"content\": \"b9d12581f227e93f094d3af2ae690a574abb8a2b9b7a96e7cfe9647b2b617678\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "magika"
+	},
+	{
+		"path": "openai/resources/realtime/calls.py",
+		"text": "                \"gpt-audio-mini-2025-12-15\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "openai"
+	},
+	{
+		"path": "fontTools/ufoLib/__init__.py",
+		"text": "    \"deprecatedFontInfoAttributesVersion2\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "fontTools"
+	},
+	{
+		"path": "pypdf/xmp.py",
+		"text": "_MINIMAL_XMP = f\"\"\"<?xpacket begin=\"\\ufeff\" id=\"W5M0MpCehiHzreSzNTczkc9d\"?>",
+		"label": "ok",
+		"stage": "model",
+		"source": "pypdf"
+	},
+	{
+		"path": "nvidia/cuda_cccl/.metadata/baseGuardwords.txt",
+		"text": "IGNORE {\"OPENVMTOOLS1030GANV061518\"} # for nvidia-topologyd-source.tar's open-vm-tools license file",
+		"label": "ok",
+		"stage": "model",
+		"source": "nvidia"
+	},
+	{
+		"path": "fastapi_cloud_cli/commands/env/set.py",
+		"text": "    return toolkit.input(prompt, password=password, bullet=False)",
+		"label": "ok",
+		"stage": "model",
+		"source": "fastapi_cloud_cli"
+	},
+	{
+		"path": "packaging/licenses/_spdx.py",
+		"text": "    'bsd-3-clause-no-nuclear-license-2014': {'id': 'BSD-3-Clause-No-Nuclear-License-2014', 'deprecated': False},",
+		"label": "ok",
+		"stage": "model",
+		"source": "packaging"
+	},
+	{
+		"path": "orjson-3.12.0.dist-info/sboms/orjson.cyclonedx.json",
+		"text": "          \"content\": \"175812e0be2bccb6abe50bb8d566126198344f707e304f45c648fd8f2cc0365e\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "orjson"
+	},
+	{
+		"path": "watchfiles-1.2.0.dist-info/sboms/watchfiles_rust_notify.cyclonedx.json",
+		"text": "          \"content\": \"93fc1dc3aaa9bfed95e02e6eadabb4baf7e3078b0bd1b4d7b6b0b68378900502\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "watchfiles"
+	},
+	{
+		"path": "numpy/_core/_string_helpers.py",
+		"text": "    'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz0123456789_'",
+		"label": "ok",
+		"stage": "model",
+		"source": "numpy"
+	},
+	{
+		"path": "ruff-0.15.14.dist-info/sboms/ruff.cyclonedx.json",
+		"text": "          \"content\": \"33e57f83510bb73707521ebaffa789ec8caf86f9657cad665b092b581d40e9fb\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "ruff"
+	},
+	{
+		"path": "pycriu/images/core_loongarch64_pb2.py",
+		"text": "  _globals['_THREAD_INFO_LOONGARCH64']._serialized_end=351",
+		"label": "ok",
+		"stage": "model",
+		"source": "pycriu"
+	},
+	{
+		"path": "jiter-0.15.0.dist-info/sboms/jiter-python.cyclonedx.json",
+		"text": "          \"content\": \"70e3cd084b1788766f53af483dd21f93881ff30d7320490ec3ef7526d203bad4\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "jiter"
+	},
+	{
+		"path": "curl_cffi/requests/impersonate.py",
+		"text": "    0xC028: \"TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "curl_cffi"
+	},
+	{
+		"path": "gradio/templates/node/build/server/chunks/index50-Cn8HE5gU.js",
+		"text": "\t  'useandom-26T198340PX75pxJACKVERYMINDBUSHWOLF_GQZbfghjklqvwyzrict';",
+		"label": "ok",
+		"stage": "model",
+		"source": "gradio"
+	},
+	{
+		"path": "pycriu/images/core_ppc64_pb2.py",
+		"text": "  _globals['_USER_PPC64_TM_REGS_ENTRY']._serialized_start=380",
+		"label": "ok",
+		"stage": "model",
+		"source": "pycriu"
+	},
+	{
+		"path": "fastar-0.11.0.dist-info/sboms/fastar.cyclonedx.json",
+		"text": "          \"content\": \"22692a6476a21fa75fdfc11d452fda482af402c008cdbaf3476414e122040973\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "fastar"
+	},
+	{
+		"path": "lancedb/embeddings/watsonx.py",
+		"text": "    # name=\"ibm/granite-embedding-278m-multilingual\".",
+		"label": "ok",
+		"stage": "model",
+		"source": "lancedb"
+	},
+	{
+		"path": "dateutil/tz/win.py",
+		"text": "        TZKEYNAME = TZKEYNAMENT",
+		"label": "ok",
+		"stage": "model",
+		"source": "dateutil"
+	},
+	{
+		"path": "scipy/signal/_filter_design.py",
+		"text": "             'highpass': 'highpass',",
+		"label": "ok",
+		"stage": "model",
+		"source": "scipy"
+	},
+	{
+		"path": "safetensors-0.8.0.dist-info/sboms/safetensors-python.cyclonedx.json",
+		"text": "          \"content\": \"6b947ae49db0d222b1dbc6b113ce7248a3fc3a6ca21b696717bfc000ba4484d8\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "safetensors"
+	},
+	{
+		"path": "keyring/credentials.py",
+		"text": "        return dict(username=self.username, password=self.password)",
+		"label": "ok",
+		"stage": "model",
+		"source": "keyring"
+	},
+	{
+		"path": "aaf2/model/datadefs.py",
+		"text": "\"0d010301-0202-6102-060e-2b3404010101\" : (\"ContainerDef_MXFGC_Clipwrapped_DVbased_1080x50I_100Mbps\", \"\"),",
+		"label": "ok",
+		"stage": "model",
+		"source": "aaf2"
+	},
+	{
+		"path": "pdfplumber/display.py",
+		"text": "                password=page.pdf.password,",
+		"label": "ok",
+		"stage": "model",
+		"source": "pdfplumber"
+	},
+	{
+		"path": "pip/_internal/utils/filesystem.py",
+		"text": "    alphabet = \"abcdefghijklmnopqrstuvwxyz0123456789\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "pip"
+	},
+	{
+		"path": "faster_whisper/utils.py",
+		"text": "    \"large-v3-turbo\": \"mobiuslabsgmbh/faster-whisper-large-v3-turbo\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "faster_whisper"
+	},
+	{
+		"path": "protontricks/util.py",
+		"text": "        new_env[\"GST_PLUGIN_SYSTEM_PATH_1_0\"] = (",
+		"label": "ok",
+		"stage": "model",
+		"source": "protontricks"
+	},
+	{
+		"path": "orjson-3.12.0.dist-info/sboms/orjson.cyclonedx.json",
+		"text": "          \"content\": \"e368e7ddfdeb98c9bca7f8383be1648fd84ab466bf2bc015e94008db6d35611e\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "orjson"
+	},
+	{
+		"path": "glances/plugins/vms/engines/multipass.py",
+		"text": "        #     \"multipassd\": \"1.13.1\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "glances"
+	},
+	{
+		"path": "cryptography/hazmat/bindings/openssl/_conditional.py",
+		"text": "    \"Cryptography_HAS_PSK_TLSv1_3\": cryptography_has_psk_tlsv13,",
+		"label": "ok",
+		"stage": "model",
+		"source": "cryptography"
+	},
+	{
+		"path": "gradio/http_server.py",
+		"text": "        ssl_keyfile_password: If a password is provided, will use this with the ssl certificate for https.",
+		"label": "ok",
+		"stage": "model",
+		"source": "gradio"
+	},
+	{
+		"path": "tokenizers-0.23.2.dist-info/sboms/tokenizers-python.cyclonedx.json",
+		"text": "          \"content\": \"900d271a03799a1ee8d1ca9b19893b48ca674a9284fefcfb85f05e74ed314217\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "tokenizers"
+	},
+	{
+		"path": "cryptography-50.0.2.dist-info/sboms/cryptography-rust.cyclonedx.json",
+		"text": "          \"content\": \"909e307f1cc32bb8bccbd98f446e6d1bf03fa30f7b53a4337da7181ad30fa11a\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "cryptography"
+	},
+	{
+		"path": "sqlalchemy/dialects/mssql/pyodbc.py",
+		"text": "        password=\"tiger\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "sqlalchemy"
+	},
+	{
+		"path": "torch/utils/hipify/cuda_to_hip_mappings.py",
+		"text": "    (\"CU_DEVICE_ATTRIBUTE_MAXIMUM_SURFACE1D_LAYERED_WIDTH\", \"hipDeviceAttributeMaxSurface1DLayeredWidth\"),",
+		"label": "ok",
+		"stage": "model",
+		"source": "torch"
+	},
+	{
+		"path": "huggingface_hub/inference_api.py",
+		"text": "    >>> inference = InferenceApi(\"deepset/roberta-base-squad2\")",
+		"label": "ok",
+		"stage": "model",
+		"source": "huggingface_hub"
+	},
+	{
+		"path": "jsonschema/benchmarks/issue232/issue.json",
+		"text": "                \"oauth2AccessCodeSecurity\": {",
+		"label": "ok",
+		"stage": "model",
+		"source": "jsonschema"
+	},
+	{
+		"path": "pypdfium2_cli/arrange.py",
+		"text": "        with pdfium.PdfDocument(in_path, password=password) as src_pdf:",
+		"label": "ok",
+		"stage": "model",
+		"source": "pypdfium2_cli"
+	},
+	{
+		"path": "fontTools/ufoLib/__init__.py",
+		"text": "        \"openTypeOS2SuperscriptYOffset\": dict(type=int),",
+		"label": "ok",
+		"stage": "model",
+		"source": "fontTools"
+	},
+	{
+		"path": "lit/llvm/config.py",
+		"text": "                features.add(\"target=powerpc64le-linux\")",
+		"label": "ok",
+		"stage": "model",
+		"source": "lit"
+	},
+	{
+		"path": "pefile.py",
+		"text": "    (\"IMAGE_FILE_MACHINE_RISCV32\", 0x5032),",
+		"label": "ok",
+		"stage": "model",
+		"source": "pefile.py"
+	},
+	{
+		"path": "pillow-12.3.0.dist-info/sboms/pillow-12.3.0.cdx.json",
+		"text": "          \"content\": \"7e8cfa78dcd21cebeb0ad91c0cd23e0dba6496c0fbd66e1ec3d25c5b1b365d11\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "pillow"
+	},
+	{
+		"path": "paddleocr/__init__.py",
+		"text": "    \"TableRecognitionPipelineV2\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "paddleocr"
+	},
+	{
+		"path": "PySide6/typesystems/typesystem_networkauth.xml",
+		"text": "    <object-type name=\"QOAuth2AuthorizationCodeFlow\">",
+		"label": "ok",
+		"stage": "model",
+		"source": "PySide6"
+	},
+	{
+		"path": "lancedb/table.py",
+		"text": "            \"base_tokenizer\": \"simple\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "lancedb"
+	},
+	{
+		"path": "safetensors-0.8.0.dist-info/sboms/safetensors-python.cyclonedx.json",
+		"text": "          \"content\": \"714098028fe011992e1c3962653c96b2d578c4b4bce9036e15ff220319b1e0e3\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "safetensors"
+	},
+	{
+		"path": "huggingface_hub/inference_api.py",
+		"text": "    >>> inference = InferenceApi(\"stabilityai/stable-diffusion-2-1\")",
+		"label": "ok",
+		"stage": "model",
+		"source": "huggingface_hub"
+	},
+	{
+		"path": "pefile.py",
+		"text": "    (\"IMAGE_SCN_ALIGN_512BYTES\", 0x00A00000),",
+		"label": "ok",
+		"stage": "model",
+		"source": "pefile.py"
+	},
+	{
+		"path": "pandas/_version.py",
+		"text": "    git_full = \"2905718b126579d2cf0fe5bae05bd75facb67d77\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "pandas"
+	},
+	{
+		"path": "pydantic_core-2.46.5.dist-info/sboms/pydantic-core.cyclonedx.json",
+		"text": "          \"content\": \"1e9df38ee2d2c3c5948ea468a8406ff0db0b29ae1ffde1bcf20ef305bcc95c51\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "pydantic_core"
+	},
+	{
+		"path": "pdfplumber/pdf.py",
+		"text": "                path_or_fp, password=password, gs_path=gs_path, setting=repair_setting",
+		"label": "ok",
+		"stage": "model",
+		"source": "pdfplumber"
+	},
+	{
+		"path": "jinja2/lexer.py",
+		"text": "        TOKEN_DATA: \"template data / text\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "jinja2"
+	},
+	{
+		"path": "starlette/status.py",
+		"text": "    \"HTTP_417_EXPECTATION_FAILED\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "starlette"
+	},
+	{
+		"path": "srxy/adapters/inbound/installer/catalog.py",
+		"text": "\t_brew_bottle(\"zstd\", \"1.5.7\", \"35b5150b27512a94ebaee7b4399aaa8adf42d247e6968319e4aeac3c05365281\"),",
+		"label": "ok",
+		"stage": "model",
+		"source": "srxy"
+	},
+	{
+		"path": "google/protobuf/descriptor_pb2.py",
+		"text": "  _globals['_FEATURESET_UTF8VALIDATION']._serialized_start=11503",
+		"label": "ok",
+		"stage": "model",
+		"source": "google"
+	},
+	{
+		"path": "sentry_sdk/consts.py",
+		"text": "    Example: \"5249fbada8d5416482c2f6e47e337372\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "sentry_sdk"
+	},
+	{
+		"path": "srxy/adapters/inbound/installer/catalog.py",
+		"text": "\t_brew_bottle(\"libpng\", \"1.6.58\", \"fd6cbd5d7a231b83e359fd96231bb3dd668124ab5c2009697dee906ace98fadd\"),",
+		"label": "ok",
+		"stage": "model",
+		"source": "srxy"
+	},
+	{
+		"path": "rich/prompt.py",
+		"text": "                password=True,",
+		"label": "ok",
+		"stage": "model",
+		"source": "rich"
+	},
+	{
+		"path": "rich/_emoji_codes.py",
+		"text": "    \"emoji_modifier_fitzpatrick_type__6\": \"🏿\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "rich"
+	},
+	{
+		"path": "sqlalchemy/dialects/oracle/base.py",
+		"text": "        \"oracle+oracledb://scott:tiger@localhost:1521?service_name=freepdb1\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "sqlalchemy"
+	},
+	{
+		"path": "ruff-0.15.14.dist-info/sboms/ruff.cyclonedx.json",
+		"text": "          \"content\": \"0053e96dd3bec5b4879c23a138d6ef26f2cb936c9cdc96274ac2b9ed44b5bb54\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "ruff"
+	},
+	{
+		"path": "orjson-3.12.0.dist-info/sboms/orjson.cyclonedx.json",
+		"text": "          \"content\": \"9330f8b2ff13f34540b44e946ef35111825727b38d33286ef986142615121801\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "orjson"
+	},
+	{
+		"path": "watchfiles-1.2.0.dist-info/sboms/watchfiles_rust_notify.cyclonedx.json",
+		"text": "          \"content\": \"5e0826a989adedc2a244799e823aece04662b66609d96af8dff7ac6df9a8925d\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "watchfiles"
+	},
+	{
+		"path": "tokenizers-0.23.2.dist-info/sboms/tokenizers-python.cyclonedx.json",
+		"text": "          \"content\": \"b3ef68daa7316a3fac65e5e18b2203f010346de1c1c53456811a2624673ab046\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "tokenizers"
+	},
+	{
+		"path": "scipy/signal/_filter_design.py",
+		"text": "             'lowpass': 'lowpass',",
+		"label": "ok",
+		"stage": "model",
+		"source": "scipy"
+	},
+	{
+		"path": "watchfiles-1.2.0.dist-info/sboms/watchfiles_rust_notify.cyclonedx.json",
+		"text": "          \"content\": \"b5aba8db14291edd000dfcc4d620c7ebfb122c613afb886ca8803fa4e128a20a\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "watchfiles"
+	},
+	{
+		"path": "jsonschema_specifications/schemas/draft6/metaschema.json",
+		"text": "        \"nonNegativeIntegerDefault0\": {",
+		"label": "ok",
+		"stage": "model",
+		"source": "jsonschema_specifications"
+	},
+	{
+		"path": "jinja2/compiler.py",
+		"text": "                _PassArg.environment: \"environment\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "jinja2"
+	},
+	{
+		"path": "google/protobuf/descriptor_pb2.py",
+		"text": "  _globals['_FEATURESET_UTF8VALIDATION']._serialized_end=11576",
+		"label": "ok",
+		"stage": "model",
+		"source": "google"
+	},
+	{
+		"path": "jsonschema/benchmarks/issue232/issue.json",
+		"text": "                \"oauth2ApplicationSecurity\": {",
+		"label": "ok",
+		"stage": "model",
+		"source": "jsonschema"
+	},
+	{
+		"path": "pip/_vendor/pygments/lexers/_mapping.py",
+		"text": "    'ActionScript3Lexer': ('pip._vendor.pygments.lexers.actionscript', 'ActionScript 3', ('actionscript3', 'as3'), ('*.as',), ('application/x-actionscript3', 'text/x-actionscript3', 'text/actionscript3')),",
+		"label": "ok",
+		"stage": "model",
+		"source": "pip"
+	},
+	{
+		"path": "pygments/styles/lilypond.py",
+		"text": "        Token.Name.Builtin.RepeatType: \"#08547A\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "pygments"
+	},
+	{
+		"path": "ctranslate2/converters/transformers.py",
+		"text": "        return \"M2M100ForConditionalGeneration\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "ctranslate2"
+	},
+	{
+		"path": "gradio/tunneling.py",
+		"text": "    \"https://cdn-media.huggingface.co/frpc-gradio-0.3/frpc_linux_amd64\": \"c791d1f047b41ff5885772fc4bf20b797c6059bbd82abb9e31de15e55d6a57c4\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "gradio"
+	},
+	{
+		"path": "faugus/launcher.py",
+		"text": "        command_parts.append(\"FAUGUS_DISABLE_UPDATES=1\")",
+		"label": "ok",
+		"stage": "model",
+		"source": "faugus"
+	},
+	{
+		"path": "fastapi/security/http.py",
+		"text": "        return HTTPBasicCredentials(username=username, password=password)",
+		"label": "ok",
+		"stage": "model",
+		"source": "fastapi"
+	},
+	{
+		"path": "starlette/status.py",
+		"text": "    \"HTTP_101_SWITCHING_PROTOCOLS\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "starlette"
+	},
+	{
+		"path": "xlsxwriter/chart.py",
+		"text": "        xmlns_r = schema + \"officeDocument/2006/relationships\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "xlsxwriter"
+	},
+	{
+		"path": "jiter-0.15.0.dist-info/sboms/jiter-python.cyclonedx.json",
+		"text": "          \"content\": \"52a9f232fbd6f550bc0137dcb5f99ab674071ac2d690ac69704593cb4abbea56\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "jiter"
+	},
+	{
+		"path": "torch/_inductor/autoheuristic/artifacts/_MMRankingA100.py",
+		"text": "        self.choices.append('type=triton_BLOCK-M=128_BLOCK-K=16_BLOCK-N=16_numstages=3_numwarps=8')",
+		"label": "ok",
+		"stage": "model",
+		"source": "torch"
+	},
+	{
+		"path": "srxy/adapters/outbound/models/model_store.py",
+		"text": "SEMANTIC_IMAGE_MODEL_ID = \"sentence-transformers/clip-ViT-B-32\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "srxy"
+	},
+	{
+		"path": "pip/_internal/network/auth.py",
+		"text": "        # Do this if either the username or the password is missing.",
+		"label": "ok",
+		"stage": "model",
+		"source": "pip"
+	},
+	{
+		"path": "curl_cffi/requests/impersonate.py",
+		"text": "    0xC036: \"TLS_ECDHE_PSK_WITH_AES_256_CBC_SHA\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "curl_cffi"
+	},
+	{
+		"path": "faster_whisper/utils.py",
+		"text": "    \"large-v2\": \"Systran/faster-whisper-large-v2\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "faster_whisper"
+	},
+	{
+		"path": "jinja2/lexer.py",
+		"text": "        TOKEN_VARIABLE_BEGIN: \"begin of print statement\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "jinja2"
+	},
+	{
+		"path": "packaging/licenses/_spdx.py",
+		"text": "    'gstreamer-exception-2008': {'id': 'GStreamer-exception-2008', 'deprecated': False},",
+		"label": "ok",
+		"stage": "model",
+		"source": "packaging"
+	},
+	{
+		"path": "lit/BooleanExpression.py",
+		"text": "                expr1, {\"linux\", \"target=x86_64-unknown-linux-gnu\"}",
+		"label": "ok",
+		"stage": "model",
+		"source": "lit"
+	},
+	{
+		"path": "huggingface_hub/inference_api.py",
+		"text": "    [{'sequence': 'the goal of life is life.', 'score': 0.10933292657136917, 'token': 2166, 'token_str': 'life'}]",
+		"label": "ok",
+		"stage": "model",
+		"source": "huggingface_hub"
+	},
+	{
+		"path": "fastapi/openapi/models.py",
+		"text": "    apiKey = \"apiKey\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "fastapi"
+	},
+	{
+		"path": "pydantic/__init__.py",
+		"text": "    'PydanticDeprecatedSince211': (__spec__.parent, '.warnings'),",
+		"label": "ok",
+		"stage": "model",
+		"source": "pydantic"
+	},
+	{
+		"path": "Xlib/ext/nvcontrol.py",
+		"text": "# \"DPY-EDID-f16a5bde-79f3-11e1-b2ae-8b5a8969ba9c\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "Xlib"
+	},
+	{
+		"path": "orjson-3.12.0.dist-info/sboms/orjson.cyclonedx.json",
+		"text": "          \"content\": \"fc80370b4544f28ffa317e3c3474ee3ecbfe269196c01ae657d9f837a7d944a1\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "orjson"
+	},
+	{
+		"path": "gradio/tunneling.py",
+		"text": "    \"https://cdn-media.huggingface.co/frpc-gradio-0.3/frpc_darwin_amd64\": \"930f8face3365810ce16689da81b7d1941fda4466225a7bbcbced9a2916a6e15\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "gradio"
+	},
+	{
+		"path": "aaf2/model/datadefs.py",
+		"text": "\"0d010301-0205-0105-060e-2b3404010101\" : (\"ContainerDef_MXFGC_Framewrapped_Uncompressed_625x50I_720_422\", \"\"),",
+		"label": "ok",
+		"stage": "model",
+		"source": "aaf2"
+	},
+	{
+		"path": "pydantic/networks.py",
+		"text": "        e.g. `fragment` in `https://user:pass@host:port/path?query#fragment`",
+		"label": "ok",
+		"stage": "model",
+		"source": "pydantic"
+	},
+	{
+		"path": "torchvision/models/mobilenetv3.py",
+		"text": "    \"MobileNet_V3_Large_Weights\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "torchvision"
+	},
+	{
+		"path": "fastar-0.11.0.dist-info/sboms/fastar.cyclonedx.json",
+		"text": "          \"content\": \"9afb3de4395d6b3e67a780b6de64b51c978ecf11cb9a462c66be7d4ca9039d33\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "fastar"
+	},
+	{
+		"path": "starlette/status.py",
+		"text": "    \"HTTP_451_UNAVAILABLE_FOR_LEGAL_REASONS\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "starlette"
+	},
+	{
+		"path": "fontTools/ufoLib/__init__.py",
+		"text": "        \"openTypeOS2SubscriptYOffset\": dict(type=int),",
+		"label": "ok",
+		"stage": "model",
+		"source": "fontTools"
+	},
+	{
+		"path": "gevent/libuv/_corecffi_build.py",
+		"text": "    _define_macro('_DARWIN_USE_64_BIT_INODE', 1)",
+		"label": "ok",
+		"stage": "model",
+		"source": "gevent"
+	},
+	{
+		"path": "lancedb/embeddings/watsonx.py",
+		"text": "    \"ibm/slate-30m-english-rtrvr\": 384,",
+		"label": "ok",
+		"stage": "model",
+		"source": "lancedb"
+	},
+	{
+		"path": "starlette/status.py",
+		"text": "    \"HTTP_308_PERMANENT_REDIRECT\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "starlette"
+	},
+	{
+		"path": "pygments/styles/onedark.py",
+		"text": "        Token:                  '#ABB2BF',",
+		"label": "ok",
+		"stage": "model",
+		"source": "pygments"
+	},
+	{
+		"path": "magika-1.0.3.dist-info/sboms/magika-cli.cyclonedx.json",
+		"text": "          \"content\": \"ce25767e7b499d1b604768e7cde645d14cc8584231ea6b295e9c9eb22c02e1d1\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "magika"
+	},
+	{
+		"path": "torchvision/datasets/celeba.py",
+		"text": "        # (\"0B7EVK8r0v71pTzJIdlJWdHczRlU\", \"063ee6ddb681f96bc9ca28c6febb9d1a\", \"list_landmarks_celeba.txt\"),",
+		"label": "ok",
+		"stage": "model",
+		"source": "torchvision"
+	},
+	{
+		"path": "ruff-0.15.14.dist-info/sboms/ruff.cyclonedx.json",
+		"text": "          \"content\": \"5041cc499144891f3790297212f32a74fb938e5136a14943f338ef9e0ae276cf\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "ruff"
+	},
+	{
+		"path": "markdown_it/rules_inline/linkify.py",
+		"text": "        token.info = \"auto\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "markdown_it"
+	},
+	{
+		"path": "glances/exports/glances_influxdb/__init__.py",
+		"text": "                password=self.password,",
+		"label": "ok",
+		"stage": "model",
+		"source": "glances"
+	},
+	{
+		"path": "scipy/datasets/_registry.py",
+		"text": "    \"ascent.dat\": \"03ce124c1afc880f87b55f6b061110e2e1e939679184f5614e38dacc6c1957e2\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "scipy"
+	},
+	{
+		"path": "lib/python3.13/site-packages/cyclonedx/schema/_res/cryptography-defs.SNAPSHOT.schema.json",
+		"text": "        \"brainpool/brainpoolP320r1\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "lib"
+	},
+	{
+		"path": "keyring/credentials.py",
+		"text": "        return dict(password=self.password)",
+		"label": "ok",
+		"stage": "model",
+		"source": "keyring"
+	},
+	{
+		"path": "srxy/adapters/inbound/installer/catalog.py",
+		"text": "\t_brew_bottle(\"xz\", \"5.8.3\", \"0a6e40dbeea3358a1277f347ef9b892070096a79a81cda90edfedbfe721c4ba3\"),",
+		"label": "ok",
+		"stage": "model",
+		"source": "srxy"
+	},
+	{
+		"path": "setuptools/_vendor/zipp/__init__.py",
+		"text": "    def open(self, mode='r', *args, pwd=None, **kwargs):",
+		"label": "ok",
+		"stage": "model",
+		"source": "setuptools"
+	},
+	{
+		"path": "ordlookup/ws2_32.py",
+		"text": "    131: b\"WSCEnumNameSpaceProviders32\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "ordlookup"
+	},
+	{
+		"path": "lancedb/table.py",
+		"text": "                \"base_tokenizer\": \"whitespace\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "lancedb"
+	},
+	{
+		"path": "pycriu/images/core_riscv64_pb2.py",
+		"text": "  _globals['_USER_RISCV64_REGS_ENTRY']._serialized_start=35",
+		"label": "ok",
+		"stage": "model",
+		"source": "pycriu"
+	},
+	{
+		"path": "pygments/lexers/igor.py",
+		"text": "         'ITCFIFOAvailable2', 'ITCGetAllChannelsConfig2', 'ITCGetChannelConfig2',",
+		"label": "ok",
+		"stage": "model",
+		"source": "pygments"
+	},
+	{
+		"path": "lancedb/index.py",
+		"text": "    base_tokenizer: BaseTokenizerType = \"simple\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "lancedb"
+	},
+	{
+		"path": "pillow-12.3.0.dist-info/sboms/pillow-12.3.0.cdx.json",
+		"text": "          \"content\": \"5549e7458674077ca4794033ade277910ba0ad6989651787eba1a8b5513a9f9d\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "pillow"
+	},
+	{
+		"path": "py_rust_stemmers-0.1.8.dist-info/sboms/py_rust_stemmers.cyclonedx.json",
+		"text": "          \"content\": \"91622ff5e7162018101f2fea40d6ebf4a78bbe5a49736a2020649edf9693679e\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "py_rust_stemmers"
+	},
+	{
+		"path": "hf_xet-1.6.0.dist-info/sboms/hf_xet.cyclonedx.json",
+		"text": "          \"content\": \"baf29c38818342a3b26b5b923639e7b1f4a61fc5e76102d4b1981c6dc7a7579d\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "hf_xet"
+	},
+	{
+		"path": "lutris/runners/o2em.py",
+		"text": "        \"jopac\": \"279008e4a0db2dc5f1c048853b033828\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "lutris"
+	},
+	{
+		"path": "watchfiles-1.2.0.dist-info/sboms/watchfiles_rust_notify.cyclonedx.json",
+		"text": "          \"content\": \"f37dccff2791ab604f9babef0ba14fbe0be30bd368dc541e2b08d07c8aa908f3\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "watchfiles"
+	},
+	{
+		"path": "ruff-0.15.14.dist-info/sboms/ruff.cyclonedx.json",
+		"text": "          \"content\": \"e396b6523b11ccb83120b115a0b7366de372751aa6edf19844dfb13a6af97e91\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "ruff"
+	},
+	{
+		"path": "glances/exports/glances_cassandra/__init__.py",
+		"text": "        auth_provider = PlainTextAuthProvider(username=self.username, password=self.password)",
+		"label": "ok",
+		"stage": "model",
+		"source": "glances"
+	},
+	{
+		"path": "torchvision/datasets/pcam.py",
+		"text": "                \"35c2d7259d906cfc8143347bb8e05be7\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "torchvision"
+	},
+	{
+		"path": "markitdown/converters/_cu_converter.py",
+		"text": "    \"prebuilt-idDocument.passport\": \"document\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "markitdown"
+	},
+	{
+		"path": "jiter-0.15.0.dist-info/sboms/jiter-python.cyclonedx.json",
+		"text": "          \"content\": \"d80ba7540edb18890d444c5aa8e1f1f99b1bdf26fb26ae383135325f4a36042b\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "jiter"
+	},
+	{
+		"path": "fastar-0.11.0.dist-info/sboms/fastar.cyclonedx.json",
+		"text": "          \"content\": \"32a66949e030da00e8c7d4434b251670a91556f4144941d37452769c25d58a53\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "fastar"
+	},
+	{
+		"path": "glances/outputs/glances_stdout_api_restful_doc.py",
+		"text": "      \"token_type\": \"bearer\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "glances"
+	},
+	{
+		"path": "lutris/util/retroarch/core_config.py",
+		"text": "                \"md5sum\": \"8639fd5e549bd6238cfee79e3e749114\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "lutris"
+	},
+	{
+		"path": "gradio_client/client.py",
+		"text": "            src: either the name of the Hugging Face Space to load, (e.g. \"abidlabs/whisper-large-v2\") or the full URL (including \"http\" or \"https\") of the hosted Gradio app to load (e.g. \"http://mydomain.com/app\" or \"https://bec81a83-5b5c-471e.gradio.live/\").",
+		"label": "ok",
+		"stage": "model",
+		"source": "gradio_client"
+	},
+	{
+		"path": "pefile.py",
+		"text": "    (\"IMAGE_SCN_ALIGN_2048BYTES\", 0x00C00000),",
+		"label": "ok",
+		"stage": "model",
+		"source": "pefile.py"
+	},
+	{
+		"path": "aaf2/model/datadefs.py",
+		"text": "\"0d010301-0205-011d-060e-2b3404010101\" : (\"ContainerDef_MXFGC_Framewrapped_Uncompressed_625x50P_960_422\", \"\"),",
+		"label": "ok",
+		"stage": "model",
+		"source": "aaf2"
+	},
+	{
+		"path": "numpy/_core/_string_helpers.py",
+		"text": "    'ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_'",
+		"label": "ok",
+		"stage": "model",
+		"source": "numpy"
+	},
+	{
+		"path": "baidubce/services/bcm/bcm_model.py",
+		"text": "                 expected_output=None, username=None, password=None):",
+		"label": "ok",
+		"stage": "model",
+		"source": "baidubce"
+	},
+	{
+		"path": "ruff-0.15.14.dist-info/sboms/ruff.cyclonedx.json",
+		"text": "          \"content\": \"dfd774e8175d3adb09c1742cb4697fb08490607fc02acfaa3b66b88254239d1d\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "ruff"
+	},
+	{
+		"path": "lutris/util/retroarch/core_config.py",
+		"text": "                \"md5sum\": \"a48e6746bd7edec0f40cff078f0bb19f\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "lutris"
+	},
+	{
+		"path": "pefile.py",
+		"text": "    (\"IMAGE_FILE_16BIT_MACHINE\", 0x0040),",
+		"label": "ok",
+		"stage": "model",
+		"source": "pefile.py"
+	},
+	{
+		"path": "nvidia/cuda_cccl/.metadata/baseGuardwords.txt",
+		"text": "IGNORE {\"YySnHIKYZtjA/MaAirSzYrNeUMaRikOyp26yvrQ8wC5ihpq4tJ7Abqwytcqg\"}                   #false positive for mariko on nvngx_dlss.dll Bug 4849437",
+		"label": "ok",
+		"stage": "model",
+		"source": "nvidia"
+	},
+	{
+		"path": "sentry_sdk/integrations/openai.py",
+		"text": "    streaming_message_total_token_usage: \"Optional[CompletionUsage]\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "sentry_sdk"
+	},
+	{
+		"path": "jiter-0.15.0.dist-info/sboms/jiter-python.cyclonedx.json",
+		"text": "          \"content\": \"20064672db26d7cdc89c7798c48a0fdfac8213434a1186e5ef29fd560ae223d6\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "jiter"
+	},
+	{
+		"path": "pydantic/__init__.py",
+		"text": "    'PydanticDeprecatedSince29',",
+		"label": "ok",
+		"stage": "model",
+		"source": "pydantic"
+	},
+	{
+		"path": "lutris/util/retroarch/core_config.py",
+		"text": "                \"md5sum\": \"f6c71de7470d16abe4f71b1444883dc8\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "lutris"
+	},
+	{
+		"path": "urwid-4.0.3.dist-info/scm_version.json",
+		"text": "  \"node\": \"gfee9c42a857ed6aabf10269534d6103ebb021894\",",
+		"label": "ok",
+		"stage": "model",
+		"source": "urwid"
+	},
+	{
+		"path": "pefile.py",
+		"text": "    (\"IMAGE_REL_BASED_MIPS_JMPADDR16\", 9),",
+		"label": "ok",
+		"stage": "model",
+		"source": "pefile.py"
+	},
+	{
+		"path": "pypdfium2_cli/_parsers.py",
+		"text": "    pdf = pdfium.PdfDocument(args.input, password=args.password, **kwargs)",
+		"label": "ok",
+		"stage": "model",
+		"source": "pypdfium2_cli"
+	},
+	{
+		"path": "fontTools/ufoLib/__init__.py",
+		"text": "    \"openTypeOS2SuperscriptYOffset\": dict(type=(int, float)),",
+		"label": "ok",
+		"stage": "model",
+		"source": "fontTools"
+	},
+	{
+		"path": "ctranslate2/converters/transformers.py",
+		"text": "        return \"T5GemmaForConditionalGeneration\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "ctranslate2"
+	},
+	{
+		"path": "pydantic_core-2.46.5.dist-info/sboms/pydantic-core.cyclonedx.json",
+		"text": "          \"content\": \"de6f9cb01fb0b08060209a057c048fcbab8717b4c1ecd2eac66ebfe39a65b0f2\"",
+		"label": "ok",
+		"stage": "model",
+		"source": "pydantic_core"
+	},
+	{
+		"path": "pdfminer/pdfpage.py",
+		"text": "        doc = PDFDocument(parser, password=password, caching=caching)",
+		"label": "ok",
+		"stage": "model",
+		"source": "pdfminer"
+	}
+]

@@ -1,0 +1,3989 @@
+[
+	{
+		"path": "src/settings.py",
+		"text": "api_key = \"Dragon22!Oran\"",
+		"label": "real",
+		"family": "human_password",
+		"template": "py-assign",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/settings.py",
+		"text": "admin_pass = \"Admin2001@\"",
+		"label": "real",
+		"family": "human_password",
+		"template": "py-assign",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/settings.py",
+		"text": "api_key = \"battery45-staple4?\"",
+		"label": "real",
+		"family": "passphrase",
+		"template": "py-assign",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/settings.py",
+		"text": "password = \"staple83-staple12@\"",
+		"label": "real",
+		"family": "passphrase",
+		"template": "py-assign",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/settings.py",
+		"text": "secret_key = \"56832d50c0e3b3f2d5af72dfeb19d26e\"",
+		"label": "real",
+		"family": "hex",
+		"template": "py-assign",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/settings.py",
+		"text": "db_password = \"LJG0Nf5QzY5sM3EBhCiEa6Fa\"",
+		"label": "real",
+		"family": "alnum",
+		"template": "py-assign",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/settings.py",
+		"text": "secret_key = \"jJCBwTOgSUktaA5cJBbrsIVJ\"",
+		"label": "real",
+		"family": "alnum",
+		"template": "py-assign",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/settings.py",
+		"text": "secret_key = \"FosZiw3UdI/B0iSu2B28rDK/mH2Nj1HYduIssDv7\"",
+		"label": "real",
+		"family": "base64",
+		"template": "py-assign",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/settings.py",
+		"text": "API_SECRET = \"E8FC2Wpa7o5tkOYafADjztU4rxZabzFeoWh2FCo4\"",
+		"label": "real",
+		"family": "base64",
+		"template": "py-assign",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/settings.py",
+		"text": "DB_PASS = \"int_PJ7zxO9xmV3B9jHVZpZVUvBoYnbI\"",
+		"label": "real",
+		"family": "prefixed",
+		"template": "py-assign",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/settings.py",
+		"text": "API_SECRET = \"bk_MX5La5TonQAVosoSSeh6i1b\"",
+		"label": "real",
+		"family": "prefixed",
+		"template": "py-assign",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/settings.py",
+		"text": "client_secret = \"eyJHgQEOyYDe12FT650R.eyJf1FWsRlGrhXxKeiaC3aYg7zXN4gtNj.GeFS3L9f73qR4pyTTewXJObkHzC\"",
+		"label": "real",
+		"family": "jwt",
+		"template": "py-assign",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/settings.py",
+		"text": "private_token = \"eyJSsvXsiesUSIMh0UN7.eyJ5u9amgHofQiCcuu7epBvw7QovQz0M3.3TtjRY3YI8PaIwKIRylN9hb9XDA\"",
+		"label": "real",
+		"family": "jwt",
+		"template": "py-assign",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/conf.py",
+		"text": "secret_key = 'Dragon81@'",
+		"label": "real",
+		"family": "human_password",
+		"template": "py-single",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/conf.py",
+		"text": "API_SECRET = 'Dragon2022@Summ'",
+		"label": "real",
+		"family": "human_password",
+		"template": "py-single",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/conf.py",
+		"text": "SMTP_PASSWORD = 'staple34-violet6&'",
+		"label": "real",
+		"family": "passphrase",
+		"template": "py-single",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/conf.py",
+		"text": "password = 'mango49-correct41#'",
+		"label": "real",
+		"family": "passphrase",
+		"template": "py-single",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/conf.py",
+		"text": "password = '00606683214c453853a63cf6761c0323'",
+		"label": "real",
+		"family": "hex",
+		"template": "py-single",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/conf.py",
+		"text": "API_SECRET = 'bab9ce074f5887329cf8c0b5e382a0f0'",
+		"label": "real",
+		"family": "hex",
+		"template": "py-single",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/conf.py",
+		"text": "password = 'jMdHHVIlOoX575GbCXI1iz2r'",
+		"label": "real",
+		"family": "alnum",
+		"template": "py-single",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/conf.py",
+		"text": "api_key = '3B9zKC04dwyU7uBmwXYlMz4P'",
+		"label": "real",
+		"family": "alnum",
+		"template": "py-single",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/conf.py",
+		"text": "access_token = 'I+75yvZ1srkmlDTtSq2Us8ZX6wtmZzV43wMjspaN'",
+		"label": "real",
+		"family": "base64",
+		"template": "py-single",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/conf.py",
+		"text": "redis_password = 'budTwslE+/ovurWYaXt0v67e072EyZ1m6kzEzAvV'",
+		"label": "real",
+		"family": "base64",
+		"template": "py-single",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/conf.py",
+		"text": "access_token = 'int_aTAgWIPs11fH0PvhcSTUINyjbS'",
+		"label": "real",
+		"family": "prefixed",
+		"template": "py-single",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/conf.py",
+		"text": "db_password = 'int_p7MvgjN9fBZIh5OJM8HEjx3WQMJDLh6'",
+		"label": "real",
+		"family": "prefixed",
+		"template": "py-single",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/conf.py",
+		"text": "SMTP_PASSWORD = 'eyJABfYdg3diI33Xl6nL.eyJQvhGx8c3a5TEH7Z1LfQSdFGEnuTQIj.9N8WM4rWgI2VomUeId4fLdOZ9Ej'",
+		"label": "real",
+		"family": "jwt",
+		"template": "py-single",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/conf.py",
+		"text": "client_secret = 'eyJau15rZtxULGcEJv8o.eyJ6GCJKJCJTGJRP6jkNdGRRdv0PY14NT.UnKL3ZMxKvKXjimirLQc3nGOIvM'",
+		"label": "real",
+		"family": "jwt",
+		"template": "py-single",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/client.py",
+		"text": "headers = {\"auth_token\": \"Secret44$Drag\"}",
+		"label": "real",
+		"family": "human_password",
+		"template": "py-dict",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/client.py",
+		"text": "headers = {\"webhook_secret\": \"Admin2020#\"}",
+		"label": "real",
+		"family": "human_password",
+		"template": "py-dict",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/client.py",
+		"text": "headers = {\"private_token\": \"river18-battery52!\"}",
+		"label": "real",
+		"family": "passphrase",
+		"template": "py-dict",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/client.py",
+		"text": "headers = {\"password\": \"copper29-correct52@\"}",
+		"label": "real",
+		"family": "passphrase",
+		"template": "py-dict",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/client.py",
+		"text": "headers = {\"redis_password\": \"06145b8a167c99d5ddf94b5aecd9903e\"}",
+		"label": "real",
+		"family": "hex",
+		"template": "py-dict",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/client.py",
+		"text": "headers = {\"access_token\": \"b0c5cb7b68a5df1d3f5f1a35ea070cde\"}",
+		"label": "real",
+		"family": "hex",
+		"template": "py-dict",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/client.py",
+		"text": "headers = {\"API_SECRET\": \"LHCaL7K9935aUwRAvLmyN8gT\"}",
+		"label": "real",
+		"family": "alnum",
+		"template": "py-dict",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/client.py",
+		"text": "headers = {\"service_key\": \"EUIgHxD9AbIkk3sl3MUcJIQh\"}",
+		"label": "real",
+		"family": "alnum",
+		"template": "py-dict",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/client.py",
+		"text": "headers = {\"access_token\": \"DzHWmn9fjA/BBAntt2SjdioMJZsLWB5OAJeZYUXg\"}",
+		"label": "real",
+		"family": "base64",
+		"template": "py-dict",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/client.py",
+		"text": "headers = {\"redis_password\": \"qLteEkOq06Y04OjHlgVv9GzgAqN1L+arOnBilksl\"}",
+		"label": "real",
+		"family": "base64",
+		"template": "py-dict",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/client.py",
+		"text": "headers = {\"access_token\": \"app-oYvFTqGwcPI2VupsblkkXn\"}",
+		"label": "real",
+		"family": "prefixed",
+		"template": "py-dict",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/client.py",
+		"text": "headers = {\"webhook_secret\": \"svc_2KgpNeH8zDDdGybtjsa6Cu\"}",
+		"label": "real",
+		"family": "prefixed",
+		"template": "py-dict",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/client.py",
+		"text": "headers = {\"service_key\": \"eyJGtExnhFxCN17FnooL.eyJDOpz7wqy5yEvfMXzqybeaCbeRJ72Fy.4wAqvq3qjVc241tIVCP9CclBGiX\"}",
+		"label": "real",
+		"family": "jwt",
+		"template": "py-dict",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/client.py",
+		"text": "headers = {\"API_SECRET\": \"eyJV6tRQKeFm6UwdFZt8.eyJkQ7amKRX4LbTYyq82t0OKcxTj4laR1.l8eYI18Ybm8la6qwA6AFIau9GpM\"}",
+		"label": "real",
+		"family": "jwt",
+		"template": "py-dict",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/db.py",
+		"text": "connect(host=\"db\", API_SECRET=\"Welcome43#\")",
+		"label": "real",
+		"family": "human_password",
+		"template": "py-kwarg",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/db.py",
+		"text": "connect(host=\"db\", client_secret=\"Secret40*Secr\")",
+		"label": "real",
+		"family": "human_password",
+		"template": "py-kwarg",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/db.py",
+		"text": "connect(host=\"db\", SMTP_PASSWORD=\"horse24-horse13?\")",
+		"label": "real",
+		"family": "passphrase",
+		"template": "py-kwarg",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/db.py",
+		"text": "connect(host=\"db\", api_key=\"correct81-copper55!\")",
+		"label": "real",
+		"family": "passphrase",
+		"template": "py-kwarg",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/db.py",
+		"text": "connect(host=\"db\", service_key=\"623ad785bce9b3e3c16265708a23e53b\")",
+		"label": "real",
+		"family": "hex",
+		"template": "py-kwarg",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/db.py",
+		"text": "connect(host=\"db\", API_SECRET=\"518054f8469aef28676685bdb1fee7f1\")",
+		"label": "real",
+		"family": "hex",
+		"template": "py-kwarg",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/db.py",
+		"text": "connect(host=\"db\", SMTP_PASSWORD=\"GFrE63rROGnVA59WlODabvdo\")",
+		"label": "real",
+		"family": "alnum",
+		"template": "py-kwarg",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/db.py",
+		"text": "connect(host=\"db\", secret_key=\"ocWMSLuxI8xHu5YQY56FGF7A\")",
+		"label": "real",
+		"family": "alnum",
+		"template": "py-kwarg",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/db.py",
+		"text": "connect(host=\"db\", service_key=\"tP99lkFHvsyTBL1wLe7EX5roOBp72cE2mZXMfeXE\")",
+		"label": "real",
+		"family": "base64",
+		"template": "py-kwarg",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/db.py",
+		"text": "connect(host=\"db\", auth_token=\"pHrh3uWMH6BQDWbKY2ITaXN6syqHUEJXo9u5/HFe\")",
+		"label": "real",
+		"family": "base64",
+		"template": "py-kwarg",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/db.py",
+		"text": "connect(host=\"db\", webhook_secret=\"tok_Q4UGpHZU2mZEZqhBkPWj7j\")",
+		"label": "real",
+		"family": "prefixed",
+		"template": "py-kwarg",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/db.py",
+		"text": "connect(host=\"db\", API_SECRET=\"sk_internal_PK4OVYzGYVGL7uYUNRDLy\")",
+		"label": "real",
+		"family": "prefixed",
+		"template": "py-kwarg",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/db.py",
+		"text": "connect(host=\"db\", DB_PASS=\"eyJngeHeb911AYEFj1x3.eyJukd1C5twfWTLYtdEkBDof5dtQkZHvk.LpXPg70m9WOZrLPoFboJfPnf5ob\")",
+		"label": "real",
+		"family": "jwt",
+		"template": "py-kwarg",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/db.py",
+		"text": "connect(host=\"db\", access_token=\"eyJ2sO55b9tRAzsSri9l.eyJK5yh1hUuhzvcz80VXZoyeWiJfbx1R6.ZpMJ19anSegVO6e1jkKrlW9QsTI\")",
+		"label": "real",
+		"family": "jwt",
+		"template": "py-kwarg",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/config.js",
+		"text": "const DB_PASS = 'Server2016*Drag';",
+		"label": "real",
+		"family": "human_password",
+		"template": "js-const",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/config.js",
+		"text": "const private_token = 'Winter2020$Oran';",
+		"label": "real",
+		"family": "human_password",
+		"template": "js-const",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/config.js",
+		"text": "const API_SECRET = 'correct90-copper96@';",
+		"label": "real",
+		"family": "passphrase",
+		"template": "js-const",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/config.js",
+		"text": "const redis_password = 'mango70-correct37*';",
+		"label": "real",
+		"family": "passphrase",
+		"template": "js-const",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/config.js",
+		"text": "const SMTP_PASSWORD = '823909146aa4bd0c02ee788b73dc9b1a';",
+		"label": "real",
+		"family": "hex",
+		"template": "js-const",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/config.js",
+		"text": "const admin_pass = '07b61a1758f924c3cb9fe5886d498b72';",
+		"label": "real",
+		"family": "hex",
+		"template": "js-const",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/config.js",
+		"text": "const api_key = 'YvgkU8hOg9NtWQYXrZ5hRZuR';",
+		"label": "real",
+		"family": "alnum",
+		"template": "js-const",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/config.js",
+		"text": "const api_key = 'E3v2G2BHlmYP987jelDonuXw';",
+		"label": "real",
+		"family": "alnum",
+		"template": "js-const",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/config.js",
+		"text": "const webhook_secret = 'pM/vmkDvR7W29hQHX+vKief6RTigwkl8GLtfFmsA';",
+		"label": "real",
+		"family": "base64",
+		"template": "js-const",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/config.js",
+		"text": "const secret_key = 'K2i0PM92L5UXtq5gdH/aytzOHmknmP1lWUgF0WEb';",
+		"label": "real",
+		"family": "base64",
+		"template": "js-const",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/config.js",
+		"text": "const webhook_secret = 'bk_cgSgKPk4U4IwqsxD5hIx3hXs74uMUdN';",
+		"label": "real",
+		"family": "prefixed",
+		"template": "js-const",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/config.js",
+		"text": "const password = 'sk_internal_TExTKK8BZUPSB8X6VHt2bhMdrFNZ';",
+		"label": "real",
+		"family": "prefixed",
+		"template": "js-const",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/config.js",
+		"text": "const auth_token = 'eyJxlzEAY0sKLAk5tmXy.eyJCZFgDmPjDrmTtuLq46XjurUQibKBax.za9eD4sJVbU6xK1AevSzPMExlw4';",
+		"label": "real",
+		"family": "jwt",
+		"template": "js-const",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/config.js",
+		"text": "const client_secret = 'eyJCTQlxcXevtDKaY7EX.eyJa4lO0j4zi6DxQL7kgKgAwNhWguTW2x.vLaWsB0smWTuzpapM8I7pqlmhoH';",
+		"label": "real",
+		"family": "jwt",
+		"template": "js-const",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/env.ts",
+		"text": "export const private_token = \"Welcome46*Secr\";",
+		"label": "real",
+		"family": "human_password",
+		"template": "ts-export",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/env.ts",
+		"text": "export const redis_password = \"Secret2005*Serv\";",
+		"label": "real",
+		"family": "human_password",
+		"template": "ts-export",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/env.ts",
+		"text": "export const redis_password = \"copper81-horse43$\";",
+		"label": "real",
+		"family": "passphrase",
+		"template": "ts-export",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/env.ts",
+		"text": "export const API_SECRET = \"violet92-mango44#\";",
+		"label": "real",
+		"family": "passphrase",
+		"template": "ts-export",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/env.ts",
+		"text": "export const api_key = \"2eac7c9fd0506e138f900f7d3712b226\";",
+		"label": "real",
+		"family": "hex",
+		"template": "ts-export",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/env.ts",
+		"text": "export const auth_token = \"2350c3f848069ddff9a08cc411b5cbc2\";",
+		"label": "real",
+		"family": "hex",
+		"template": "ts-export",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/env.ts",
+		"text": "export const admin_pass = \"fCERJyOF9flHoDK54nP9DRSL\";",
+		"label": "real",
+		"family": "alnum",
+		"template": "ts-export",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/env.ts",
+		"text": "export const service_key = \"sbL0TSFJgbZJIrATJ03kkJcz\";",
+		"label": "real",
+		"family": "alnum",
+		"template": "ts-export",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/env.ts",
+		"text": "export const client_secret = \"L7L0hoSL4gF0NKMI+qvcFPBkDPQdkRO/khnTvWOA\";",
+		"label": "real",
+		"family": "base64",
+		"template": "ts-export",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/env.ts",
+		"text": "export const api_key = \"GGbHHb2qIubQ/4Bagna7+YJ6X+zL3RdL1r1iHmux\";",
+		"label": "real",
+		"family": "base64",
+		"template": "ts-export",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/env.ts",
+		"text": "export const webhook_secret = \"sk_internal_dQ4AVPnwH2LaaTPdpKC7rfxmvet2\";",
+		"label": "real",
+		"family": "prefixed",
+		"template": "ts-export",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/env.ts",
+		"text": "export const service_key = \"svc_E6wm0KK0tXGqc4w1Jt2Yk\";",
+		"label": "real",
+		"family": "prefixed",
+		"template": "ts-export",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/env.ts",
+		"text": "export const API_SECRET = \"eyJw7jbfm0q09yh9g560.eyJW3SKUKwkkGIZRPPnU5QKtkN3utKsCM.h3PSCr6Vnwcr0A5SZv4uk9nXDlg\";",
+		"label": "real",
+		"family": "jwt",
+		"template": "ts-export",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/env.ts",
+		"text": "export const webhook_secret = \"eyJsSUQQwRSC6rpGgnD0.eyJoqZcCOz34A9ETY8SVswYGp4j2XUUVR.q1Vqo0maWQMrjudwUmknGI4xuUl\";",
+		"label": "real",
+		"family": "jwt",
+		"template": "ts-export",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.json",
+		"text": "  \"redis_password\": \"Monkey2011%\",",
+		"label": "real",
+		"family": "human_password",
+		"template": "json",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.json",
+		"text": "  \"DB_PASS\": \"Admin2000@\",",
+		"label": "real",
+		"family": "human_password",
+		"template": "json",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.json",
+		"text": "  \"secret_key\": \"battery10-violet88*\",",
+		"label": "real",
+		"family": "passphrase",
+		"template": "json",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.json",
+		"text": "  \"password\": \"mango31-staple44@\",",
+		"label": "real",
+		"family": "passphrase",
+		"template": "json",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.json",
+		"text": "  \"api_key\": \"858f42df3f730158fe7af289e3a7854f\",",
+		"label": "real",
+		"family": "hex",
+		"template": "json",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.json",
+		"text": "  \"SMTP_PASSWORD\": \"a2c1a0f3936aaafff132d838b8976fbe\",",
+		"label": "real",
+		"family": "hex",
+		"template": "json",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.json",
+		"text": "  \"db_password\": \"IId2Bn7SwUKJUuuwaMAAIlLj\",",
+		"label": "real",
+		"family": "alnum",
+		"template": "json",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.json",
+		"text": "  \"secret_key\": \"yHT4urlxub73UyDz6hTlGPSt\",",
+		"label": "real",
+		"family": "alnum",
+		"template": "json",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.json",
+		"text": "  \"SMTP_PASSWORD\": \"QA81ZOLUZue4y++iVahNKfR6hj9bZ2YtofqGTEvr\",",
+		"label": "real",
+		"family": "base64",
+		"template": "json",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.json",
+		"text": "  \"client_secret\": \"GgNpHTikHjL88q21irMnPs8m7ATz0XqxXiIlHydF\",",
+		"label": "real",
+		"family": "base64",
+		"template": "json",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.json",
+		"text": "  \"auth_token\": \"app-c9J2jPGtO6IAERMcF9Bqz3Q3c\",",
+		"label": "real",
+		"family": "prefixed",
+		"template": "json",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.json",
+		"text": "  \"redis_password\": \"app-Cyx1wnEOhkCauvMspY9XMAo\",",
+		"label": "real",
+		"family": "prefixed",
+		"template": "json",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.json",
+		"text": "  \"SMTP_PASSWORD\": \"eyJ088EDdJ2Z7iOjGqP8.eyJaZDNd7CMn6yiBVtOMc8cm06yhYeBXV.PBZ74c6r5EZjMnaQlue1oBc2m9F\",",
+		"label": "real",
+		"family": "jwt",
+		"template": "json",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.json",
+		"text": "  \"DB_PASS\": \"eyJxsI0o3nRwIrIKCzID.eyJWcnLDYMVEi1qpqq0TyYB83w32uEPhL.v9rDkhptGX9zCQMox8TXGQV6nFv\",",
+		"label": "real",
+		"family": "jwt",
+		"template": "json",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/prod.yaml",
+		"text": "  API_SECRET: Admin37*Secr",
+		"label": "real",
+		"family": "human_password",
+		"template": "yaml",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/prod.yaml",
+		"text": "  password: Falcon2003%",
+		"label": "real",
+		"family": "human_password",
+		"template": "yaml",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/prod.yaml",
+		"text": "  DB_PASS: river89-correct95@",
+		"label": "real",
+		"family": "passphrase",
+		"template": "yaml",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/prod.yaml",
+		"text": "  SMTP_PASSWORD: correct16-battery91@",
+		"label": "real",
+		"family": "passphrase",
+		"template": "yaml",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/prod.yaml",
+		"text": "  redis_password: 4f1982b5227d57683252e78f3e0295b0",
+		"label": "real",
+		"family": "hex",
+		"template": "yaml",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/prod.yaml",
+		"text": "  DB_PASS: 2ea6b440b1b8dbbeb3c7df9bd6daa7fe",
+		"label": "real",
+		"family": "hex",
+		"template": "yaml",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/prod.yaml",
+		"text": "  api_key: v9kNljukyghAOVnxQxLu3jDz",
+		"label": "real",
+		"family": "alnum",
+		"template": "yaml",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/prod.yaml",
+		"text": "  api_key: GgMuxVw8tOoITF43I2jlt4bs",
+		"label": "real",
+		"family": "alnum",
+		"template": "yaml",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/prod.yaml",
+		"text": "  db_password: 23j09gehF1AEvlWiqY2/3wtz65qQReSb7374Poof",
+		"label": "real",
+		"family": "base64",
+		"template": "yaml",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/prod.yaml",
+		"text": "  api_key: 0NN8i1xSK7BSRlohj2fX8mLZc6aWUPEUDlHF/cQ7",
+		"label": "real",
+		"family": "base64",
+		"template": "yaml",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/prod.yaml",
+		"text": "  api_key: svc_RABOSb1fM0oDo0pcSwWHpq",
+		"label": "real",
+		"family": "prefixed",
+		"template": "yaml",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/prod.yaml",
+		"text": "  password: app-X0uvhDM0fe3odQpi72Vs",
+		"label": "real",
+		"family": "prefixed",
+		"template": "yaml",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/prod.yaml",
+		"text": "  SMTP_PASSWORD: eyJQFhu7uBKfPffQolBs.eyJQjuTXi6UpMPrHzmO13WF0BKejqLVFi.Wptx8CCkM7LW1H3HvItYPPIIxoS",
+		"label": "real",
+		"family": "jwt",
+		"template": "yaml",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/prod.yaml",
+		"text": "  auth_token: eyJVouFk2Gvb58y22l9J.eyJQnsxvrUA8Duilkr1G1EBrCP3FyrytA.gMMvW4ObKiqi08XBJWx24Qpj0hp",
+		"label": "real",
+		"family": "jwt",
+		"template": "yaml",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "deploy/values.yaml",
+		"text": "  admin_pass: \"Secret30?Oran\"",
+		"label": "real",
+		"family": "human_password",
+		"template": "yaml-quoted",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "deploy/values.yaml",
+		"text": "  DB_PASS: \"Tiger2026&\"",
+		"label": "real",
+		"family": "human_password",
+		"template": "yaml-quoted",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "deploy/values.yaml",
+		"text": "  db_password: \"correct84-horse38?\"",
+		"label": "real",
+		"family": "passphrase",
+		"template": "yaml-quoted",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "deploy/values.yaml",
+		"text": "  redis_password: \"battery51-correct55!\"",
+		"label": "real",
+		"family": "passphrase",
+		"template": "yaml-quoted",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "deploy/values.yaml",
+		"text": "  DB_PASS: \"3dc1cece477eddc645eec552bdf38ec9\"",
+		"label": "real",
+		"family": "hex",
+		"template": "yaml-quoted",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "deploy/values.yaml",
+		"text": "  API_SECRET: \"fd7fd9f7e8df1a63d73b9c76171bbd23\"",
+		"label": "real",
+		"family": "hex",
+		"template": "yaml-quoted",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "deploy/values.yaml",
+		"text": "  access_token: \"l42JT7VSp3O8yV1IxcV0Ss0B\"",
+		"label": "real",
+		"family": "alnum",
+		"template": "yaml-quoted",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "deploy/values.yaml",
+		"text": "  access_token: \"IlyqadeUUujZ776z34t9fXBw\"",
+		"label": "real",
+		"family": "alnum",
+		"template": "yaml-quoted",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "deploy/values.yaml",
+		"text": "  auth_token: \"C8MmVpdBkmdYBxfr9B8AddObGyMxZBpU95CRpTwk\"",
+		"label": "real",
+		"family": "base64",
+		"template": "yaml-quoted",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "deploy/values.yaml",
+		"text": "  service_key: \"8wK/V3yqUJr0+uF7FkuSUclo4g0C6Wf/HgYwq8xg\"",
+		"label": "real",
+		"family": "base64",
+		"template": "yaml-quoted",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "deploy/values.yaml",
+		"text": "  API_SECRET: \"int_5QPbSn8e8IHz23c20dhhtJ0EI\"",
+		"label": "real",
+		"family": "prefixed",
+		"template": "yaml-quoted",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "deploy/values.yaml",
+		"text": "  secret_key: \"sk_internal_OiXGmc8uZA9g0SimcWBv5Gw\"",
+		"label": "real",
+		"family": "prefixed",
+		"template": "yaml-quoted",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "deploy/values.yaml",
+		"text": "  admin_pass: \"eyJtAsmb0495GG0J6POU.eyJTAsfUyrXqnExplL6iJZZ4UFn0Vxq2l.KwJvsgHDOjZSJ6A67ElXPJBiC8R\"",
+		"label": "real",
+		"family": "jwt",
+		"template": "yaml-quoted",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "deploy/values.yaml",
+		"text": "  secret_key: \"eyJdBRhFFVySIwKIfPSJ.eyJqQyC2ZHAOkWYMHb1DEqa1G3xaCFy9i.2UK5bhJjnviuZhEb0LpW8AAnn0x\"",
+		"label": "real",
+		"family": "jwt",
+		"template": "yaml-quoted",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.toml",
+		"text": "private_token = \"Qwerty2005@\"",
+		"label": "real",
+		"family": "human_password",
+		"template": "toml",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.toml",
+		"text": "admin_pass = \"Welcome2004@Oran\"",
+		"label": "real",
+		"family": "human_password",
+		"template": "toml",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.toml",
+		"text": "access_token = \"copper16-violet85*\"",
+		"label": "real",
+		"family": "passphrase",
+		"template": "toml",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.toml",
+		"text": "API_SECRET = \"staple72-correct98!\"",
+		"label": "real",
+		"family": "passphrase",
+		"template": "toml",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.toml",
+		"text": "SMTP_PASSWORD = \"50e14aedc8cccd0846b28b9fe48f880e\"",
+		"label": "real",
+		"family": "hex",
+		"template": "toml",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.toml",
+		"text": "API_SECRET = \"ef419108037c0ca27c88a3916b6aeacf\"",
+		"label": "real",
+		"family": "hex",
+		"template": "toml",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.toml",
+		"text": "SMTP_PASSWORD = \"x8HS9JofjAi1sFDpGWc5bXbp\"",
+		"label": "real",
+		"family": "alnum",
+		"template": "toml",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.toml",
+		"text": "auth_token = \"u9cpyz1iwcwOjEmUwoIq7RHG\"",
+		"label": "real",
+		"family": "alnum",
+		"template": "toml",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.toml",
+		"text": "API_SECRET = \"+c3FrYb2fPFlVqvlYGXPBA59zSmeyc+NczM45/ik\"",
+		"label": "real",
+		"family": "base64",
+		"template": "toml",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.toml",
+		"text": "webhook_secret = \"ftjLb4pJOegnSsRk3w70ggndqi9OneKG5mx2d8f3\"",
+		"label": "real",
+		"family": "base64",
+		"template": "toml",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.toml",
+		"text": "secret_key = \"int_uti24p3iIO7VAyITN5L2ARLWJGnZsuhS\"",
+		"label": "real",
+		"family": "prefixed",
+		"template": "toml",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.toml",
+		"text": "password = \"tok_rXTH8qP3WMAtWGGH5OWc3GUMwoXFDWJm\"",
+		"label": "real",
+		"family": "prefixed",
+		"template": "toml",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.toml",
+		"text": "SMTP_PASSWORD = \"eyJpSDgBZLbhcLPXOCt1.eyJwt4eDxaGKrWZ7YhLL6KJ6qxOyQUcs4.RdQicDBh1H5wndnPgFkfYb60QPY\"",
+		"label": "real",
+		"family": "jwt",
+		"template": "toml",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.toml",
+		"text": "private_token = \"eyJG2kpVqSWOG0TM7TPb.eyJd0B7IHa3SQdhKf9uACEoQT4cM0iwhX.alFzVT7QDz4KBqmUDCRxLep5Q1C\"",
+		"label": "real",
+		"family": "jwt",
+		"template": "toml",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.ini",
+		"text": "access_token = Welcome1991?Serv",
+		"label": "real",
+		"family": "human_password",
+		"template": "ini",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.ini",
+		"text": "db_password = staple10-staple83#",
+		"label": "real",
+		"family": "passphrase",
+		"template": "ini",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.ini",
+		"text": "auth_token = d47bf637ab43caa0bb2fdc62f73a0f3f",
+		"label": "real",
+		"family": "hex",
+		"template": "ini",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.ini",
+		"text": "DB_PASS = 412162b5118833b0a9f3cd70fe76e407",
+		"label": "real",
+		"family": "hex",
+		"template": "ini",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.ini",
+		"text": "private_token = bAi0PulI8wXbuKFAvwQWqNTK",
+		"label": "real",
+		"family": "alnum",
+		"template": "ini",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.ini",
+		"text": "db_password = mar1IgtucU8HZ7oEj8bTTLHD",
+		"label": "real",
+		"family": "alnum",
+		"template": "ini",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.ini",
+		"text": "DB_PASS = wjpu4AegHaQzBbczWJBg0Lx+sHbe+3Q6jjZa1V2U",
+		"label": "real",
+		"family": "base64",
+		"template": "ini",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.ini",
+		"text": "client_secret = 8hcL9/guGXpy1yq3hkcoj3j7UUc5GuyiNNbUKmMn",
+		"label": "real",
+		"family": "base64",
+		"template": "ini",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.ini",
+		"text": "password = bk_S3RmMdfEDlr5Zn9qetEM66L4",
+		"label": "real",
+		"family": "prefixed",
+		"template": "ini",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.ini",
+		"text": "API_SECRET = bk_oFf6z7o85OBU61iKousuOgjpvSck8",
+		"label": "real",
+		"family": "prefixed",
+		"template": "ini",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.ini",
+		"text": "admin_pass = eyJS18OuDIeSdNtCvC1b.eyJ4oPTgsk6klA16tz1T6GFRUBaPb8Hix.uQJ3srEThxiiklJpesbMmgO5eVp",
+		"label": "real",
+		"family": "jwt",
+		"template": "ini",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.ini",
+		"text": "client_secret = eyJsomm5Ib7SaTVoGGs1.eyJDE3qhfHbLiAKVwGnv4TPDzdFqJsYuS.ZHiStmDcuVb9s6od6uEDLGg1aoR",
+		"label": "real",
+		"family": "jwt",
+		"template": "ini",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "deploy/prod.env.txt",
+		"text": "SMTP_PASSWORD=Tiger2010?",
+		"label": "real",
+		"family": "human_password",
+		"template": "env",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "deploy/prod.env.txt",
+		"text": "API_SECRET=Welcome46#Welc",
+		"label": "real",
+		"family": "human_password",
+		"template": "env",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "deploy/prod.env.txt",
+		"text": "db_password=river74-lantern99&",
+		"label": "real",
+		"family": "passphrase",
+		"template": "env",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "deploy/prod.env.txt",
+		"text": "admin_pass=violet90-lantern63%",
+		"label": "real",
+		"family": "passphrase",
+		"template": "env",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "deploy/prod.env.txt",
+		"text": "client_secret=2f5174d8037311d6959224fc4df0c791",
+		"label": "real",
+		"family": "hex",
+		"template": "env",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "deploy/prod.env.txt",
+		"text": "client_secret=aa0379a818284b6b4071496687c65791",
+		"label": "real",
+		"family": "hex",
+		"template": "env",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "deploy/prod.env.txt",
+		"text": "private_token=9jPnQWvaXJVD0qCVj7ALXu2Z",
+		"label": "real",
+		"family": "alnum",
+		"template": "env",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "deploy/prod.env.txt",
+		"text": "password=QeFLWQqAbSctHjItCQnVXoPYrAfyVPjS3jFExbph",
+		"label": "real",
+		"family": "base64",
+		"template": "env",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "deploy/prod.env.txt",
+		"text": "redis_password=aXm5Eiepll/b2PUmESxCMRPd4puXFVW0LGuobFIY",
+		"label": "real",
+		"family": "base64",
+		"template": "env",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "deploy/prod.env.txt",
+		"text": "DB_PASS=tok_HaX40f8XsKhjYcQh0FgPQQDuZE",
+		"label": "real",
+		"family": "prefixed",
+		"template": "env",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "deploy/prod.env.txt",
+		"text": "secret_key=svc_xatfGvclo4RoI2o1EZ12NFe5MflJ",
+		"label": "real",
+		"family": "prefixed",
+		"template": "env",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "deploy/prod.env.txt",
+		"text": "service_key=eyJf8PjORDN5AtcLMcxx.eyJ0b0xO8CKZGqBFFk4PmzCdzTO544bpN.HOiJ8CC4PlhQ9U7OwPKEtR3UYRM",
+		"label": "real",
+		"family": "jwt",
+		"template": "env",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "deploy/prod.env.txt",
+		"text": "client_secret=eyJHLkpyWClFwVQsnHV1.eyJ7IZCBQbJTx1OoPcsySF4w8SkfUXxSO.gvZmSdPiKXfnke4qD3HwBZ82wVv",
+		"label": "real",
+		"family": "jwt",
+		"template": "env",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/main/Config.java",
+		"text": "private static final String redis_password = \"Orange97&Admi\";",
+		"label": "real",
+		"family": "human_password",
+		"template": "java",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/main/Config.java",
+		"text": "private static final String private_token = \"Admin59?Oran\";",
+		"label": "real",
+		"family": "human_password",
+		"template": "java",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/main/Config.java",
+		"text": "private static final String auth_token = \"mango76-mango82&\";",
+		"label": "real",
+		"family": "passphrase",
+		"template": "java",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/main/Config.java",
+		"text": "private static final String SMTP_PASSWORD = \"horse93-mango12@\";",
+		"label": "real",
+		"family": "passphrase",
+		"template": "java",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/main/Config.java",
+		"text": "private static final String SMTP_PASSWORD = \"4ec2410d86616df8c2de35690632bfd7\";",
+		"label": "real",
+		"family": "hex",
+		"template": "java",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/main/Config.java",
+		"text": "private static final String private_token = \"a82831f2ca0d09f59eb003901a0d119a\";",
+		"label": "real",
+		"family": "hex",
+		"template": "java",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/main/Config.java",
+		"text": "private static final String client_secret = \"wTDOsOCecA7ggABGWnVpNabs\";",
+		"label": "real",
+		"family": "alnum",
+		"template": "java",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/main/Config.java",
+		"text": "private static final String api_key = \"6K8CW7r9wMhMS8p3md4CV9Kl\";",
+		"label": "real",
+		"family": "alnum",
+		"template": "java",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/main/Config.java",
+		"text": "private static final String api_key = \"VyioLO7qZEeKA7Cr6ZcK0X4FUGZUvYldXmTa3b+I\";",
+		"label": "real",
+		"family": "base64",
+		"template": "java",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/main/Config.java",
+		"text": "private static final String client_secret = \"aSYihRuI1y6UsTT0RmmxKU2zszYSQ75rbtRnuoqW\";",
+		"label": "real",
+		"family": "base64",
+		"template": "java",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/main/Config.java",
+		"text": "private static final String access_token = \"tok_PHz5VtBlspS0LIAuoe5N88vCpiHhjg\";",
+		"label": "real",
+		"family": "prefixed",
+		"template": "java",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/main/Config.java",
+		"text": "private static final String password = \"app-jJqx2V2o17NDwWLw5TxJ4XGvkS2N6\";",
+		"label": "real",
+		"family": "prefixed",
+		"template": "java",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/main/Config.java",
+		"text": "private static final String DB_PASS = \"eyJxU8OwNYJwruDczmv6.eyJW4KYFBKsVeiRSKcJzyDCSKsqBiLtsA.RpAFCFw9xif2lANe3GWxhQw80gh\";",
+		"label": "real",
+		"family": "jwt",
+		"template": "java",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/main/Config.java",
+		"text": "private static final String service_key = \"eyJ5F5S7jSVIemefBsjv.eyJJwDfUtEmbV1DfDN7XwPYmHzAid9vEC.tXTH26IsE9AFcwK55ZIcljwp6lj\";",
+		"label": "real",
+		"family": "jwt",
+		"template": "java",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "internal/cfg.go",
+		"text": "var client_secret = \"Tiger1993$Falc\"",
+		"label": "real",
+		"family": "human_password",
+		"template": "go",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "internal/cfg.go",
+		"text": "var private_token = \"Orange75?\"",
+		"label": "real",
+		"family": "human_password",
+		"template": "go",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "internal/cfg.go",
+		"text": "var DB_PASS = \"lantern61-lantern6?\"",
+		"label": "real",
+		"family": "passphrase",
+		"template": "go",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "internal/cfg.go",
+		"text": "var db_password = \"correct91-horse60?\"",
+		"label": "real",
+		"family": "passphrase",
+		"template": "go",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "internal/cfg.go",
+		"text": "var api_key = \"34919daa2f7259ae5203b106e9f4ce15\"",
+		"label": "real",
+		"family": "hex",
+		"template": "go",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "internal/cfg.go",
+		"text": "var API_SECRET = \"efb43f3385a6026912af730f3fdfddc4\"",
+		"label": "real",
+		"family": "hex",
+		"template": "go",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "internal/cfg.go",
+		"text": "var access_token = \"lVDcPdFkFBlRFEi3bANznKAK\"",
+		"label": "real",
+		"family": "alnum",
+		"template": "go",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "internal/cfg.go",
+		"text": "var client_secret = \"D9wig4JyIgenjrXbV1YMqwaR\"",
+		"label": "real",
+		"family": "alnum",
+		"template": "go",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "internal/cfg.go",
+		"text": "var client_secret = \"kfZ4Xm1Ah7y2J2+PNML/vV96E98e4M8S8hp8SZFf\"",
+		"label": "real",
+		"family": "base64",
+		"template": "go",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "internal/cfg.go",
+		"text": "var access_token = \"f4hQmOJliCQHxLfdpl5nH1l/EwerJRW6ECHbjq7B\"",
+		"label": "real",
+		"family": "base64",
+		"template": "go",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "internal/cfg.go",
+		"text": "var admin_pass = \"bk_iXAEFn3apylGx1tGkP1ik4noEsA31\"",
+		"label": "real",
+		"family": "prefixed",
+		"template": "go",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "internal/cfg.go",
+		"text": "var SMTP_PASSWORD = \"sk_internal_gfIn06luSJjY1FCSjNsCJfL2On\"",
+		"label": "real",
+		"family": "prefixed",
+		"template": "go",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "internal/cfg.go",
+		"text": "var auth_token = \"eyJp35IuOM45SFbO5PKc.eyJ7UhxMd9VxsYxz1FV2mqogIpL95sRey.vr9YHmVqaJbDSbgnsAViiXx2Suy\"",
+		"label": "real",
+		"family": "jwt",
+		"template": "go",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "internal/cfg.go",
+		"text": "var db_password = \"eyJztaRPhOumy1valxtW.eyJZng8h2ktXEasiVN9aaStvq7SqlHXvx.5xEp2OmmiZBXoOWOaVM3VMwDfkB\"",
+		"label": "real",
+		"family": "jwt",
+		"template": "go",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/config.rs",
+		"text": "const client_secret: &str = \"c75a9654f613c0964d0d9942b3746f1d\";",
+		"label": "real",
+		"family": "hex",
+		"template": "rust",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/config.rs",
+		"text": "const service_key: &str = \"e882bd3c3e6d1cca0a9bd6f65d143332\";",
+		"label": "real",
+		"family": "hex",
+		"template": "rust",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/config.rs",
+		"text": "const auth_token: &str = \"yJhHtDk427KOSUwiADX6VlfU\";",
+		"label": "real",
+		"family": "alnum",
+		"template": "rust",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/config.rs",
+		"text": "const api_key: &str = \"qZRVvWlOXbbVXA1vhEkpCkBq\";",
+		"label": "real",
+		"family": "alnum",
+		"template": "rust",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/config.rs",
+		"text": "const admin_pass: &str = \"y0HJALpO4lB925BGBp/zz3YawUGyc7RI57poTe1W\";",
+		"label": "real",
+		"family": "base64",
+		"template": "rust",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/config.rs",
+		"text": "const admin_pass: &str = \"ye78lr4w5OUtS14yNZCapr9pNsbYt//Mmh0tpj7W\";",
+		"label": "real",
+		"family": "base64",
+		"template": "rust",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/config.rs",
+		"text": "const API_SECRET: &str = \"tok_uLcCIUhiakc2gBJmeLZvCc\";",
+		"label": "real",
+		"family": "prefixed",
+		"template": "rust",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/config.rs",
+		"text": "const DB_PASS: &str = \"int_EeirCyGDryX4iO2bnv9lC\";",
+		"label": "real",
+		"family": "prefixed",
+		"template": "rust",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/config.rs",
+		"text": "const DB_PASS: &str = \"eyJGc6enkTaFn52Gme6L.eyJol5iaUAiQGoU6TELpGvLkMXfQxBiS9.QPvJEin6NTPsgWQWGXLvdeG8V3Y\";",
+		"label": "real",
+		"family": "jwt",
+		"template": "rust",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/config.rs",
+		"text": "const client_secret: &str = \"eyJYUCW7StbFtO1wayMu.eyJq0DQalrzFTcZM6Rsj9vb36WJ3jalQK.eKbzDb67TdbL088DhxvmFijqt0z\";",
+		"label": "real",
+		"family": "jwt",
+		"template": "rust",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "app/config.php",
+		"text": "$secret_key = 'Server2016&Secr';",
+		"label": "real",
+		"family": "human_password",
+		"template": "php",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "app/config.php",
+		"text": "$API_SECRET = 'Secret2010%Oran';",
+		"label": "real",
+		"family": "human_password",
+		"template": "php",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "app/config.php",
+		"text": "$admin_pass = 'battery56-mango88!';",
+		"label": "real",
+		"family": "passphrase",
+		"template": "php",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "app/config.php",
+		"text": "$API_SECRET = 'horse94-staple26!';",
+		"label": "real",
+		"family": "passphrase",
+		"template": "php",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "app/config.php",
+		"text": "$redis_password = '1a3ee34e636e112b9b757aae12f13813';",
+		"label": "real",
+		"family": "hex",
+		"template": "php",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "app/config.php",
+		"text": "$api_key = '3b88326c404c2789f6d20d689bc0c129';",
+		"label": "real",
+		"family": "hex",
+		"template": "php",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "app/config.php",
+		"text": "$redis_password = 'KuXlEquD31wtRB2ObHZ0m9Mj';",
+		"label": "real",
+		"family": "alnum",
+		"template": "php",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "app/config.php",
+		"text": "$api_key = 'af7ndQ2ulJ5MCIg9Mw4dwxl1';",
+		"label": "real",
+		"family": "alnum",
+		"template": "php",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "app/config.php",
+		"text": "$client_secret = 'UbjsUbcGWTcLfym2S2KzgCGlaee7VVOAhcKdmAfQ';",
+		"label": "real",
+		"family": "base64",
+		"template": "php",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "app/config.php",
+		"text": "$DB_PASS = 'rmFzMzZWIr3+Sl/+qBIcs3HTFzTf7fSeetSebG1j';",
+		"label": "real",
+		"family": "base64",
+		"template": "php",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "app/config.php",
+		"text": "$password = 'tok_7GIJcbSGDbw7JpHeiRfWtvP';",
+		"label": "real",
+		"family": "prefixed",
+		"template": "php",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "app/config.php",
+		"text": "$password = 'tok_tBuQoFH8P40ME1OKR3GzdGGK70R4VCJ';",
+		"label": "real",
+		"family": "prefixed",
+		"template": "php",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "app/config.php",
+		"text": "$db_password = 'eyJmTLcxOfxyYt3oaCe3.eyJdedEYAltV3EXJfU9pSAmR8OcARbhe4.6RLIniP26kIrT98vxtigHgPN2gZ';",
+		"label": "real",
+		"family": "jwt",
+		"template": "php",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "app/config.php",
+		"text": "$API_SECRET = 'eyJV8vLWcKzjZjk6QpT3.eyJxigvAUdW1HI4EMmkHwaJfm72ZJQ4fG.Mi0vlPv0pmQ8JV1C7cN4Y6ZA87K';",
+		"label": "real",
+		"family": "jwt",
+		"template": "php",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/initializers/x.rb",
+		"text": "config.api_key = 'Admin76#Summ'",
+		"label": "real",
+		"family": "human_password",
+		"template": "ruby",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "config/initializers/x.rb",
+		"text": "config.API_SECRET = 'Dragon30&Summ'",
+		"label": "real",
+		"family": "human_password",
+		"template": "ruby",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "config/initializers/x.rb",
+		"text": "config.secret_key = 'battery32-mango68@'",
+		"label": "real",
+		"family": "passphrase",
+		"template": "ruby",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "config/initializers/x.rb",
+		"text": "config.db_password = 'staple30-copper84%'",
+		"label": "real",
+		"family": "passphrase",
+		"template": "ruby",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "config/initializers/x.rb",
+		"text": "config.API_SECRET = 'be7a5ede8f4f25e54647414ff202dc55'",
+		"label": "real",
+		"family": "hex",
+		"template": "ruby",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "config/initializers/x.rb",
+		"text": "config.API_SECRET = '9117d94ca6e9d585eef2b8bd69ab1e2a'",
+		"label": "real",
+		"family": "hex",
+		"template": "ruby",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "config/initializers/x.rb",
+		"text": "config.API_SECRET = 'OFwYOqnikfKlAuXb1iZDiSXk'",
+		"label": "real",
+		"family": "alnum",
+		"template": "ruby",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "config/initializers/x.rb",
+		"text": "config.api_key = 'NrcwriswXpKXbp4E9G2TeXZf'",
+		"label": "real",
+		"family": "alnum",
+		"template": "ruby",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "config/initializers/x.rb",
+		"text": "config.private_token = 'hrCPTesV49GCzZTke9swp6pKdcr1gbvFGvqrFZmN'",
+		"label": "real",
+		"family": "base64",
+		"template": "ruby",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "config/initializers/x.rb",
+		"text": "config.api_key = 'kvlddhhOokEt34tDA/Le0oXr9h0zyK1fzEZ9tMql'",
+		"label": "real",
+		"family": "base64",
+		"template": "ruby",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "config/initializers/x.rb",
+		"text": "config.secret_key = 'int_SX4FfUzrhIUmWO7KEmDGIOFP68bGK'",
+		"label": "real",
+		"family": "prefixed",
+		"template": "ruby",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "config/initializers/x.rb",
+		"text": "config.SMTP_PASSWORD = 'tok_iDqqOryfRcHsBXmTCCmHJAY'",
+		"label": "real",
+		"family": "prefixed",
+		"template": "ruby",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "config/initializers/x.rb",
+		"text": "config.db_password = 'eyJy4Rl9qQeFUdHzMJYJ.eyJTt9eU7EckpkNwbptgK74d3hFtkHlOJ.lNOCL4x4xiVZAKD2o8fMwsY0Lb2'",
+		"label": "real",
+		"family": "jwt",
+		"template": "ruby",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "config/initializers/x.rb",
+		"text": "config.service_key = 'eyJRA7QW0miP1EEFZchv.eyJ7XcAHpOVpGlGZwSeVvUKhlSLNXlYzG.d0xgY9olscPPIKr7E3RIaAgyBMj'",
+		"label": "real",
+		"family": "jwt",
+		"template": "ruby",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "scripts/deploy.sh",
+		"text": "export private_token=\"Welcome1998*Oran\"",
+		"label": "real",
+		"family": "human_password",
+		"template": "shell-export",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "scripts/deploy.sh",
+		"text": "export DB_PASS=\"Winter49%\"",
+		"label": "real",
+		"family": "human_password",
+		"template": "shell-export",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "scripts/deploy.sh",
+		"text": "export client_secret=\"battery6-river82!\"",
+		"label": "real",
+		"family": "passphrase",
+		"template": "shell-export",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "scripts/deploy.sh",
+		"text": "export access_token=\"lantern94-copper69@\"",
+		"label": "real",
+		"family": "passphrase",
+		"template": "shell-export",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "scripts/deploy.sh",
+		"text": "export secret_key=\"0946f9c49d56e42530e4c697f4f99af5\"",
+		"label": "real",
+		"family": "hex",
+		"template": "shell-export",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "scripts/deploy.sh",
+		"text": "export access_token=\"3cf0a60bb40c9582a3c6974da45bd2e7\"",
+		"label": "real",
+		"family": "hex",
+		"template": "shell-export",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "scripts/deploy.sh",
+		"text": "export access_token=\"qvvHOSen57LW6ohIseIctvAc\"",
+		"label": "real",
+		"family": "alnum",
+		"template": "shell-export",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "scripts/deploy.sh",
+		"text": "export password=\"8g9FkE0KZ8EN4SoRYyCmTOps\"",
+		"label": "real",
+		"family": "alnum",
+		"template": "shell-export",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "scripts/deploy.sh",
+		"text": "export auth_token=\"Tzyf2QZ2AQ9p2SSkwn6XVrwSRLqXpPd4WtskIeT2\"",
+		"label": "real",
+		"family": "base64",
+		"template": "shell-export",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "scripts/deploy.sh",
+		"text": "export API_SECRET=\"eeRKfZxQIYE1QtTcfqON2yvAzUmsekU94pzrIsvD\"",
+		"label": "real",
+		"family": "base64",
+		"template": "shell-export",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "scripts/deploy.sh",
+		"text": "export API_SECRET=\"svc_WdGUEkuIhjJScieK2WhGvyXgKwiNJ\"",
+		"label": "real",
+		"family": "prefixed",
+		"template": "shell-export",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "scripts/deploy.sh",
+		"text": "export redis_password=\"sk_internal_LfEMlDUlkqUZZk4Ko1Sp\"",
+		"label": "real",
+		"family": "prefixed",
+		"template": "shell-export",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "scripts/deploy.sh",
+		"text": "export redis_password=\"eyJ5IOCMJbToipoFBTWJ.eyJ4rDiP9GV5XyAHs6TpRTEuSSUkGOpXI.nvjQIsjQCbUd8ShafhCH6zi77L2\"",
+		"label": "real",
+		"family": "jwt",
+		"template": "shell-export",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "scripts/deploy.sh",
+		"text": "export private_token=\"eyJ9qzrbejRjD7SS209t.eyJ0aRoyiIsw3Pa9CRgnqBoA2cuwEFqyv.8NgR3UDtn9Zjq2onieSIGaLgwVp\"",
+		"label": "real",
+		"family": "jwt",
+		"template": "shell-export",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "Dockerfile.prod",
+		"text": "ENV auth_token eyJpnR6j7Get0FYaOMcp.eyJgc0SIV0H0Xgu4MaYXCeggUIPTFfChs.NjaQDggDxEHNyjycDgQNwKespYs",
+		"label": "real",
+		"family": "jwt",
+		"template": "docker-env",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "Dockerfile.prod",
+		"text": "ENV API_SECRET eyJVa8bcnXl6VCq0mfoN.eyJ50LHpLMHXuk50LLMrUEON0AvklT6Qm.nzPkqDTpcSDqn2I4nGwGHiLRJJ2",
+		"label": "real",
+		"family": "jwt",
+		"template": "docker-env",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "docker-compose.prod.yml",
+		"text": "      - db_password=Dragon2003*Oran",
+		"label": "real",
+		"family": "human_password",
+		"template": "compose",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "docker-compose.prod.yml",
+		"text": "      - api_key=Server19*Secr",
+		"label": "real",
+		"family": "human_password",
+		"template": "compose",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "docker-compose.prod.yml",
+		"text": "      - webhook_secret=8eb0c9c2df21a2dffc49512089be3072",
+		"label": "real",
+		"family": "hex",
+		"template": "compose",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "docker-compose.prod.yml",
+		"text": "      - webhook_secret=89c7541ac1635e0d38a727857866dafb",
+		"label": "real",
+		"family": "hex",
+		"template": "compose",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "docker-compose.prod.yml",
+		"text": "      - access_token=LiNi8J8c7XP3XZRrp3YMKDIa",
+		"label": "real",
+		"family": "alnum",
+		"template": "compose",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "docker-compose.prod.yml",
+		"text": "      - auth_token=9IRfhZYmWgaez7aiXS6Y2qTM",
+		"label": "real",
+		"family": "alnum",
+		"template": "compose",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "docker-compose.prod.yml",
+		"text": "      - secret_key=hb/UOvnntUKUi3tNhnC8DJCKm2or9pAqb8dgsClc",
+		"label": "real",
+		"family": "base64",
+		"template": "compose",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "docker-compose.prod.yml",
+		"text": "      - client_secret=fECeYsbAFyaUqrbHTRae8K/rBD4iIy1S/sIqC3OV",
+		"label": "real",
+		"family": "base64",
+		"template": "compose",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "docker-compose.prod.yml",
+		"text": "      - access_token=int_88EpczhK37Lny31hJTV27whl",
+		"label": "real",
+		"family": "prefixed",
+		"template": "compose",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "docker-compose.prod.yml",
+		"text": "      - redis_password=eyJcE0mvXZ39lnPKcomg.eyJ5yvLYyp7mGtY7OeFnDExf0eAjgbqVJ.Pwhcx9UOtiCH0hrr5hIz1gMYuFv",
+		"label": "real",
+		"family": "jwt",
+		"template": "compose",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "docker-compose.prod.yml",
+		"text": "      - access_token=eyJ8MKPjeXtVWtMB1Oaa.eyJ03w9poqMi5Yx2q3OGpXREvuEACSgoJ.1amhVmAFbTQYAM8NpfdoYSz0HjP",
+		"label": "real",
+		"family": "jwt",
+		"template": "compose",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "infra/main.tf",
+		"text": "  api_key = \"Winter2019#\"",
+		"label": "real",
+		"family": "human_password",
+		"template": "terraform",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "infra/main.tf",
+		"text": "  access_token = \"Welcome2003?Secr\"",
+		"label": "real",
+		"family": "human_password",
+		"template": "terraform",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "infra/main.tf",
+		"text": "  secret_key = \"correct49-mango30?\"",
+		"label": "real",
+		"family": "passphrase",
+		"template": "terraform",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "infra/main.tf",
+		"text": "  private_token = \"copper76-lantern57#\"",
+		"label": "real",
+		"family": "passphrase",
+		"template": "terraform",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "infra/main.tf",
+		"text": "  auth_token = \"40fad032972aae6927a8b0437f1ac29a\"",
+		"label": "real",
+		"family": "hex",
+		"template": "terraform",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "infra/main.tf",
+		"text": "  redis_password = \"e1564899b83ee4a944185f117df55514\"",
+		"label": "real",
+		"family": "hex",
+		"template": "terraform",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "infra/main.tf",
+		"text": "  admin_pass = \"rrjYBYtTpOKB63iO2Qum3Qyf\"",
+		"label": "real",
+		"family": "alnum",
+		"template": "terraform",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "infra/main.tf",
+		"text": "  api_key = \"Hd8PMOkCfqpnN105H037L9Ue\"",
+		"label": "real",
+		"family": "alnum",
+		"template": "terraform",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "infra/main.tf",
+		"text": "  DB_PASS = \"ybL34xvlAbUuZqCyqXhUlCBvw3IHz6b6letI5gwX\"",
+		"label": "real",
+		"family": "base64",
+		"template": "terraform",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "infra/main.tf",
+		"text": "  admin_pass = \"v0b6L+qTq6ryhLYbrf0RE8TVP5A1P4PueJFkFJHa\"",
+		"label": "real",
+		"family": "base64",
+		"template": "terraform",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "infra/main.tf",
+		"text": "  api_key = \"int_Z21Oi4T3nRe6AcB6nELkFrTr3PDyl7m\"",
+		"label": "real",
+		"family": "prefixed",
+		"template": "terraform",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "infra/main.tf",
+		"text": "  API_SECRET = \"int_jrpm1w74ukNqxK4QpA9PpNdRNJcl0NqG\"",
+		"label": "real",
+		"family": "prefixed",
+		"template": "terraform",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "infra/main.tf",
+		"text": "  redis_password = \"eyJRRp5tNvUkDYmSrfSt.eyJNTHQc9QmHBmfBmf4loEG8yATzJiR2D.lTm8eXDZeCGcti4xiTX8SGZwS3J\"",
+		"label": "real",
+		"family": "jwt",
+		"template": "terraform",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "infra/main.tf",
+		"text": "  client_secret = \"eyJOgk5H3xlDguYhizVF.eyJoQvGyfFwsxEx0q62nNeSuwEh5hwN9i.zfZ26Mqwe0bHOxyLorvaTNuhCIi\"",
+		"label": "real",
+		"family": "jwt",
+		"template": "terraform",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "scripts/call.sh",
+		"text": "curl -H \"Authorization: Bearer c25a4b8028f044da244787a29754981a\" https://api.internal.example/v1",
+		"label": "real",
+		"family": "hex",
+		"template": "curl-header",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "scripts/call.sh",
+		"text": "curl -H \"Authorization: Bearer 97a6198702d9148a5187c3a6102bd85b\" https://api.internal.example/v1",
+		"label": "real",
+		"family": "hex",
+		"template": "curl-header",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "scripts/call.sh",
+		"text": "curl -H \"Authorization: Bearer uz7iQyJkHlvEvm3ks8nXELvE\" https://api.internal.example/v1",
+		"label": "real",
+		"family": "alnum",
+		"template": "curl-header",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "scripts/call.sh",
+		"text": "curl -H \"Authorization: Bearer i74RBlZkoTy50UZOyOYISg4y\" https://api.internal.example/v1",
+		"label": "real",
+		"family": "alnum",
+		"template": "curl-header",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "scripts/call.sh",
+		"text": "curl -H \"Authorization: Bearer Z9rin1z2r6TGxHF+8x2MKw3s9XaTIUP+Wy6QcaAE\" https://api.internal.example/v1",
+		"label": "real",
+		"family": "base64",
+		"template": "curl-header",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "scripts/call.sh",
+		"text": "curl -H \"Authorization: Bearer obKPrxV1UTNvIYWYOb3iEg3jhrqEBhjnlRcVyYRj\" https://api.internal.example/v1",
+		"label": "real",
+		"family": "base64",
+		"template": "curl-header",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "scripts/call.sh",
+		"text": "curl -H \"Authorization: Bearer tok_WV1UZgSf9W1VAxdhFfpzwTO38jMrCrEg\" https://api.internal.example/v1",
+		"label": "real",
+		"family": "prefixed",
+		"template": "curl-header",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "scripts/call.sh",
+		"text": "curl -H \"Authorization: Bearer svc_OCU54wAWkqYBYRXGOYEKqO9DvBNjW\" https://api.internal.example/v1",
+		"label": "real",
+		"family": "prefixed",
+		"template": "curl-header",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "scripts/call.sh",
+		"text": "curl -H \"Authorization: Bearer eyJ6xwVtNie9to7JGMvS.eyJUfKhLrmeHZnrIT22sZ2X78BTUT47e1.nYCNBTT3Z2MeU0liSyWJ1NSs8Uf\" https://api.internal.example/v1",
+		"label": "real",
+		"family": "jwt",
+		"template": "curl-header",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "scripts/call.sh",
+		"text": "curl -H \"Authorization: Bearer eyJ9FrGbwGAubmCTk9cd.eyJwBhsl54x3mqLOliC1K6l1w4Y8wui0f.DYOBkyfwaVZyKR5W8G50fVc3DFv\" https://api.internal.example/v1",
+		"label": "real",
+		"family": "jwt",
+		"template": "curl-header",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "Makefile",
+		"text": "\tmytool --password=river36-violet76? deploy",
+		"label": "real",
+		"family": "passphrase",
+		"template": "cli-flag",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "Makefile",
+		"text": "\tmytool --password=horse93-correct62@ deploy",
+		"label": "real",
+		"family": "passphrase",
+		"template": "cli-flag",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "Makefile",
+		"text": "\tmytool --SMTP_PASSWORD=eyJRoEA37zLBYtMVy5f5.eyJ0YQphFpOuoc4husmyjTdRSURmKj2hL.iWDTN54moj5sMJRLzrcze8B5dOz deploy",
+		"label": "real",
+		"family": "jwt",
+		"template": "cli-flag",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "Makefile",
+		"text": "\tmytool --access_token=eyJ4j7vnPpWbMPUTszlN.eyJCrTMc8K3q7g0byPXF8LOHD4QCSV4J1.D1sh8E2qBbAdl3W4D8nDnaw81I9 deploy",
+		"label": "real",
+		"family": "jwt",
+		"template": "cli-flag",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/Config.cs",
+		"text": "public const string private_token = \"Secret2020#Secr\";",
+		"label": "real",
+		"family": "human_password",
+		"template": "csharp",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/Config.cs",
+		"text": "public const string db_password = \"Monkey2017!\";",
+		"label": "real",
+		"family": "human_password",
+		"template": "csharp",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/Config.cs",
+		"text": "public const string secret_key = \"horse34-lantern19#\";",
+		"label": "real",
+		"family": "passphrase",
+		"template": "csharp",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/Config.cs",
+		"text": "public const string password = \"horse32-mango16$\";",
+		"label": "real",
+		"family": "passphrase",
+		"template": "csharp",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/Config.cs",
+		"text": "public const string db_password = \"054c857988df32d9b99917a307393fd4\";",
+		"label": "real",
+		"family": "hex",
+		"template": "csharp",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/Config.cs",
+		"text": "public const string SMTP_PASSWORD = \"1da7515d084ed8c2ece44c30c6c6cb7c\";",
+		"label": "real",
+		"family": "hex",
+		"template": "csharp",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/Config.cs",
+		"text": "public const string API_SECRET = \"AqS5I5NSlI8spu3B32yNbNW8\";",
+		"label": "real",
+		"family": "alnum",
+		"template": "csharp",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/Config.cs",
+		"text": "public const string password = \"XIqT3Y1lLifyYK4lhoXgIvjB\";",
+		"label": "real",
+		"family": "alnum",
+		"template": "csharp",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/Config.cs",
+		"text": "public const string db_password = \"mGUYlOrGDKvlj4j+AGrpXECarBpXnB7r1p4cSjiV\";",
+		"label": "real",
+		"family": "base64",
+		"template": "csharp",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/Config.cs",
+		"text": "public const string password = \"GLzkpcKmLeZlvJkAz/YgqlLL2HkOhek+rXzvRXFq\";",
+		"label": "real",
+		"family": "base64",
+		"template": "csharp",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/Config.cs",
+		"text": "public const string db_password = \"tok_kH2vAVRdQUlBRy9mkD1r5\";",
+		"label": "real",
+		"family": "prefixed",
+		"template": "csharp",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/Config.cs",
+		"text": "public const string API_SECRET = \"int_UV0qnkt5BiHU1qw3XMhwXMfsLb0EMure\";",
+		"label": "real",
+		"family": "prefixed",
+		"template": "csharp",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/Config.cs",
+		"text": "public const string webhook_secret = \"eyJ8bIE9jVkarNu8AATL.eyJ4grX0itLTECkJe7p75PM4fNAFLlE1j.hCY9uUOEKpOwWOAlbgTBQLHePAb\";",
+		"label": "real",
+		"family": "jwt",
+		"template": "csharp",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/Config.cs",
+		"text": "public const string DB_PASS = \"eyJJeLKdfmrh8G8C3p82.eyJZcOfNbYZnmKhVQwZ0P9V0VhD72XlDh.RcnnAEMbFelHM84GBi1kFR1BzLQ\";",
+		"label": "real",
+		"family": "jwt",
+		"template": "csharp",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "App/Secrets.swift",
+		"text": "let admin_pass = \"Qwerty2011#\"",
+		"label": "real",
+		"family": "human_password",
+		"template": "swift",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "App/Secrets.swift",
+		"text": "let access_token = \"Qwerty4*Monk\"",
+		"label": "real",
+		"family": "human_password",
+		"template": "swift",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "App/Secrets.swift",
+		"text": "let SMTP_PASSWORD = \"violet42-copper62#\"",
+		"label": "real",
+		"family": "passphrase",
+		"template": "swift",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "App/Secrets.swift",
+		"text": "let DB_PASS = \"staple4-horse85?\"",
+		"label": "real",
+		"family": "passphrase",
+		"template": "swift",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "App/Secrets.swift",
+		"text": "let password = \"276c0696494176e8e15c1d27f2659bd9\"",
+		"label": "real",
+		"family": "hex",
+		"template": "swift",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "App/Secrets.swift",
+		"text": "let SMTP_PASSWORD = \"6faf4fdab640b369059c530a4f485d05\"",
+		"label": "real",
+		"family": "hex",
+		"template": "swift",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "App/Secrets.swift",
+		"text": "let db_password = \"fWl04QSWMYMotz1schMTZHPv\"",
+		"label": "real",
+		"family": "alnum",
+		"template": "swift",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "App/Secrets.swift",
+		"text": "let private_token = \"OCqigoaxrddcWQW8yASpDKYk\"",
+		"label": "real",
+		"family": "alnum",
+		"template": "swift",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "App/Secrets.swift",
+		"text": "let DB_PASS = \"95xLmGstkzOahmxpCHjSwRL47yZkORpEk97UqRkG\"",
+		"label": "real",
+		"family": "base64",
+		"template": "swift",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "App/Secrets.swift",
+		"text": "let secret_key = \"BVkzO5HekdFQboS0vWmt0+xIlJECFZ8HzBT6Zsp8\"",
+		"label": "real",
+		"family": "base64",
+		"template": "swift",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "App/Secrets.swift",
+		"text": "let client_secret = \"int_3GN7g2mvHVc3iHi8l6MA8ISskK\"",
+		"label": "real",
+		"family": "prefixed",
+		"template": "swift",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "App/Secrets.swift",
+		"text": "let redis_password = \"tok_C26CAUkABGQgoX6xKh9R4gA715L8\"",
+		"label": "real",
+		"family": "prefixed",
+		"template": "swift",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "App/Secrets.swift",
+		"text": "let API_SECRET = \"eyJdedMIWzF29bSrpNno.eyJonzSBh2OoRvJtrwbw9jTLEBOImvRIs.vPOe2BsitrMJK6QvHiKwrfe7rM4\"",
+		"label": "real",
+		"family": "jwt",
+		"template": "swift",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "App/Secrets.swift",
+		"text": "let db_password = \"eyJwNqvRb29rtcsX6C4F.eyJU24o3pF7JwdGzhTbD9A1Uns6QUKMCp.zcWCEA1OgGlQ9Pi9MJPmt1o36gF\"",
+		"label": "real",
+		"family": "jwt",
+		"template": "swift",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/app.py",
+		"text": "# temporary: password is 8427ac9c261871e9ecad2ca3c1e9d206, remove before release",
+		"label": "real",
+		"family": "hex",
+		"template": "comment",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/app.py",
+		"text": "# temporary: service_key is eyJ6CcVzRNDtAh7BDH89.eyJ3Nksn4WtWHZOrQJJUQxVe7l2q0tA4f.usOlJ0bz0pnaHNcC6pDJAP9cCeO, remove before release",
+		"label": "real",
+		"family": "jwt",
+		"template": "comment",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/app.py",
+		"text": "# temporary: private_token is eyJPc7EUhfB79uMs6A3W.eyJDNW573zmzVStuGM7xfhmCH6RdkGkLZ.5Poin8seAebtrWS9ZZQNgjNP0iF, remove before release",
+		"label": "real",
+		"family": "jwt",
+		"template": "comment",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "docs/runbook.txt",
+		"text": "the service_key for staging is eyJIdmrgLlRMydgJd6XH.eyJxpHXaRiQebXQ49pRyqWWrLRYYyg94Z.CfdycOshLnqtQO0uzY0i3fSbVTQ",
+		"label": "real",
+		"family": "jwt",
+		"template": "log-line",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "docs/runbook.txt",
+		"text": "the access_token for staging is eyJ58lBZ4YuUGBDlp492.eyJ0Q9ms3KxBbSLfoYhqVBx3YBxSJxcqG.GyR1vwC59IkrrkAvNpuonzW7Fsa",
+		"label": "real",
+		"family": "jwt",
+		"template": "log-line",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "db/seed.sql",
+		"text": "ALTER USER app WITH PASSWORD '25f3f1294eb6735b0d46b8aeb727df62';",
+		"label": "real",
+		"family": "hex",
+		"template": "sql",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "db/seed.sql",
+		"text": "ALTER USER app WITH PASSWORD '515fa39193c657d88248e69d4a26a53f';",
+		"label": "real",
+		"family": "hex",
+		"template": "sql",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "db/seed.sql",
+		"text": "ALTER USER app WITH PASSWORD 'eSqGsFvX6ElPO79fHKSGkjo7';",
+		"label": "real",
+		"family": "alnum",
+		"template": "sql",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "db/seed.sql",
+		"text": "ALTER USER app WITH PASSWORD '8M3Swy9D4phiNjFLBBoHySl9';",
+		"label": "real",
+		"family": "alnum",
+		"template": "sql",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "db/seed.sql",
+		"text": "ALTER USER app WITH PASSWORD 'O0jPs9has8n2QzZymXhgep5YKZLgg4JA+UJjc4zw';",
+		"label": "real",
+		"family": "base64",
+		"template": "sql",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "db/seed.sql",
+		"text": "ALTER USER app WITH PASSWORD 'opDFyPlY2qO9JdkrDAqiDfPcst2cdYvtUKbVYUro';",
+		"label": "real",
+		"family": "base64",
+		"template": "sql",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "db/seed.sql",
+		"text": "ALTER USER app WITH PASSWORD 'sk_internal_xG7JJZmKhOIYU9tiQT2KAJ';",
+		"label": "real",
+		"family": "prefixed",
+		"template": "sql",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "db/seed.sql",
+		"text": "ALTER USER app WITH PASSWORD 'app-6U5IER8KPIrwjPVr1dBWMT5Be';",
+		"label": "real",
+		"family": "prefixed",
+		"template": "sql",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "db/seed.sql",
+		"text": "ALTER USER app WITH PASSWORD 'eyJZuykEAmj0gOkSn8dd.eyJWTxmYWglGLKjHdpYxesGFrZtnsDkEG.MhbWalLONPbXwsTUtUpYimETUkw';",
+		"label": "real",
+		"family": "jwt",
+		"template": "sql",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "db/seed.sql",
+		"text": "ALTER USER app WITH PASSWORD 'eyJgRrJEEIh3XwceV69V.eyJu4kRzALA4lh37hrNZPQlurQUVThanD.RiuBInCN2y92965qAAjeU2uPjd4';",
+		"label": "real",
+		"family": "jwt",
+		"template": "sql",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/settings.py",
+		"text": "password_secret_name = \"app-db-credentials\"",
+		"label": "ok",
+		"family": "ok-reference",
+		"template": "py-assign",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/settings.py",
+		"text": "source_revision = \"2b0a278aebe81c096083e8f6cd2b2fb920b60dcf\"",
+		"label": "ok",
+		"family": "ok-git-sha",
+		"template": "py-assign",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/settings.py",
+		"text": "correlation_token = \"48c8a40c-99c6-46e9-b893-2635d476f749\"",
+		"label": "ok",
+		"family": "ok-uuid",
+		"template": "py-assign",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/settings.py",
+		"text": "token_enabled = \"required\"",
+		"label": "ok",
+		"family": "ok-flag",
+		"template": "py-assign",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/settings.py",
+		"text": "etag = \"IeQfX558I0I5PTVxj9WIBaFgU04o\"",
+		"label": "ok",
+		"family": "ok-opaque-id",
+		"template": "py-assign",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/settings.py",
+		"text": "thumbnail = \"XjTw31Zw4JVqdvWm1Vw1Kf91bZcn1WQx2EDdmsNwibyMz1A0/VBrBJcJ4792H8LxqW0knCuSh0E4sfTFst2Fwu/4\"",
+		"label": "ok",
+		"family": "ok-base64-chunk",
+		"template": "py-assign",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/conf.py",
+		"text": "token_ttl = '86400'",
+		"label": "ok",
+		"family": "ok-ttl",
+		"template": "py-single",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/conf.py",
+		"text": "secret_kind = 'bcrypt'",
+		"label": "ok",
+		"family": "ok-type-name",
+		"template": "py-single",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/conf.py",
+		"text": "existingSecret = 'app-db-credentials'",
+		"label": "ok",
+		"family": "ok-reference",
+		"template": "py-single",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/conf.py",
+		"text": "publishable_key = 'pk_live_KWfQGQ3dCC1FpaztfU9S5oZa'",
+		"label": "ok",
+		"family": "ok-public-key-id",
+		"template": "py-single",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/conf.py",
+		"text": "secret_mode = 'required'",
+		"label": "ok",
+		"family": "ok-flag",
+		"template": "py-single",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/conf.py",
+		"text": "nonce_public = 'Qhy7SnJ9mbtSKZritgEXf2Jkr14U'",
+		"label": "ok",
+		"family": "ok-opaque-id",
+		"template": "py-single",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/conf.py",
+		"text": "thumbnail = '5bfcrg+5NH4KaXXJxhXsSy9xQXGfD7IaL/ggyUXt7F4doF3K1DUckv3P4mfO'",
+		"label": "ok",
+		"family": "ok-base64-chunk",
+		"template": "py-single",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/client.py",
+		"text": "headers = {\"REFRESH_TOKEN_TTL\": \"3600\"}",
+		"label": "ok",
+		"family": "ok-ttl",
+		"template": "py-dict",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/client.py",
+		"text": "headers = {\"secret_kind\": \"bcrypt\"}",
+		"label": "ok",
+		"family": "ok-type-name",
+		"template": "py-dict",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/client.py",
+		"text": "headers = {\"secretName\": \"app-db-credentials\"}",
+		"label": "ok",
+		"family": "ok-reference",
+		"template": "py-dict",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/client.py",
+		"text": "headers = {\"public_api_key\": \"pk_live_GCWPx9EYVKySnQExskKmIWwL\"}",
+		"label": "ok",
+		"family": "ok-public-key-id",
+		"template": "py-dict",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/client.py",
+		"text": "headers = {\"password_required\": \"true\"}",
+		"label": "ok",
+		"family": "ok-flag",
+		"template": "py-dict",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/client.py",
+		"text": "headers = {\"icon_data\": \"xjkkYolSuLGAPk41kch/QHExrYtoGHfYujaPo6+rHfFOIlq9i6aYkP1jRf52\"}",
+		"label": "ok",
+		"family": "ok-base64-chunk",
+		"template": "py-dict",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/db.py",
+		"text": "connect(host=\"db\", token_ttl=\"3600\")",
+		"label": "ok",
+		"family": "ok-ttl",
+		"template": "py-kwarg",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/db.py",
+		"text": "connect(host=\"db\", secret_question=\"Forgot password?\")",
+		"label": "ok",
+		"family": "ok-label",
+		"template": "py-kwarg",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/db.py",
+		"text": "connect(host=\"db\", publishable_key=\"pk_live_jiNxXB1DOi4cGaKJSZkREWvi\")",
+		"label": "ok",
+		"family": "ok-public-key-id",
+		"template": "py-kwarg",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/db.py",
+		"text": "connect(host=\"db\", password_required=\"required\")",
+		"label": "ok",
+		"family": "ok-flag",
+		"template": "py-kwarg",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/db.py",
+		"text": "connect(host=\"db\", icon_data=\"z3mwgzTs2/KETbsnawah0evO7/IFhowzT13ngQYhap0ntE6mfV6KIrKs1OI3L8rSYarOVeOAy8mP81cYAFXPNOQS\")",
+		"label": "ok",
+		"family": "ok-base64-chunk",
+		"template": "py-kwarg",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/config.js",
+		"text": "const token_type = 'Bearer';",
+		"label": "ok",
+		"family": "ok-type-name",
+		"template": "js-const",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/config.js",
+		"text": "const api_key_hint = 'Mother's maiden name';",
+		"label": "ok",
+		"family": "ok-label",
+		"template": "js-const",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/config.js",
+		"text": "const publishable_key = 'pk_test_0vhfxjamHEJN7bhaPWGghlxX';",
+		"label": "ok",
+		"family": "ok-public-key-id",
+		"template": "js-const",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/config.js",
+		"text": "const correlation_token = 'a4e21f37-2772-4ff9-8ed1-309704ff1ded';",
+		"label": "ok",
+		"family": "ok-uuid",
+		"template": "js-const",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/config.js",
+		"text": "const password_required = 'false';",
+		"label": "ok",
+		"family": "ok-flag",
+		"template": "js-const",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/config.js",
+		"text": "const font_chunk = '7NEQXQ4AJ+9eCp06iWsjubSfUM9nKo+ZFXPdRgL9KLdPgbUuIwtcmquVsh1j';",
+		"label": "ok",
+		"family": "ok-base64-chunk",
+		"template": "js-const",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/env.ts",
+		"text": "export const password_max_age = \"86400\";",
+		"label": "ok",
+		"family": "ok-ttl",
+		"template": "ts-export",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/env.ts",
+		"text": "export const secret_ref = \"arn:aws:secretsmanager:eu-west-1:123456789012:secret:app\";",
+		"label": "ok",
+		"family": "ok-reference",
+		"template": "ts-export",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/env.ts",
+		"text": "export const STRIPE_PUBLIC_KEY = \"pk_test_4Ax1FG9PenVzjbOZLVj5WviZ\";",
+		"label": "ok",
+		"family": "ok-public-key-id",
+		"template": "ts-export",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/env.ts",
+		"text": "export const source_revision = \"0d40eb4d490908f54d0548fc858a5e82ea277bc6\";",
+		"label": "ok",
+		"family": "ok-git-sha",
+		"template": "ts-export",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/env.ts",
+		"text": "export const token_enabled = \"false\";",
+		"label": "ok",
+		"family": "ok-flag",
+		"template": "ts-export",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/env.ts",
+		"text": "export const svg_blob = \"laaJBYKKPUkmYh6rA2OabaEujfMR/ObGIDPFsfApqMG8aRGxk28M1U9Nhw+oqPkx6PInmMnmB9fKw4PfuabE86/L\";",
+		"label": "ok",
+		"family": "ok-base64-chunk",
+		"template": "ts-export",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.json",
+		"text": "  \"REFRESH_TOKEN_TTL\": \"86400\",",
+		"label": "ok",
+		"family": "ok-ttl",
+		"template": "json",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.json",
+		"text": "  \"secret_kind\": \"Bearer\",",
+		"label": "ok",
+		"family": "ok-type-name",
+		"template": "json",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.json",
+		"text": "  \"api_key_hint\": \"Forgot password?\",",
+		"label": "ok",
+		"family": "ok-label",
+		"template": "json",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.json",
+		"text": "  \"publishable_key\": \"pk_test_CILAp1nIblkbAOmXjA3mCFvw\",",
+		"label": "ok",
+		"family": "ok-public-key-id",
+		"template": "json",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.json",
+		"text": "  \"source_revision\": \"f47d29e60c5323cb29c56f2388fa86591b2219eb\",",
+		"label": "ok",
+		"family": "ok-git-sha",
+		"template": "json",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.json",
+		"text": "  \"correlation_token\": \"250a42b1-29aa-43c5-9714-a64d3265a939\",",
+		"label": "ok",
+		"family": "ok-uuid",
+		"template": "json",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.json",
+		"text": "  \"token_enabled\": \"disabled\",",
+		"label": "ok",
+		"family": "ok-flag",
+		"template": "json",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.json",
+		"text": "  \"element_id\": \"rl2RQuQMswTzo4SOOUH8blaPTiYk\",",
+		"label": "ok",
+		"family": "ok-opaque-id",
+		"template": "json",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.json",
+		"text": "  \"thumbnail\": \"djJ7K4Sacwa2m3rjwy1k74//qy5CG2eyu2B4dDcyBPQT\",",
+		"label": "ok",
+		"family": "ok-base64-chunk",
+		"template": "json",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "deploy/values.yaml",
+		"text": "  token_ttl: \"604800\"",
+		"label": "ok",
+		"family": "ok-ttl",
+		"template": "yaml-quoted",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "deploy/values.yaml",
+		"text": "  publishable_key: \"pk_live_EVpXmwAglKPenaw1oWWdVwu8\"",
+		"label": "ok",
+		"family": "ok-public-key-id",
+		"template": "yaml-quoted",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "deploy/values.yaml",
+		"text": "  source_revision: \"4454c192fbac57a8d645bd411dfcc4504781a24c\"",
+		"label": "ok",
+		"family": "ok-git-sha",
+		"template": "yaml-quoted",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "deploy/values.yaml",
+		"text": "  token_enabled: \"disabled\"",
+		"label": "ok",
+		"family": "ok-flag",
+		"template": "yaml-quoted",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "deploy/values.yaml",
+		"text": "  element_id: \"BKpKugTE1Av3VR70o5m780cjA1Sm\"",
+		"label": "ok",
+		"family": "ok-opaque-id",
+		"template": "yaml-quoted",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "deploy/values.yaml",
+		"text": "  icon_data: \"Fo65EZlCiF/dGmBwbYMkM+iNGg4D1n5SHH5yTQVXqd+i\"",
+		"label": "ok",
+		"family": "ok-base64-chunk",
+		"template": "yaml-quoted",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.toml",
+		"text": "REFRESH_TOKEN_TTL = \"604800\"",
+		"label": "ok",
+		"family": "ok-ttl",
+		"template": "toml",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.toml",
+		"text": "token_type = \"argon2id\"",
+		"label": "ok",
+		"family": "ok-type-name",
+		"template": "toml",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.toml",
+		"text": "publishable_key = \"pk_test_xyzlHek3IhrQRHPddgdRFLY7\"",
+		"label": "ok",
+		"family": "ok-public-key-id",
+		"template": "toml",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.toml",
+		"text": "correlation_token = \"38686d07-9a69-4c90-b034-edd80dbf4d47\"",
+		"label": "ok",
+		"family": "ok-uuid",
+		"template": "toml",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.toml",
+		"text": "token_enabled = \"false\"",
+		"label": "ok",
+		"family": "ok-flag",
+		"template": "toml",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.toml",
+		"text": "etag = \"2GojCkYJbtlZQ59GdmFm67ltgCbZ\"",
+		"label": "ok",
+		"family": "ok-opaque-id",
+		"template": "toml",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.toml",
+		"text": "svg_blob = \"aMe3HqM1iTtoUI13VZrRtdtQqnao3ef0E5oJDPZVQSql\"",
+		"label": "ok",
+		"family": "ok-base64-chunk",
+		"template": "toml",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.ini",
+		"text": "token_type = hmac-sha256",
+		"label": "ok",
+		"family": "ok-type-name",
+		"template": "ini",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/app.ini",
+		"text": "secret_ref = arn:aws:secretsmanager:eu-west-1:123456789012:secret:app",
+		"label": "ok",
+		"family": "ok-reference",
+		"template": "ini",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "deploy/prod.env.txt",
+		"text": "secret_ref=arn:aws:secretsmanager:eu-west-1:123456789012:secret:app",
+		"label": "ok",
+		"family": "ok-reference",
+		"template": "env",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/main/Config.java",
+		"text": "private static final String secret_rotation_days = \"86400\";",
+		"label": "ok",
+		"family": "ok-ttl",
+		"template": "java",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/main/Config.java",
+		"text": "private static final String password_hash_algorithm = \"Basic\";",
+		"label": "ok",
+		"family": "ok-type-name",
+		"template": "java",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/main/Config.java",
+		"text": "private static final String STRIPE_PUBLIC_KEY = \"pk_live_QjCbUMmbBvgN2nyGdLJCh0IJ\";",
+		"label": "ok",
+		"family": "ok-public-key-id",
+		"template": "java",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/main/Config.java",
+		"text": "private static final String secret_mode = \"true\";",
+		"label": "ok",
+		"family": "ok-flag",
+		"template": "java",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/main/Config.java",
+		"text": "private static final String element_id = \"9nAFD27maQ3zAVqP8eGgK4OXcWoR\";",
+		"label": "ok",
+		"family": "ok-opaque-id",
+		"template": "java",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/main/Config.java",
+		"text": "private static final String thumbnail = \"92r7xWpUnaFTkohlu7MF8s98nn7uwaiJ+3AtnmJEbpXe\";",
+		"label": "ok",
+		"family": "ok-base64-chunk",
+		"template": "java",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "internal/cfg.go",
+		"text": "var password_hash_algorithm = \"oauth2\"",
+		"label": "ok",
+		"family": "ok-type-name",
+		"template": "go",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "internal/cfg.go",
+		"text": "var secretName = \"app-db-credentials\"",
+		"label": "ok",
+		"family": "ok-reference",
+		"template": "go",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "internal/cfg.go",
+		"text": "var STRIPE_PUBLIC_KEY = \"pk_test_BEZl9a0EbNXF1RFiZU7cfELP\"",
+		"label": "ok",
+		"family": "ok-public-key-id",
+		"template": "go",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "internal/cfg.go",
+		"text": "var source_revision = \"15a81f957249e3fea77e13a63e18a5231fcddcb0\"",
+		"label": "ok",
+		"family": "ok-git-sha",
+		"template": "go",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "internal/cfg.go",
+		"text": "var token_enabled = \"false\"",
+		"label": "ok",
+		"family": "ok-flag",
+		"template": "go",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "internal/cfg.go",
+		"text": "var font_chunk = \"GYnvKG9iQordmGzpHUyRsSOtx7kA2NvlUQEC7ZiaLAuP\"",
+		"label": "ok",
+		"family": "ok-base64-chunk",
+		"template": "go",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/config.rs",
+		"text": "const publishable_key: &str = \"pk_live_Sry1hvEntiDH1TCTReZ3GTxU\";",
+		"label": "ok",
+		"family": "ok-public-key-id",
+		"template": "rust",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/config.rs",
+		"text": "const source_revision: &str = \"14601c1c8b43e440cc59ca3afc7e69593481b6ef\";",
+		"label": "ok",
+		"family": "ok-git-sha",
+		"template": "rust",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/config.rs",
+		"text": "const build_id: &str = \"UL6VwTGbEWhVwuDSYUNRdnmSSFmT\";",
+		"label": "ok",
+		"family": "ok-opaque-id",
+		"template": "rust",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "src/config.rs",
+		"text": "const svg_blob: &str = \"YAn7ippT8vAgJ4j6G3FOsINTGGb2A8Gcxo3JI5/ebRVeIJfFMAyDt7QO4CAy\";",
+		"label": "ok",
+		"family": "ok-base64-chunk",
+		"template": "rust",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "app/config.php",
+		"text": "$secret_kind = 'Bearer';",
+		"label": "ok",
+		"family": "ok-type-name",
+		"template": "php",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "app/config.php",
+		"text": "$password_secret_name = 'vault:secret/data/app';",
+		"label": "ok",
+		"family": "ok-reference",
+		"template": "php",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "app/config.php",
+		"text": "$STRIPE_PUBLIC_KEY = 'pk_test_KqevMBmK8zfSu46xbjeGRW5o';",
+		"label": "ok",
+		"family": "ok-public-key-id",
+		"template": "php",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "app/config.php",
+		"text": "$secret_mode = 'required';",
+		"label": "ok",
+		"family": "ok-flag",
+		"template": "php",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "app/config.php",
+		"text": "$icon_data = 'GV0Ap9yNnf0AhOBO4iZN8ttFrWy5lKgQwkuykz13JRLQ';",
+		"label": "ok",
+		"family": "ok-base64-chunk",
+		"template": "php",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "config/initializers/x.rb",
+		"text": "config.REFRESH_TOKEN_TTL = '604800'",
+		"label": "ok",
+		"family": "ok-ttl",
+		"template": "ruby",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "config/initializers/x.rb",
+		"text": "config.password_label = 'Forgot password?'",
+		"label": "ok",
+		"family": "ok-label",
+		"template": "ruby",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "config/initializers/x.rb",
+		"text": "config.secretName = 'app-db-credentials'",
+		"label": "ok",
+		"family": "ok-reference",
+		"template": "ruby",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "config/initializers/x.rb",
+		"text": "config.publishable_key = 'pk_live_DJBqyQ6YrK3MgTFLarpgPoSN'",
+		"label": "ok",
+		"family": "ok-public-key-id",
+		"template": "ruby",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "config/initializers/x.rb",
+		"text": "config.password_required = 'false'",
+		"label": "ok",
+		"family": "ok-flag",
+		"template": "ruby",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "config/initializers/x.rb",
+		"text": "config.svg_blob = 'FxsSKQAJAqlpXIWPAymQ60KRgv35rHlyGk6r+UiPZ0A/'",
+		"label": "ok",
+		"family": "ok-base64-chunk",
+		"template": "ruby",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "scripts/deploy.sh",
+		"text": "export REFRESH_TOKEN_TTL=\"604800\"",
+		"label": "ok",
+		"family": "ok-ttl",
+		"template": "shell-export",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "scripts/deploy.sh",
+		"text": "export password_hash_algorithm=\"oauth2\"",
+		"label": "ok",
+		"family": "ok-type-name",
+		"template": "shell-export",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "scripts/deploy.sh",
+		"text": "export api_key_hint=\"Mother's maiden name\"",
+		"label": "ok",
+		"family": "ok-label",
+		"template": "shell-export",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "scripts/deploy.sh",
+		"text": "export secret_ref=\"app-db-credentials\"",
+		"label": "ok",
+		"family": "ok-reference",
+		"template": "shell-export",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "scripts/deploy.sh",
+		"text": "export password_required=\"true\"",
+		"label": "ok",
+		"family": "ok-flag",
+		"template": "shell-export",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "scripts/deploy.sh",
+		"text": "export element_id=\"K3UHSYlMgQq03UX2bnXINI8Dy2vp\"",
+		"label": "ok",
+		"family": "ok-opaque-id",
+		"template": "shell-export",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "scripts/deploy.sh",
+		"text": "export icon_data=\"lGqusKqV4CVxtAwJfb4zWYuOB8nJ5TYKjp0rvkz5WBavqIdE5rB0Dv8dLDNF\"",
+		"label": "ok",
+		"family": "ok-base64-chunk",
+		"template": "shell-export",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "docker-compose.prod.yml",
+		"text": "      - correlation_token=3223c5f9-26ec-402c-9d56-5bf410d4d668",
+		"label": "ok",
+		"family": "ok-uuid",
+		"template": "compose",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "infra/main.tf",
+		"text": "  password_max_age = \"86400\"",
+		"label": "ok",
+		"family": "ok-ttl",
+		"template": "terraform",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "infra/main.tf",
+		"text": "  token_type = \"oauth2\"",
+		"label": "ok",
+		"family": "ok-type-name",
+		"template": "terraform",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "infra/main.tf",
+		"text": "  api_key_hint = \"Forgot password?\"",
+		"label": "ok",
+		"family": "ok-label",
+		"template": "terraform",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "infra/main.tf",
+		"text": "  secret_ref = \"vault:secret/data/app\"",
+		"label": "ok",
+		"family": "ok-reference",
+		"template": "terraform",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "infra/main.tf",
+		"text": "  STRIPE_PUBLIC_KEY = \"pk_live_72uiCEJf9MakgiAd2Hk6CFW2\"",
+		"label": "ok",
+		"family": "ok-public-key-id",
+		"template": "terraform",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "infra/main.tf",
+		"text": "  token_enabled = \"required\"",
+		"label": "ok",
+		"family": "ok-flag",
+		"template": "terraform",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "infra/main.tf",
+		"text": "  thumbnail = \"7yPLWxUHFWbtmDfYWCM2aXyRF5d5MFQHKbOHLOWVmxeY\"",
+		"label": "ok",
+		"family": "ok-base64-chunk",
+		"template": "terraform",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/Config.cs",
+		"text": "public const string token_ttl = \"3600\";",
+		"label": "ok",
+		"family": "ok-ttl",
+		"template": "csharp",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/Config.cs",
+		"text": "public const string token_type = \"argon2id\";",
+		"label": "ok",
+		"family": "ok-type-name",
+		"template": "csharp",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/Config.cs",
+		"text": "public const string api_key_hint = \"Mother's maiden name\";",
+		"label": "ok",
+		"family": "ok-label",
+		"template": "csharp",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/Config.cs",
+		"text": "public const string publishable_key = \"pk_live_BduvLGvOHnZNIErZMlKi3yGh\";",
+		"label": "ok",
+		"family": "ok-public-key-id",
+		"template": "csharp",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/Config.cs",
+		"text": "public const string password_required = \"disabled\";",
+		"label": "ok",
+		"family": "ok-flag",
+		"template": "csharp",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/Config.cs",
+		"text": "public const string node_id = \"6DNIbd1GbmVtwZTfp7ZxX3Hz8rmg\";",
+		"label": "ok",
+		"family": "ok-opaque-id",
+		"template": "csharp",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "src/Config.cs",
+		"text": "public const string icon_data = \"XfGzBuwQVKoWhtM6J6HTEWYIYXGpnumVzqwTMFo5YnKh\";",
+		"label": "ok",
+		"family": "ok-base64-chunk",
+		"template": "csharp",
+		"split": "tune",
+		"stage": "model"
+	},
+	{
+		"path": "App/Secrets.swift",
+		"text": "let token_ttl = \"604800\"",
+		"label": "ok",
+		"family": "ok-ttl",
+		"template": "swift",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "App/Secrets.swift",
+		"text": "let password_hash_algorithm = \"bcrypt\"",
+		"label": "ok",
+		"family": "ok-type-name",
+		"template": "swift",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "App/Secrets.swift",
+		"text": "let secret_question = \"Mother's maiden name\"",
+		"label": "ok",
+		"family": "ok-label",
+		"template": "swift",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "App/Secrets.swift",
+		"text": "let public_api_key = \"pk_live_FTiVBJnjg1vPHDHbSkVv5mgv\"",
+		"label": "ok",
+		"family": "ok-public-key-id",
+		"template": "swift",
+		"split": "test",
+		"stage": "model"
+	},
+	{
+		"path": "App/Secrets.swift",
+		"text": "let token_enabled = \"disabled\"",
+		"label": "ok",
+		"family": "ok-flag",
+		"template": "swift",
+		"split": "test",
+		"stage": "model"
+	}
+]

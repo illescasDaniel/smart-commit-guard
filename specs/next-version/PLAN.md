@@ -88,12 +88,16 @@ Ranking: `jevk5:4b`, then `jeb:4b` (slightly more false blocks at 0.5; its best 
 (overconfident: placeholders score up to 0.91, and slow). The model-stage subset is only 44 lines, so the gaps between the first two
 are within noise: the larger eval (4.2 / 4.3) should use `jevk5:4b` and `jeb:4b`.
 
+The expanded comparison (generated and open-source sets, thresholds fitted on a tune half, bootstrap intervals, time and
+GPU memory) is in `MODEL_COMPARISON.md`: `jevk5:4b` stays the default, `jeb:4b` is statistically tied, `snap:2b` is not accurate enough.
+That also covers 4.2 / 4.3 except the experiments table (context lines, question wording, per-model thresholds file).
+
 ### Still TODO(local): needs macOS or Windows, or a hosted model
 - **0.6** run the eval against a hosted endpoint (a different hosted model needs its own thresholds).
 - **10. Windows / macOS:** `text=True` code page crash is fixed by explicit UTF-8, but test it; `--files` backslash paths; the
   shared hook looking for `.venv/Scripts/smart-commit-guard.exe`; `_executable()` with `.exe`; CI `install-smoke` on macOS and
   Windows (needs `Scripts` vs `bin` handling). The CI matrix runs the unit tests on all three; read its results.
-- **4.2 / 4.3** the larger eval work in item 9 above.
+- **4.2 / 4.3** the experiments table (context lines, question wording, `evals/thresholds.json`), `my-jev-4b` / `Metask-Jev-4B` after a GGUF conversion, and a rule for public key prefixes (`pk_live_`).
 
 ### Done in the second pass (no model needed)
 3.2 richer `[[allow]]` entries, opt-in inline pragma, `--baseline` / `baseline create`, fingerprint v2 with `allowlist migrate`
