@@ -184,6 +184,9 @@ Answers are read from `answers[<key>].noul`. A missing or non-noul answer is a f
 ## Eval results (2026-10-06, `jevk5:4b` via ollaya, RTX 4070 laptop GPU)
 Data: `evals/cases_tune.json` (75 lines, 32 real) and `evals/cases_holdout.json` (42 lines, 16 real), synthetic only.
 Reproduce: `PYTHONPATH=src uv run python evals/run_eval.py` (needs `ollaya serve` with `jevk5:4b`).
+A larger evaluation (1,056 lines: template-split generated cases and an open-source `ok` corpus, bootstrap intervals, three local models, a
+hosted one, GPU memory and latency) is in `specs/next-version/MODEL_COMPARISON.md`: `jevk5:4b` has AUC 0.998, recall 0.98 and 1.6 % false
+blocks at its fitted threshold.
 
 Findings that changed the design:
 - **Batching hurts this model.** The same line scored 0.87 as `items[0]` and 0.37 as `items[1]`; real secrets in a batch of

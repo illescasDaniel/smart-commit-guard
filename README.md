@@ -47,6 +47,24 @@ upgrading from 0.1, which only wrote `pre-commit`; `doctor` warns when `commit-m
 Or protect only your own clone: `smart-commit-guard install-hook`. Either way, check the result with
 `smart-commit-guard doctor`.
 
+### Set up a project, step by step
+
+1. **Install the tool** (above), then **choose a model once per machine**. The default needs no setup if a local ollaya
+   server runs `jevk5:4b`; otherwise write your settings file and edit it (see [Your settings file](#your-settings-file-choosing-a-model)):
+
+   ```bash
+   smart-commit-guard config init        # writes ~/.config/smart-commit-guard/config.jsonc
+   smart-commit-guard config path        # where it is
+   ```
+
+2. **Add the gate to the repo**: `uvx smart-commit-guard install-hook --shared`, then commit `.githooks` and `.gitattributes`
+   (see above). Everyone who clones it gets the hook after one `git config core.hooksPath .githooks`, or by running `install-hook`.
+3. **Optionally add `.secret-guard.toml`** at the repo root for files to skip and findings to allow (see
+   [Bypassing a false positive](#bypassing-a-false-positive)). Keep `.env` files out of git (`.gitignore`); a staged `.env` blocks.
+4. **Add the CI step** below, so `--no-verify` and a missing hook still get caught.
+5. **Check it**: `smart-commit-guard doctor` verifies the hooks, the rules, your settings file and that the model answers; the
+   throwaway-repo test in [Testing that the hook works](#testing-that-the-hook-works) proves it through real git.
+
 ### CI
 
 CI is the backstop: it catches `git commit --no-verify` and ignores `SKIP_SECRET_GUARD`. A GitHub Actions example
@@ -117,7 +135,8 @@ use a hosted model only in CI, keep the hook on rules and set the scope (the rep
 hosted_scope = "ci"      # the commit hook never calls a hosted model; ambiguous candidates only warn there
 ```
 
-In the workflow, run the scan without `--no-model` and give it the endpoint and the key from repository secrets:
+In the workflow, run the scan without `--no-model` and give it the endpoint and the key from repository secrets (CI has no settings file, so
+it uses environment variables):
 
 ```yaml
       - name: Scan the pull request's added lines (hosted model)
@@ -146,7 +165,7 @@ Check out with `fetch-depth: 0`. After a force-push the old `before` commit can 
 1. Only **added lines** are scanned. Binaries and `.env.example` are skipped. Lockfiles and generated files (`.min.js`,
    `.map`) only get the high-confidence rules below, since they can carry inlined keys or `user:token@` URLs but are too
    noisy for model candidates.
-2. **High-confidence rules** (private keys, AWS keys, GitHub, GitLab, Slack, Stripe, Google, Anthropic/OpenAI-style,
+2. **High-confidence rules** (private keys, AWS keys, GitHub, GitLab, Slack, Stripe secret keys, Google, Anthropic/OpenAI-style,
    npm, PyPI, Hugging Face, SendGrid, Shopify, DigitalOcean and similar token shapes, chat webhook URLs,
    connection strings with a password) **block immediately**, with no model call, outside test/doc/example paths.
 3. A staged **environment file** (`.env`, `.env.local`, `prod.env`; not `.env.example`/`.sample`/`.template`) blocks as a whole,
@@ -164,6 +183,8 @@ Check out with `fetch-depth: 0`. After a force-push the old `before` commit can 
 6. The **policy lives in code**, not in the model: the model's probability `p` blocks at `p >= 0.5` and warns at
    `p >= 0.4` (configurable).
 7. If the model is unreachable: rule hits still block; model-only candidates warn and allow.
+
+Stripe publishable keys (`pk_live_...`, `pk_test_...`) are public identifiers and are never flagged.
 
 A base64 token that decodes to a known secret shape (a Kubernetes `Secret`, an encoded key) is reported as that rule, marked
 `(base64-encoded)`.
@@ -192,24 +213,47 @@ crash is also `2`, with the details on stderr when `SMART_COMMIT_GUARD_DEBUG=1`)
 | `--baseline FILE` | ignore the findings recorded in a baseline file |
 | `smart-commit-guard baseline create [-o FILE] [--no-model]` | record the current findings (default `.secret-guard-baseline.json`) |
 | `smart-commit-guard allowlist migrate` | rewrite v1 fingerprints in `.secret-guard.toml` to v2 |
-| `smart-commit-guard install-hook --chain` | keep an existing hook as `pre-commit.local` and run it first |
-| `--version` | print the version |
 | `smart-commit-guard install-hook [--force]` | per-clone hook in the effective hooks directory |
-| `smart-commit-guard install-hook --shared` | committable `.githooks/pre-commit` plus `core.hooksPath` |
-| `smart-commit-guard doctor` | verify the hook, the rules and the model |
-| `smart-commit-guard config init` / `config path` | write a commented template of your per-user settings file / print where it is |
+| `smart-commit-guard install-hook --shared` | committable `.githooks/pre-commit` and `commit-msg` plus `core.hooksPath` |
+| `smart-commit-guard install-hook --chain` | keep an existing hook as `pre-commit.local` and run it first |
+| `smart-commit-guard doctor` | verify the hooks, the rules, your settings file and the model |
+| `smart-commit-guard config init [--force]` / `config path` | write a commented template of your settings file / print where it is |
+| `--version` | print the version |
 
-## Choosing a model: your settings file
+## Your settings file: choosing a model
 
-Run `smart-commit-guard config init` once. It writes `~/.config/smart-commit-guard/config.jsonc` (`$XDG_CONFIG_HOME` is honoured; an existing `config.json` is read too;
-`%APPDATA%` on Windows; `SECRET_GUARD_CONFIG` names another path) with the default, a local `jevk5:4b`, and the settings for a
-hosted model as comments (`//` and `/* */` are allowed in the file). The keys are `base_url`, `model`, `api_key`, `api_key_env`
-(the name of an environment variable that holds the key, so the key stays out of the file), `timeout`, `allow_hosted`,
-`hosted_scope`, `budget`, `block_at` and `warn_at`. Environment variables below override the file; the file overrides the
-repo's `[model]` table. It is your own file outside every repository, which is why it may name a server (the repo file never
-may). A `.env` file is never read.
+The model is a per-user choice, so it lives outside every repository. Run `smart-commit-guard config init` once; it writes
+`~/.config/smart-commit-guard/config.jsonc` (mode 600) with the default and the hosted-model settings as comments. The file is
+JSON with comments (`//` and `/* */`). `config path` prints its location: `$XDG_CONFIG_HOME/smart-commit-guard/` if set,
+`%APPDATA%\smart-commit-guard\` on Windows, or the path in `SECRET_GUARD_CONFIG`. An existing `config.json` is read too.
+
+```jsonc
+{
+	// The default: a local ollaya server. Nothing leaves your machine.
+	"base_url": "http://localhost:11435",
+	"model": "jevk5:4b"
+
+	// A hosted model (candidate lines are sent UNMASKED: only use a server you would trust with the secrets):
+	//   "base_url": "https://api.typesafe.ai",
+	//   "model": "jev-latest",
+	//   "allow_hosted": true,
+	//   "api_key_env": "TYPESAFE_API_KEY",     // the NAME of an environment variable that holds the key
+	//   "hosted_scope": "ci"                   // the commit hook never calls it; CI does
+}
+```
+
+Keys: `base_url`, `model`, `api_key`, `api_key_env`, `timeout`, `allow_hosted`, `hosted_scope`, `budget`, `block_at`, `warn_at`
+(same meaning as the variables below). Prefer `api_key_env` to `api_key`: the key then never sits in a file, and a file that
+holds a key and is readable by others gets a warning.
+
+**Precedence, per setting:** environment variable, then this file, then the repo's `[model]` table (model name and thresholds
+only), then the default. Only this file and the environment can name a server or a key; the repo file never can, so a pull
+request cannot send your diff somewhere. "Environment variable" means a real one that you export (in your shell profile, a CI
+`env:` block...). **A `.env` file is never read.** (This repo's `.env` / `.env.example` are only for its own eval scripts.)
 
 ## Environment variables
+
+Each of these overrides the same setting in your settings file.
 
 | Variable | Default | Meaning |
 |---|---|---|
@@ -380,19 +424,29 @@ cat .git/secret-guard-skips.log            # the logged bypass
 
 ## Model setup
 
-The default is a local model server that speaks the `POST /v1/systemone` API, with the `jevk5:4b` model
-(for example ollaya serving `jevk5:4b` on port 11435). Typical latency is
-about 70 ms per candidate. Commits with no candidates never call the model.
+The default is a local model server that speaks the `POST /v1/systemone` API, with the `jevk5:4b` model (for example
+ollaya serving it on port 11435). A call takes about 80 ms and the model needs about 5.5 GB of GPU memory;
+commits with no candidates never call the model (about 9 in 10 commits in a replay of 486 real commits).
 
 ### Other models
 
-Thresholds are calibrated per model. The defaults come from `evals/` (tuning and held-out sets, synthetic only):
-recall 0.97 / 1.00 (tuning / held-out) and precision 1.00 at block 0.5 / warn 0.4 for `jevk5:4b`. Those sets are small and the rules were adjusted
-after seeing the first held-out misses, so treat the numbers as optimistic. For another model, rerun the eval and
-choose your own thresholds:
+Thresholds are calibrated per model. On 1,056 labelled lines that reach the model (356 real, 700 not; synthetic cases split by
+template, plus real lines from 95 open-source packages), with thresholds fitted on one half and scored on the other:
+
+| model | AUC | recall | false blocks | median call | GPU memory |
+|---|---|---|---|---|---|
+| `jevk5:4b` (default) | 0.998 | 0.98 | 1.6 % | 82 ms | 5.6 GB |
+| `jeb:4b` | 0.994 | 0.99 | 3.6 % | 75 ms | 5.3 GB |
+| `snap:2b` | 0.855 | 0.61 | 5.2 % | 43 ms | 3.1 GB |
+| hosted TypeSafe `jev-latest` | 1.000 (60 lines only) | 1.00 | 0 | 242 ms | none |
+
+At the defaults (block 0.5, warn 0.4) `jevk5:4b` has recall 0.97 and 1 % false blocks on that set. The cases are mostly synthetic, so
+treat the numbers as optimistic for real code. The full report, per-model thresholds (`evals/thresholds.json`) and prompt
+experiments are in [`specs/next-version/MODEL_COMPARISON.md`](specs/next-version/MODEL_COMPARISON.md). For another model, rerun
+the comparison and set `block_at` / `warn_at` for it in your settings file:
 
 ```bash
-PYTHONPATH=src uv run python evals/run_eval.py
+uv run python evals/compare_models.py run MODEL && uv run python evals/compare_models.py report
 ```
 
 ### Privacy
