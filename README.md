@@ -41,6 +41,9 @@ release that changes behaviour. `doctor` warns when the committed hook differs f
 Already have a pre-commit hook (husky, lefthook, a custom one)? `install-hook --chain` (also with `--shared`) keeps it as
 `pre-commit.local` next to the new hook and runs it first; if it fails, the commit stops before the scan.
 
+`install-hook` writes two hooks: `pre-commit` (the staged diff) and `commit-msg` (the message, see below). Re-run it after
+upgrading from 0.1, which only wrote `pre-commit`; `doctor` warns when `commit-msg` is missing.
+
 Or protect only your own clone: `smart-commit-guard install-hook`. Either way, check the result with
 `smart-commit-guard doctor`.
 
@@ -80,6 +83,28 @@ request cannot change its own skip list. A GitHub Actions run prints findings as
       - run: uvx --from 'smart-commit-guard>=0.2,<0.3' smart-commit-guard scan --no-model --all
       - run: uvx --from 'smart-commit-guard>=0.2,<0.3' smart-commit-guard scan --no-model --diff "origin/${{ github.base_ref }}...HEAD" --config-from "origin/${{ github.base_ref }}" --format sarif > results.sarif
 ```
+
+#### Commit messages
+
+Secrets also leak through commit messages (`git commit -m "debugging with AKIA..."`), and a message is permanent once pushed.
+The `commit-msg` hook runs `scan --message` on the message; for the CI backstop add `--messages` to a diff scan, which also
+scans the message of every commit in the range (it catches `--no-verify`, a hook that was never installed, and the message
+GitHub builds for a squash merge):
+
+```yaml
+      - run: uvx --from 'smart-commit-guard>=0.2,<0.3' smart-commit-guard scan --no-model --diff "origin/${{ github.base_ref }}...HEAD" --messages
+      # a pull request title and body are not commits: pipe them in
+      - run: printf '%s\n%s\n' "$TITLE" "$BODY" | uvx --from 'smart-commit-guard>=0.2,<0.3' smart-commit-guard scan --text -
+        env:
+          TITLE: ${{ github.event.pull_request.title }}
+          BODY: ${{ github.event.pull_request.body }}
+```
+
+Messages follow different rules than code: **rule hits block** (AWS keys, tokens, private keys, connection strings), but
+candidates (`the password is ...`) **only warn**, and the model is never called, because prose is too noisy to block on a score.
+When a message is blocked, git keeps it in `.git/COMMIT_EDITMSG`; fix it and run `git commit -e -F .git/COMMIT_EDITMSG`. Text
+below the `-v` scissors line (the diff) is not scanned as message text, comment lines are. `SKIP_SECRET_GUARD=1` skips the message
+hook too, and so does `# smart-commit-guard: allow` on a line when `allow_inline = true`.
 
 #### Hosted model in CI only
 
@@ -160,6 +185,8 @@ crash is also `2`, with the details on stderr when `SMART_COMMIT_GUARD_DEBUG=1`)
 | `smart-commit-guard scan --diff RANGE` | a revision range, for CI (`origin/main...HEAD`) |
 | `smart-commit-guard scan --files PATH...` | whole files (`--files -` reads NUL-separated paths from stdin) |
 | `smart-commit-guard scan --all` | every tracked file (`git ls-files`) |
+| `smart-commit-guard scan --message FILE` | a commit message (what the `commit-msg` hook runs); `--text -` scans stdin the same way |
+| `--messages` | with `--diff`: also scan the message of every commit in the range |
 | `--format text\|json\|sarif`, `--json`, `--no-model` | output format (`--json` is `--format json`); rules only (no model call) |
 | `--config-from REF` | read `.secret-guard.toml` from a revision such as `origin/main`, not the working tree |
 | `--baseline FILE` | ignore the findings recorded in a baseline file |

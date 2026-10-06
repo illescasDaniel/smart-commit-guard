@@ -36,6 +36,7 @@ update `.secret-guard.toml` if a previously allowlisted finding comes back.
 - `baseline create` and `scan --baseline FILE`: adopt the tool on an existing repo and fail on new findings only.
 - Fingerprint v2 and `allowlist migrate`.
 - `install-hook --chain`: keep an existing hook as `pre-commit.local` and run it first.
+- **Commit-message scanning**: a `commit-msg` hook (`scan --message FILE`) refuses a commit whose message contains a secret (rule hits block, candidates only warn, no model), `scan --diff A..B --messages` scans every message in a range for CI and squash merges, and `scan --text -` scans stdin (PR title and body). `install-hook` now writes both hooks (with `--shared` and `--chain`), and `doctor` warns when `commit-msg` is missing. Re-run `install-hook` after upgrading.
 - Base64 decoding: a token that decodes to a known secret shape (Kubernetes `Secret`, encoded key) is found and marked `(base64-encoded)`. Sequential and repeated values are placeholders. `gitleaks:allow` and `pragma: allowlist secret` work as inline markers when `allow_inline = true`.
 - `[model] name / block_at / warn_at` in `.secret-guard.toml` (environment wins; never `base_url`).
 - Push ranges: an all-zero `before` scans the whole branch; a missing base revision explains `fetch-depth: 0`.

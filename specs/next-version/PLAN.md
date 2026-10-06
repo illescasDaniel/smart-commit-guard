@@ -78,9 +78,12 @@ range and the extra `doctor` checks (tool lookup and version, stale shared hook)
 notes. Ideas taken from similar tools (base64 decoding, sequential-value filter, other tools' inline markers) are in
 `RESEARCH.md`, which also lists what was deliberately not adopted and the next candidates.
 
+### Done in the fourth pass
+Commit-message scanning (see `RESEARCH.md`): `commit-msg` hook, `scan --message`, `--diff --messages`, `--text -`, `install-hook`
+writes both hooks, `doctor` checks the second one.
+
 ### Still not done
-Everything left is in the TODO(local) list above, plus the candidates at the end of `RESEARCH.md` (commit-message scanning,
-`pre-push` hook, global template-dir install, per-rule stopwords, severity levels, BPE-based randomness test).
+Everything left is in the TODO(local) list above, plus the candidates at the end of `RESEARCH.md` (`pre-push` hook, global template-dir install, per-rule stopwords, severity levels, BPE-based randomness test).
 
 ---
 

@@ -22,6 +22,7 @@ from .config import CONFIG_NAME, Config, ConfigError, RepoSettings
 from .decider import Decider, DeciderUnavailable, HttpDecider
 from .diff import parse_added_lines
 from .git import GitError
+from .messages import message_lines
 from .policy import scan
 from .redact import fingerprint_v2, fingerprints
 from .skip import BINARY_SUFFIXES
@@ -45,7 +46,7 @@ HOOK = """#!/bin/sh
 # installed by smart-commit-guard
 @CHAIN@exe={exe}
 if [ -x "$exe" ] || command -v "$exe" >/dev/null 2>&1; then
-	exec "$exe" scan --staged
+	exec "$exe" scan @ARGS@
 fi
 """ + _MISSING
 # Shared hook (committed to the repo): no machine-specific paths, so it resolves the tool at run time.
@@ -53,20 +54,21 @@ SHARED_HOOK = """#!/bin/sh
 # managed by smart-commit-guard (install-hook --shared). Commit this file so every clone gets the same gate.
 @CHAIN@root=$(git rev-parse --show-toplevel)
 if command -v smart-commit-guard >/dev/null 2>&1; then
-	exec smart-commit-guard scan --staged
+	exec smart-commit-guard scan @ARGS@
 elif [ -x "$root/.venv/bin/smart-commit-guard" ]; then
-	exec "$root/.venv/bin/smart-commit-guard" scan --staged
+	exec "$root/.venv/bin/smart-commit-guard" scan @ARGS@
 elif command -v uvx >/dev/null 2>&1; then
-	exec uvx @UVX@smart-commit-guard scan --staged
+	exec uvx @UVX@smart-commit-guard scan @ARGS@
 fi
 """ + _MISSING
-# `install-hook --chain`: the hook that was already there is kept as `pre-commit.local` and runs first.
-CHAIN_BLOCK = """local_hook="$(dirname "$0")/pre-commit.local"
+# `install-hook --chain`: the hook that was already there is kept as `<name>.local` and runs first.
+CHAIN_BLOCK = """local_hook="$(dirname "$0")/@NAME@.local"
 if [ -x "$local_hook" ]; then
 	"$local_hook" "$@" || exit $?
 fi
 """
-LOCAL_HOOK = "pre-commit.local"
+# (hook file, arguments for `scan`). The message hook is separate because the message does not exist yet when pre-commit runs.
+HOOKS = (("pre-commit", "--staged"), ("commit-msg", '--message "$1"'))
 SHARED_DIR = ".githooks"
 GITATTRIBUTES_LINE = f"/{SHARED_DIR}/* text eol=lf"
 
@@ -128,6 +130,12 @@ def _hint() -> str:
 			f"in {CONFIG_NAME} or, for this commit only, run it with {SKIP_ENV}=1.")
 
 
+def _message_hint(message_file: str) -> str:
+	return ("smart-commit-guard: commit message blocked: it contains a secret. Your message is saved in "
+			f"{message_file}; edit it and re-run with `git commit -e -F {message_file}`. For a false positive, run the commit "
+			f"with {SKIP_ENV}=1.")
+
+
 def _log_skip() -> None:
 	"""Append an audit entry for a bypassed commit to `<git dir>/secret-guard-skips.log`. Never blocks the commit."""
 	try:
@@ -149,8 +157,19 @@ def _log_skip() -> None:
 		print(f"smart-commit-guard: could not write the skips log: {e}", file=sys.stderr)
 
 
-def _input(args: argparse.Namespace, root: Path) -> tuple[list[AddedLine], list[str]]:
-	"""(added lines, changed paths that may have no lines, such as key stores) with repo-relative paths."""
+def _input(args: argparse.Namespace, root: Path) -> tuple[list[AddedLine], list[str], list[AddedLine]]:
+	"""(added lines, changed paths that may have no lines such as key stores, commit message lines), repo-relative paths.
+	Messages never go to the model: rule hits block, candidates only warn (prose is too noisy to block on a score)."""
+	if args.messages and not args.diff:
+		raise ToolError("--messages goes with --diff: it scans the messages of the commits in that range")
+	if args.message:
+		try:
+			text = Path(args.message).read_bytes().decode("utf-8", "replace")
+		except OSError as e:
+			raise ToolError(f"cannot read the commit message {args.message}: {e}") from e
+		return [], [], message_lines(text)
+	if args.text:
+		return [], [], message_lines(sys.stdin.buffer.read().decode("utf-8", "replace"), "stdin")
 	if args.all or args.files:
 		if args.all:
 			listed = [p for p in git.run("ls-files", "-z", cwd=root).split("\0") if p]
@@ -158,20 +177,22 @@ def _input(args: argparse.Namespace, root: Path) -> tuple[list[AddedLine], list[
 		else:
 			names = [n for n in sys.stdin.buffer.read().decode("utf-8", "replace").split("\0") if n] if args.files == ["-"] else args.files
 			files = [(n, _display_path(n, root)) for n in names]
-		return _file_lines(files), [shown for _, shown in files]
+		return _file_lines(files), [shown for _, shown in files], []
 	if args.diff:
 		if ".." not in args.diff:
 			raise ToolError(f"--diff takes a revision range such as origin/main...HEAD, got {args.diff!r} "
 							"(a single revision would compare it with the working tree)")
 		rev = git.normalize_range(args.diff)
 		try:
-			return parse_added_lines(git.diff_text(rev)), git.changed_paths(rev)
+			lines, paths = parse_added_lines(git.diff_text(rev)), git.changed_paths(rev)
+			messages = [l for sha, body in git.commit_messages(args.diff) for l in message_lines(body, f"commit {sha}")] if args.messages else []
+			return lines, paths, messages
 		except GitError as e:
 			if any(t in str(e) for t in ("bad revision", "unknown revision", "Invalid revision")):
 				raise ToolError(f"{e}. In CI check out with fetch-depth: 0 (a shallow clone lacks the base), and after a force-push "
 								"the old `before` commit may be gone: scan the branch against its base instead.") from e
 			raise
-	return parse_added_lines(git.diff_text("--cached")), git.changed_paths("--cached")
+	return parse_added_lines(git.diff_text("--cached")), git.changed_paths("--cached"), []
 
 
 def _read_baseline(path: str) -> frozenset[str]:
@@ -187,7 +208,7 @@ def _read_baseline(path: str) -> frozenset[str]:
 def _execute(args: argparse.Namespace, env: Mapping[str, str], decider: Decider | None) -> ScanResult:
 	"""Read the input, apply the repo config and the baseline, and scan."""
 	root = git.repo_root() or Path.cwd()
-	lines, paths = _input(args, root)
+	lines, paths, messages = _input(args, root)
 	settings = _load_settings(root, args.config_from)
 	if args.diff and CONFIG_NAME in paths and not args.config_from:
 		print(f"smart-commit-guard: warning: {CONFIG_NAME} changes in this range, and it can skip or allowlist findings. "
@@ -198,8 +219,9 @@ def _execute(args: argparse.Namespace, env: Mapping[str, str], decider: Decider 
 		print(f"smart-commit-guard: warning: the skip patterns in {CONFIG_NAME} cover every changed file, so nothing was scanned.",
 			  file=sys.stderr)
 	lines, paths = filtered, kept
+	messages = [l for l in messages if not _skipped_by(l.path, settings.skip)]
 	skipped_reason = None
-	if args.no_model:
+	if args.message or args.text or args.no_model:   # a commit message hook must never fail on model or hosted-model configuration
 		decider, cfg = None, Config()
 	else:
 		cfg = Config.from_env(env, settings)
@@ -211,6 +233,9 @@ def _execute(args: argparse.Namespace, env: Mapping[str, str], decider: Decider 
 	allow = settings.fingerprints | (_read_baseline(args.baseline) if args.baseline else frozenset())
 	result = scan(lines, decider, block_at=cfg.block_at, warn_at=cfg.warn_at, allowlist=allow, allow_paths=settings.allow_paths,
 				  inline_allow=settings.allow_inline, paths=paths, budget=budget)
+	if messages:
+		said = scan(messages, None, allowlist=allow, allow_paths=settings.allow_paths, inline_allow=settings.allow_inline)
+		result.findings = sorted(result.findings + said.findings, key=lambda f: (f.path, f.number))
 	result.model_skipped = skipped_reason
 	return result
 
@@ -221,18 +246,22 @@ def _scan(args: argparse.Namespace, env: Mapping[str, str], decider: Decider | N
 			  file=sys.stderr)
 		_log_skip()
 		return 0
+	if args.message and env.get(SKIP_ENV) == "1":   # the pre-commit hook already logged this skip
+		print(f"smart-commit-guard: SKIPPED ({SKIP_ENV}=1): this commit message was not scanned.", file=sys.stderr)
+		return 0
 	result = _execute(args, env, decider)
 	if args.format == "json":
 		print(report.as_json(result))
 	elif args.format == "sarif":
 		print(report.as_sarif(result))
 	else:
-		report.print_text(result, env.get("GITHUB_ACTIONS") == "true", _hint())
+		report.print_text(result, env.get("GITHUB_ACTIONS") == "true", _message_hint(args.message) if args.message else _hint())
 	return result.exit_code
 
 
 def _whole_tree_args(no_model: bool) -> argparse.Namespace:
-	return argparse.Namespace(staged=False, diff=None, files=None, all=True, config_from=None, no_model=no_model, baseline=None)
+	return argparse.Namespace(staged=False, diff=None, files=None, all=True, config_from=None, no_model=no_model, baseline=None,
+							  message=None, text=None, messages=False)
 
 
 def _baseline_create(output: str, no_model: bool, env: Mapping[str, str], decider: Decider | None) -> int:
@@ -255,7 +284,7 @@ def _allowlist_migrate(env: Mapping[str, str]) -> int:
 	settings = RepoSettings.load(root)
 	old = settings.fingerprints
 	args = _whole_tree_args(True)
-	lines, paths = _input(args, root)
+	lines, paths, _ = _input(args, root)
 	lines = [l for l in lines if not _skipped_by(l.path, settings.skip)]
 	# empty allowlist, no model: every flagged line shows up as a finding, so its v1 and v2 fingerprints can be paired
 	found = scan(lines, None, paths=[p for p in paths if not _skipped_by(p, settings.skip)]).findings
@@ -290,22 +319,39 @@ def _uvx_spec() -> str:
 	return f"--from 'smart-commit-guard>={m[1]}.{m[2]},<{m[1]}.{int(m[2]) + 1}' " if m else ""
 
 
-def _shared_hook() -> str:
-	return SHARED_HOOK.replace("@UVX@", _uvx_spec())
+def _hook_text(name: str, shared: bool, exe: str = "") -> str:
+	"""A hook script (with `@CHAIN@` and `@NAME@` still to fill in): per-clone with an absolute path, or shared and path-free."""
+	args = dict(HOOKS)[name]
+	text = SHARED_HOOK.replace("@UVX@", _uvx_spec()) if shared else HOOK.format(exe=shlex.quote(exe))
+	return text.replace("@ARGS@", args)
+
+
+def _chain(text: str, name: str, chained: bool) -> str:
+	return text.replace("@CHAIN@", CHAIN_BLOCK.replace("@NAME@", name) if chained else "")
+
+
+def _is_ours(hook: Path) -> bool:
+	return "smart-commit-guard" in hook.read_text(encoding="utf-8", errors="replace")
+
+
+def _check_hook(hook: Path, force: bool, chain: bool) -> None:
+	"""Refuse before anything is written, so a refusal never leaves one hook installed and the other not."""
+	local = hook.with_name(hook.name + ".local")
+	if hook.exists() and not _is_ours(hook) and chain:
+		if local.exists() and not force:
+			raise ToolError(f"{local} already exists; use --force to overwrite it")
+	elif hook.exists() and not force:
+		raise ToolError(f"{hook} already exists; use --force to overwrite it, or --chain to keep it and run it first")
 
 
 def _write_hook(hook: Path, text: str, force: bool, chain: bool = False) -> None:
-	"""Write a hook. With `chain`, a hook that is already there (not ours) is kept as `pre-commit.local` and called first."""
-	local = hook.with_name(LOCAL_HOOK)
-	if hook.exists() and "smart-commit-guard" not in hook.read_text(encoding="utf-8", errors="replace") and chain:
-		if local.exists() and not force:
-			raise ToolError(f"{local} already exists; use --force to overwrite it")
+	"""Write a hook. With `chain`, a hook that is already there (not ours) is kept as `<name>.local` and called first."""
+	_check_hook(hook, force, chain)
+	local = hook.with_name(hook.name + ".local")
+	if hook.exists() and not _is_ours(hook) and chain:
 		hook.replace(local)
 		print(f"kept the existing hook as {local}; it runs before the scan")
-	elif hook.exists() and not force:
-		raise ToolError(f"{hook} already exists; use --force to overwrite it, or --chain to keep it and run it first")
-	chained = chain and local.exists()
-	text = text.replace("@CHAIN@", CHAIN_BLOCK if chained else "")
+	text = _chain(text, hook.name, chain and local.exists())
 	hook.parent.mkdir(parents=True, exist_ok=True)
 	hook.write_bytes(text.encode("utf-8"))   # LF endings on every OS: write_text would turn them into CRLF on Windows
 	hook.chmod(hook.stat().st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
@@ -314,8 +360,12 @@ def _write_hook(hook: Path, text: str, force: bool, chain: bool = False) -> None
 
 def _install_hook(force: bool, shared: bool, chain: bool = False) -> int:
 	if not shared:
-		_write_hook(Path(git.run("rev-parse", "--git-path", "hooks/pre-commit").strip()), HOOK.format(exe=shlex.quote(_executable())),
-					force, chain)
+		exe = _executable()
+		targets = [(Path(git.run("rev-parse", "--git-path", f"hooks/{name}").strip()), _hook_text(name, False, exe)) for name, _ in HOOKS]
+		for hook, _ in targets:
+			_check_hook(hook, force, chain)
+		for hook, text in targets:
+			_write_hook(hook, text, force, chain)
 		return 0
 	top = Path(git.run("rev-parse", "--show-toplevel").strip())
 	try:
@@ -324,7 +374,11 @@ def _install_hook(force: bool, shared: bool, chain: bool = False) -> int:
 		current = ""
 	if current not in ("", SHARED_DIR) and not force:
 		raise ToolError(f"core.hooksPath is already set to {current!r}; use --force to replace it")
-	_write_hook(top / SHARED_DIR / "pre-commit", _shared_hook(), force, chain)
+	targets = [(top / SHARED_DIR / name, _hook_text(name, True)) for name, _ in HOOKS]
+	for hook, _ in targets:
+		_check_hook(hook, force, chain)
+	for hook, text in targets:
+		_write_hook(hook, text, force, chain)
 	git.run("config", "core.hooksPath", SHARED_DIR)
 	attrs = top / ".gitattributes"
 	existing = attrs.read_text(encoding="utf-8", errors="replace") if attrs.exists() else ""
@@ -391,12 +445,21 @@ def _doctor(env: Mapping[str, str], decider: Decider | None) -> int:
 				hooks_path = git.run("config", "core.hooksPath").strip()
 			except GitError:
 				hooks_path = ""
-			if hooks_path == SHARED_DIR:
-				chained = hook.with_name(LOCAL_HOOK).exists()
-				expected = _shared_hook().replace("@CHAIN@", CHAIN_BLOCK if chained else "")
-				if text.replace("\r\n", "\n") != expected:
-					say("WARN", "shared hook", f"{hook} differs from the template of smart-commit-guard {__version__}: it may be "
-											   "stale (run `smart-commit-guard install-hook --shared --force`, then commit it)")
+			for name, _ in HOOKS:
+				path = hook.with_name(name)
+				if hooks_path == SHARED_DIR and path.is_file():
+					expected = _chain(_hook_text(name, True), name, path.with_name(name + ".local").exists())
+					if path.read_text(encoding="utf-8", errors="replace").replace("\r\n", "\n") != expected:
+						say("WARN", "shared hook", f"{path} differs from the template of smart-commit-guard {__version__}: it may be "
+												   "stale (run `smart-commit-guard install-hook --shared --force`, then commit it)")
+		msg_hook = hook.with_name("commit-msg")
+		if not msg_hook.is_file() or "scan --message" not in msg_hook.read_text(encoding="utf-8", errors="replace"):
+			say("WARN", "commit-msg hook", f"{msg_hook} is missing: commit messages are not scanned for secrets. Run "
+										   "`smart-commit-guard install-hook` (or `install-hook --shared`) again")
+		elif not os.access(msg_hook, os.X_OK):
+			say("WARN", "commit-msg hook", f"{msg_hook} is not executable (chmod +x)")
+		else:
+			say("ok", "commit-msg hook", str(msg_hook))
 	probe = AddedLine("doctor.py", 1, 'KEY = "' + "AKIA" + 'IOSFODNN7EXAMPLE"')   # assembled so this file never trips the scanner
 	if scan([probe], None).exit_code == 1:
 		say("ok", "rules", "a synthetic AWS key is blocked")
@@ -432,6 +495,10 @@ def main(argv: Sequence[str] | None = None, env: Mapping[str, str] | None = None
 	src.add_argument("--diff", metavar="RANGE", help="a git revision range, e.g. origin/main...HEAD (CI)")
 	src.add_argument("--files", nargs="+", metavar="PATH", help="scan whole files; `-` reads NUL-separated paths from stdin")
 	src.add_argument("--all", action="store_true", help="scan every tracked file (git ls-files)")
+	src.add_argument("--message", metavar="FILE", help="a commit message file (what the commit-msg hook runs); rule hits block, "
+													   "candidates only warn")
+	src.add_argument("--text", choices=["-"], help="text on stdin, scanned like a commit message (for example a PR title and body)")
+	sc.add_argument("--messages", action="store_true", help="with --diff: also scan the message of every commit in the range")
 	sc.add_argument("--format", choices=report.FORMATS, default="text",
 					help="text (with GitHub Actions annotations when GITHUB_ACTIONS=true), json, or sarif for code scanning")
 	sc.add_argument("--json", action="store_true", help="same as --format json")

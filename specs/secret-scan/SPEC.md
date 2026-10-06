@@ -53,6 +53,14 @@ placeholder, mock or env reference). The tool is a CLI for a git pre-commit hook
 | Binary file (by suffix, or NUL bytes), `.env.example` | Skipped |
 | Lockfile, generated file (`.min.js`, `.min.css`, `.map`) | High-confidence rules only; no candidates, no model |
 
+**Commit messages.** The `commit-msg` hook runs `scan --message FILE`: every line above git's scissors line (`# ---- >8 ----`,
+which `commit -v` appends the diff below) is scanned, comment lines included, as the pseudo-file `COMMIT_EDITMSG`. Rule hits block
+(exit 1, with a hint to recover the message from `COMMIT_EDITMSG`); candidates only warn and the model is never called, so a model
+or hosted-model configuration problem cannot refuse a commit. `scan --diff A..B --messages` scans the message of every commit in
+the range (`commit <sha>`; an all-zero base means the whole branch); `scan --text -` scans stdin as a message (PR title and body).
+`SKIP_SECRET_GUARD=1` skips the message scan with a notice (the pre-commit hook already logged the skip). `install-hook` installs
+both hooks, checking every target before writing any, with the same `--shared` and `--chain` behaviour for each.
+
 **Git invocation.** Every diff is read with the user's diff configuration overridden (no external diff, no textconv, `a/` and
 `b/` prefixes, no relative paths, no rename detection, `--text` so `binary` / `-diff` attributes cannot hide a file, binary
 suffixes excluded from the pathspec), decoded as UTF-8 whatever the locale, with C-quoted paths decoded. A user's git config
@@ -140,6 +148,10 @@ Answers are read from `answers[<key>].noul`. A missing or non-noul answer is a f
 - **Given** `# gitleaks:allow` or `# pragma: allowlist secret` with `allow_inline = true`, **then** the line is ignored.
 - **Given** a push range whose base is all zeros, **then** the whole branch is scanned; **and given** a missing base revision, **then** exit 2 with a `fetch-depth: 0` hint.
 - **Given** `doctor` and a hook that cannot find the tool, **then** it fails; **given** a stale shared hook, **then** it warns.
+- **Given** `git commit -m "... AKIA..."` with the hooks installed, **then** the commit is refused, nothing is committed, the message stays in `COMMIT_EDITMSG` and the secret is not printed.
+- **Given** a prose candidate in a message (`the admin password is ...`), **then** exit 0 with a warning and no model call; **and given** a secret only below the scissors line, **then** it is not reported.
+- **Given** `scan --diff A..B --messages` and a secret in a commit message in the range, **then** exit 1 naming the commit; **and given** `--messages` without `--diff`, **then** exit 2.
+- **Given** an existing `commit-msg` hook that is not ours and no `--force` or `--chain`, **then** nothing is written (no half-installed state).
 - **Given** a candidate at column 350 of a long line, **then** the model payload contains it.
 - **Given** `HTTP_PROXY` set and a loopback model, **then** the call bypasses the proxy; **and given** a redirect, **then** it is not followed.
 - **Given** `SKIP_SECRET_GUARD=1` and a staged secret, **when** scanning staged, **then** exit 0, a `SKIPPED` notice, no model call;

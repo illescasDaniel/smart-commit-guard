@@ -31,23 +31,26 @@ sorted by what we did with them.
   the path and the masked line shape, so a changed secret on the same line shape stays allowed; a checksum would be stricter.
   Worth reconsidering if reviewers ask for "allow this exact content only".
 
+## Done since
+- **`commit-msg` scanning** (git-secrets installs `commit-msg` and `prepare-commit-msg` hooks): `scan --message`, the
+  `commit-msg` hook, `--diff --messages` and `--text -` for CI. Rule hits block, candidates only warn.
+  **TODO(local):** measure the false-warning rate on the messages of real repositories before considering a model for messages.
+
 ## Ideas worth doing next (need a decision)
-1. **`commit-msg` scanning** (git-secrets installs `commit-msg` and `prepare-commit-msg` hooks): secrets leak through commit
-   messages too. Cheap: `scan --message FILE` plus a second hook.
-2. **Global install through the git template directory** (git-secrets `init.templateDir`): every new clone gets the hook with no
+1. **Global install through the git template directory** (git-secrets `init.templateDir`): every new clone gets the hook with no
    per-repo step. A `install-hook --global` would remove the "each clone runs once" gap in the README.
-3. **`pre-push` hook** (Talisman, ggshield): scans the commits being pushed, which also covers commits made with
+2. **`pre-push` hook** (Talisman, ggshield): scans the commits being pushed, which also covers commits made with
    `--no-verify`. `scan --diff` already does the work; the hook only has to read git's stdin refs.
-4. **Per-rule stopwords and path allowlists** (gitleaks rule allowlists, `stopwords`): finer than the global `skip`.
-5. **Severity levels and a threshold** (Talisman low / medium / high): lets a team block only on high.
-6. **BPE "token efficiency" instead of entropy** (Betterleaks reports 98.6% recall versus 70.4% for entropy on the CredData
+3. **Per-rule stopwords and path allowlists** (gitleaks rule allowlists, `stopwords`): finer than the global `skip`.
+4. **Severity levels and a threshold** (Talisman low / medium / high): lets a team block only on high.
+5. **BPE "token efficiency" instead of entropy** (Betterleaks reports 98.6% recall versus 70.4% for entropy on the CredData
    dataset). Our entropy checks are only used for the literal and preview-masking heuristics, but this is a cheap-to-test
    upgrade; needs a tokenizer vocabulary (a dependency or a vendored table) and the CredData benchmark. **TODO(local):** measure.
-7. **Rule-defined validation** (Betterleaks CEL) and **LLM-assisted analysis** (listed on Betterleaks' roadmap): the closest
+6. **Rule-defined validation** (Betterleaks CEL) and **LLM-assisted analysis** (listed on Betterleaks' roadmap): the closest
    neighbour to what this project already does; worth watching, and a reason to publish our eval numbers.
-8. **Audit mode** (`detect-secrets audit`): interactively label each baseline entry real or false positive. Could feed our eval
+7. **Audit mode** (`detect-secrets audit`): interactively label each baseline entry real or false positive. Could feed our eval
    sets with real-world labelled lines (**TODO(local)**).
-9. **Honeytokens** (ggshield): planted fake credentials that alert when used. Out of scope, but a fake-secret fixture helps
+8. **Honeytokens** (ggshield): planted fake credentials that alert when used. Out of scope, but a fake-secret fixture helps
    `doctor` prove the gate end to end.
 
 ## Sources

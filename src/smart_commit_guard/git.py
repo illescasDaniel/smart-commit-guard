@@ -113,3 +113,12 @@ def unquote_path(raw: str) -> str:
 			out += ("\\" + nxt).encode("utf-8")
 			i += 2
 	return out.decode("utf-8", "replace")
+
+
+def commit_messages(revision_range: str) -> list[tuple[str, str]]:
+	"""(abbreviated sha, full message) of every commit in a range. An all-zero base (a new branch) means the whole branch."""
+	m = _RANGE.match(revision_range)
+	rev = m["right"] or "HEAD" if m and m["left"] and set(m["left"]) == {"0"} else revision_range
+	out = run("-c", "log.showSignature=false", "log", "--format=%h%x00%B%x01", rev)
+	rows = [row.strip("\n") for row in out.split("\x01") if row.strip("\n")]
+	return [(sha, body) for sha, _, body in (row.partition("\0") for row in rows)]
