@@ -72,6 +72,22 @@ Done, with tests (630 unit and integration tests, ruff and ty clean):
     (merge subjects with long branch slugs, 0.4 %), 0 blocks.
 12. **Pinned actions:** `scripts/pin_actions.py` ran (3 workflow files and `action.yml`); `--check` is a step in CI.
 
+### Model comparison (2026-10-06, same 117 cases, RTX 4070 laptop, 6.5 GB usable VRAM)
+Candidates had to fit in about 6.5 GB. Run with `SECRET_GUARD_MODEL=<tag> EVAL_OUT=evals/models/<tag>.json python evals/run_eval.py`.
+Not run: `my-jev-4b` and `Metask-Jev-4B` (BF16 safetensors on Hugging Face only, 9 GB, no ollaya tag: they need a GGUF Q8
+conversion and their own letter-readout adapter), `snap:2b` (needs ollaya 0.10, installed 0.9.0), `winnow:e4b` (8 GB),
+`decider:4b`, `kev`, `jeeves`, `clef`, `nimble`, `cygnet` (8.4 GB and up).
+
+| model | size | AUC (28 real / 16 ok, model-stage) | block 0.5: recall / false blocks (tune, held-out) | median call |
+|---|---|---|---|---|
+| `jevk5:4b` | 4.5 GB | 0.996 | 0.97 / 0, 1.00 / 0 | 71 ms |
+| `jeb:4b` | 4.6 GB | 0.991 | 0.97 / 2, 1.00 / 0 | 67 ms |
+| `decider:2b` | 3.8 GB | 0.949 | 0.94 / 4, 0.94 / 1 | 1,231 ms |
+
+Ranking: `jevk5:4b`, then `jeb:4b` (slightly more false blocks at 0.5; its best threshold is about 0.7), then `decider:2b`
+(overconfident: placeholders score up to 0.91, and slow). The model-stage subset is only 44 lines, so the gaps between the first two
+are within noise: the larger eval (4.2 / 4.3) should use `jevk5:4b` and `jeb:4b`.
+
 ### Still TODO(local): needs macOS or Windows, or a hosted model
 - **0.6** run the eval against a hosted endpoint (a different hosted model needs its own thresholds).
 - **10. Windows / macOS:** `text=True` code page crash is fixed by explicit UTF-8, but test it; `--files` backslash paths; the

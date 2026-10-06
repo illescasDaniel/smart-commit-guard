@@ -94,7 +94,8 @@ def main(paths: list[str]) -> None:
 		per_item = [t / n for t, n in rec.latencies]
 		print(f"\nmodel calls: {len(rec.latencies)}, median {statistics.median(t for t, _ in rec.latencies) * 1000:.0f} ms/call, "
 			  f"{statistics.median(per_item) * 1000:.0f} ms/item")
-	with open("evals/last_run.json", "w") as f:
+	out = os.environ.get("EVAL_OUT") or "evals/last_run.json"   # a comparison run of another model must not overwrite the default's
+	with open(out, "w") as f:
 		json.dump(report, f, indent="\t")
 
 
