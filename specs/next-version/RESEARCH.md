@@ -45,11 +45,11 @@ sorted by what we did with them.
 4. **Severity levels and a threshold** (Talisman low / medium / high): lets a team block only on high.
 5. **BPE "token efficiency" instead of entropy** (Betterleaks reports 98.6% recall versus 70.4% for entropy on the CredData
    dataset). Our entropy checks are only used for the literal and preview-masking heuristics, but this is a cheap-to-test
-   upgrade; needs a tokenizer vocabulary (a dependency or a vendored table) and the CredData benchmark. **TODO(local):** measure.
+   upgrade; needs a tokenizer vocabulary (a dependency or a vendored table) and the CredData benchmark. Not measured yet.
 6. **Rule-defined validation** (Betterleaks CEL) and **LLM-assisted analysis** (listed on Betterleaks' roadmap): the closest
    neighbour to what this project already does; worth watching, and a reason to publish our eval numbers.
 7. **Audit mode** (`detect-secrets audit`): interactively label each baseline entry real or false positive. Could feed our eval
-   sets with real-world labelled lines (**TODO(local)**).
+   sets with real-world labelled lines.
 8. **Honeytokens** (ggshield): planted fake credentials that alert when used. Out of scope, but a fake-secret fixture helps
    `doctor` prove the gate end to end.
 

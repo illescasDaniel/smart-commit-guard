@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Stripe publishable keys (`pk_live_...`, `pk_test_...`) are public identifiers and are no longer flagged. Secret and restricted keys (`sk_`, `rk_`) still block.
+- Evals: generated and open-source case sets, `compare_models.py` (AUC, bootstrap intervals, latency, GPU memory), `experiments.py` (prompt variants), per-model `evals/thresholds.json`. `.env` is gitignored.
 
 ## 0.2.0 - 2026-10-05
 

@@ -204,7 +204,7 @@ def report(small: bool = False) -> None:
 		n = sum(c["family"] == fam and c["split"] == "test" and c["label"] == "real" for c in cases)
 		cells = []
 		for s in summary:
-			r = s["rows"](lambda c, fam=fam: c["family"] == fam and c["split"] == "test")
+			r = [row for row in s["rows"](lambda c, fam=fam: c["family"] == fam and c["split"] == "test") if row[1]]
 			cells.append(f"{sum(p >= s['thr'] for p, _ in r) / len(r):.2f}")
 		say(f"| {fam} | {n} | " + " | ".join(cells) + " |")
 	say("\n## False blocks by source of `ok` lines at each model's fitted threshold (test half)\n")
