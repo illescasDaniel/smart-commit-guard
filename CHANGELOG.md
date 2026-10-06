@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Stripe publishable keys (`pk_live_...`, `pk_test_...`) are public identifiers and are no longer flagged. Secret and restricted keys (`sk_`, `rk_`) still block.
+
 ## 0.2.0 - 2026-10-05
 
 Printed allowlist fingerprints are now `v2:...` (hash of the stripped line); v1 entries keep working, and

@@ -108,13 +108,17 @@ def _is_sequential(v: str) -> bool:
 	return len(low) >= 6 and (bool(_REPEATED.fullmatch(low)) or any(low in run or low[::-1] in run for run in _RUNS))
 
 
+_PUBLISHABLE_KEY = re.compile(r"[\"']?pk_(?:live|test)_")
+
+
 def _is_weak_word_only(v: str) -> bool:
 	return bool(_WEAK_WORD.search(v)) and _PLAIN_REST.fullmatch(_WEAK_WORD.sub("", v).lower()) is not None
 
 
 def _is_placeholder(v: str) -> bool:
-	"""Obvious dummy values (`your-api-key-here`, `changeme`, `xxxxxxxx`, `test-token-123`, `abcdef123456`) never need a model."""
-	return bool(_PLACEHOLDER.search(v) or _is_weak_word_only(v)) or _is_sequential(v)
+	"""Obvious dummy values (`your-api-key-here`, `changeme`, `xxxxxxxx`, `test-token-123`, `abcdef123456`) and public
+	identifiers (Stripe publishable keys, `pk_live_...`, made to be shipped in client code) never need a model."""
+	return bool(_PLACEHOLDER.search(v) or _is_weak_word_only(v) or _PUBLISHABLE_KEY.match(v)) or _is_sequential(v)
 
 
 def has_digit_and_letter(v: str) -> bool:
@@ -233,7 +237,7 @@ def scan_line(text: str, *, rules_only: bool = False, _depth: int = 0) -> list[L
 			add("candidate", None, False, m.span())
 	for m in _LITERAL.finditer(text):
 		v = m.group(1)
-		if not free(m.span(1)) or _looks_like_path_or_identifier(v) or _is_hash_or_id(v, text):
+		if not free(m.span(1)) or _looks_like_path_or_identifier(v) or _is_hash_or_id(v, text) or _PUBLISHABLE_KEY.match(v):
 			continue
 		if has_digit_and_letter(v) and entropy(v) >= 3.5:
 			add("candidate", None, False, m.span(1))

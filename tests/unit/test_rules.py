@@ -261,3 +261,15 @@ def test_given_a_sequential_or_repeated_value_when_scanning_then_it_is_a_placeho
 def test_given_a_weak_but_real_password_that_starts_with_a_placeholder_word_when_scanning_then_it_is_still_a_candidate(line):
 	hit = first(line)
 	assert hit and hit.kind == "candidate"
+
+
+@pytest.mark.parametrize("line", [
+	'STRIPE_PUBLIC_KEY = "pk_live_51HxYz8AbCdEfGhIjKlMnOpQr"',
+	'publishable_key: pk_test_4eC39HqLyjWDarjtT1zdp7dc',
+])
+def test_stripe_publishable_keys_are_not_candidates(line):
+	assert scan_line(line) == []
+
+
+def test_stripe_secret_keys_still_block():
+	assert any(h.high_confidence for h in scan_line('key = "sk_live_51HxYz8AbCdEfGhIjKlMnOpQr"'))

@@ -65,7 +65,8 @@ False blocks on the `test` half by source of the `ok` line (n in brackets), `jev
 3. **Both 4B models fit in 6.5 GB** with room to spare (5.1 to 5.6 GB), at about 70 ms a call; the 5 s hook budget covers about 70 calls.
 4. **Shared weakness: publishable keys.** Both 4B models block `pk_live_...` lines under `publishable_key` / `STRIPE_PUBLIC_KEY`
    (6 of 8 test cases for `jevk5:4b`, 5 for `jeb:4b`), and UUID values under `correlation_token`. A rule for known public prefixes
-   (`pk_live_`, `pk_test_`) is cheaper than any model change.
+   (`pk_live_`, `pk_test_`) was cheaper than any model change and is now in `rules.py`; the generated set was regenerated
+   without those lines (the numbers above predate that).
 5. **Weakest real family for both: human-chosen passwords** (0.79 to 0.84 recall), the same family the placeholder fix targeted.
 
 ## Caveats

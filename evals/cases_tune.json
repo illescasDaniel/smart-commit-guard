@@ -213,7 +213,7 @@
 		"path": "src/pricing.js",
 		"text": "const stripePublishableKey = 'pk_test_TYooMQauvdEDq54NiTphI7jx';",
 		"label": "ok",
-		"stage": "model"
+		"stage": "no-hit"
 	},
 	{
 		"path": "src/crypto.py",

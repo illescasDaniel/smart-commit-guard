@@ -3034,15 +3034,6 @@
 	},
 	{
 		"path": "src/conf.py",
-		"text": "publishable_key = 'pk_live_KWfQGQ3dCC1FpaztfU9S5oZa'",
-		"label": "ok",
-		"family": "ok-public-key-id",
-		"template": "py-single",
-		"split": "tune",
-		"stage": "model"
-	},
-	{
-		"path": "src/conf.py",
 		"text": "secret_mode = 'required'",
 		"label": "ok",
 		"family": "ok-flag",
@@ -3097,15 +3088,6 @@
 	},
 	{
 		"path": "src/client.py",
-		"text": "headers = {\"public_api_key\": \"pk_live_GCWPx9EYVKySnQExskKmIWwL\"}",
-		"label": "ok",
-		"family": "ok-public-key-id",
-		"template": "py-dict",
-		"split": "tune",
-		"stage": "model"
-	},
-	{
-		"path": "src/client.py",
 		"text": "headers = {\"password_required\": \"true\"}",
 		"label": "ok",
 		"family": "ok-flag",
@@ -3142,15 +3124,6 @@
 	},
 	{
 		"path": "src/db.py",
-		"text": "connect(host=\"db\", publishable_key=\"pk_live_jiNxXB1DOi4cGaKJSZkREWvi\")",
-		"label": "ok",
-		"family": "ok-public-key-id",
-		"template": "py-kwarg",
-		"split": "test",
-		"stage": "model"
-	},
-	{
-		"path": "src/db.py",
 		"text": "connect(host=\"db\", password_required=\"required\")",
 		"label": "ok",
 		"family": "ok-flag",
@@ -3181,15 +3154,6 @@
 		"text": "const api_key_hint = 'Mother's maiden name';",
 		"label": "ok",
 		"family": "ok-label",
-		"template": "js-const",
-		"split": "tune",
-		"stage": "model"
-	},
-	{
-		"path": "src/config.js",
-		"text": "const publishable_key = 'pk_test_0vhfxjamHEJN7bhaPWGghlxX';",
-		"label": "ok",
-		"family": "ok-public-key-id",
 		"template": "js-const",
 		"split": "tune",
 		"stage": "model"
@@ -3235,15 +3199,6 @@
 		"text": "export const secret_ref = \"arn:aws:secretsmanager:eu-west-1:123456789012:secret:app\";",
 		"label": "ok",
 		"family": "ok-reference",
-		"template": "ts-export",
-		"split": "test",
-		"stage": "model"
-	},
-	{
-		"path": "src/env.ts",
-		"text": "export const STRIPE_PUBLIC_KEY = \"pk_test_4Ax1FG9PenVzjbOZLVj5WviZ\";",
-		"label": "ok",
-		"family": "ok-public-key-id",
 		"template": "ts-export",
 		"split": "test",
 		"stage": "model"
@@ -3304,15 +3259,6 @@
 	},
 	{
 		"path": "config/app.json",
-		"text": "  \"publishable_key\": \"pk_test_CILAp1nIblkbAOmXjA3mCFvw\",",
-		"label": "ok",
-		"family": "ok-public-key-id",
-		"template": "json",
-		"split": "test",
-		"stage": "model"
-	},
-	{
-		"path": "config/app.json",
 		"text": "  \"source_revision\": \"f47d29e60c5323cb29c56f2388fa86591b2219eb\",",
 		"label": "ok",
 		"family": "ok-git-sha",
@@ -3367,15 +3313,6 @@
 	},
 	{
 		"path": "deploy/values.yaml",
-		"text": "  publishable_key: \"pk_live_EVpXmwAglKPenaw1oWWdVwu8\"",
-		"label": "ok",
-		"family": "ok-public-key-id",
-		"template": "yaml-quoted",
-		"split": "test",
-		"stage": "model"
-	},
-	{
-		"path": "deploy/values.yaml",
 		"text": "  source_revision: \"4454c192fbac57a8d645bd411dfcc4504781a24c\"",
 		"label": "ok",
 		"family": "ok-git-sha",
@@ -3424,15 +3361,6 @@
 		"text": "token_type = \"argon2id\"",
 		"label": "ok",
 		"family": "ok-type-name",
-		"template": "toml",
-		"split": "tune",
-		"stage": "model"
-	},
-	{
-		"path": "config/app.toml",
-		"text": "publishable_key = \"pk_test_xyzlHek3IhrQRHPddgdRFLY7\"",
-		"label": "ok",
-		"family": "ok-public-key-id",
 		"template": "toml",
 		"split": "tune",
 		"stage": "model"
@@ -3520,15 +3448,6 @@
 	},
 	{
 		"path": "src/main/Config.java",
-		"text": "private static final String STRIPE_PUBLIC_KEY = \"pk_live_QjCbUMmbBvgN2nyGdLJCh0IJ\";",
-		"label": "ok",
-		"family": "ok-public-key-id",
-		"template": "java",
-		"split": "test",
-		"stage": "model"
-	},
-	{
-		"path": "src/main/Config.java",
 		"text": "private static final String secret_mode = \"true\";",
 		"label": "ok",
 		"family": "ok-flag",
@@ -3574,15 +3493,6 @@
 	},
 	{
 		"path": "internal/cfg.go",
-		"text": "var STRIPE_PUBLIC_KEY = \"pk_test_BEZl9a0EbNXF1RFiZU7cfELP\"",
-		"label": "ok",
-		"family": "ok-public-key-id",
-		"template": "go",
-		"split": "tune",
-		"stage": "model"
-	},
-	{
-		"path": "internal/cfg.go",
 		"text": "var source_revision = \"15a81f957249e3fea77e13a63e18a5231fcddcb0\"",
 		"label": "ok",
 		"family": "ok-git-sha",
@@ -3606,15 +3516,6 @@
 		"family": "ok-base64-chunk",
 		"template": "go",
 		"split": "tune",
-		"stage": "model"
-	},
-	{
-		"path": "src/config.rs",
-		"text": "const publishable_key: &str = \"pk_live_Sry1hvEntiDH1TCTReZ3GTxU\";",
-		"label": "ok",
-		"family": "ok-public-key-id",
-		"template": "rust",
-		"split": "test",
 		"stage": "model"
 	},
 	{
@@ -3664,15 +3565,6 @@
 	},
 	{
 		"path": "app/config.php",
-		"text": "$STRIPE_PUBLIC_KEY = 'pk_test_KqevMBmK8zfSu46xbjeGRW5o';",
-		"label": "ok",
-		"family": "ok-public-key-id",
-		"template": "php",
-		"split": "test",
-		"stage": "model"
-	},
-	{
-		"path": "app/config.php",
 		"text": "$secret_mode = 'required';",
 		"label": "ok",
 		"family": "ok-flag",
@@ -3712,15 +3604,6 @@
 		"text": "config.secretName = 'app-db-credentials'",
 		"label": "ok",
 		"family": "ok-reference",
-		"template": "ruby",
-		"split": "tune",
-		"stage": "model"
-	},
-	{
-		"path": "config/initializers/x.rb",
-		"text": "config.publishable_key = 'pk_live_DJBqyQ6YrK3MgTFLarpgPoSN'",
-		"label": "ok",
-		"family": "ok-public-key-id",
 		"template": "ruby",
 		"split": "tune",
 		"stage": "model"
@@ -3853,15 +3736,6 @@
 	},
 	{
 		"path": "infra/main.tf",
-		"text": "  STRIPE_PUBLIC_KEY = \"pk_live_72uiCEJf9MakgiAd2Hk6CFW2\"",
-		"label": "ok",
-		"family": "ok-public-key-id",
-		"template": "terraform",
-		"split": "tune",
-		"stage": "model"
-	},
-	{
-		"path": "infra/main.tf",
 		"text": "  token_enabled = \"required\"",
 		"label": "ok",
 		"family": "ok-flag",
@@ -3901,15 +3775,6 @@
 		"text": "public const string api_key_hint = \"Mother's maiden name\";",
 		"label": "ok",
 		"family": "ok-label",
-		"template": "csharp",
-		"split": "tune",
-		"stage": "model"
-	},
-	{
-		"path": "src/Config.cs",
-		"text": "public const string publishable_key = \"pk_live_BduvLGvOHnZNIErZMlKi3yGh\";",
-		"label": "ok",
-		"family": "ok-public-key-id",
 		"template": "csharp",
 		"split": "tune",
 		"stage": "model"
@@ -3964,15 +3829,6 @@
 		"text": "let secret_question = \"Mother's maiden name\"",
 		"label": "ok",
 		"family": "ok-label",
-		"template": "swift",
-		"split": "test",
-		"stage": "model"
-	},
-	{
-		"path": "App/Secrets.swift",
-		"text": "let public_api_key = \"pk_live_FTiVBJnjg1vPHDHbSkVv5mgv\"",
-		"label": "ok",
-		"family": "ok-public-key-id",
 		"template": "swift",
 		"split": "test",
 		"stage": "model"
