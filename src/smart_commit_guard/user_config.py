@@ -1,4 +1,4 @@
-"""Per-user settings: `~/.config/smart-commit-guard/config.json` (comments allowed), the place to choose a model.
+"""Per-user settings: `~/.config/smart-commit-guard/config.jsonc` (JSON with comments), the place to choose a model.
 
 It is the user's own file, outside every repository, so unlike `.secret-guard.toml` it may name the server, the key and the
 hosted opt-in. Each key becomes the matching `SECRET_GUARD_*` variable unless that variable is set: environment wins."""
@@ -22,7 +22,7 @@ _KEYS = {   # key -> (SECRET_GUARD_* variable, accepted types)
 _EXTRA = {"api_key_env": "the name of an environment variable that holds the API key (keeps the key out of the file)"}
 
 TEMPLATE = """\
-// smart-commit-guard user settings. Comments (// and /* */) are allowed in this file.
+// smart-commit-guard user settings (JSON with comments: // and /* */).
 // Environment variables (SECRET_GUARD_BASE_URL, SECRET_GUARD_MODEL, ...) override anything here.
 {
 	// The default: a local ollaya server and the model the thresholds were calibrated on. Nothing leaves your machine.
@@ -43,16 +43,24 @@ TEMPLATE = """\
 """
 
 
+def _config_dir(env: Mapping[str, str]) -> Path | None:
+	if xdg := env.get("XDG_CONFIG_HOME"):
+		return Path(xdg) / "smart-commit-guard"
+	if appdata := env.get("APPDATA"):   # Windows
+		return Path(appdata) / "smart-commit-guard"
+	if home := env.get("HOME") or env.get("USERPROFILE"):
+		return Path(home) / ".config" / "smart-commit-guard"
+	return None
+
+
 def config_path(env: Mapping[str, str]) -> Path | None:
+	"""`config.jsonc`, or an existing `config.json` (same format) when there is no `.jsonc`."""
 	if explicit := env.get(CONFIG_ENV):
 		return Path(explicit)
-	if xdg := env.get("XDG_CONFIG_HOME"):
-		return Path(xdg) / "smart-commit-guard" / "config.json"
-	if appdata := env.get("APPDATA"):   # Windows
-		return Path(appdata) / "smart-commit-guard" / "config.json"
-	if home := env.get("HOME") or env.get("USERPROFILE"):
-		return Path(home) / ".config" / "smart-commit-guard" / "config.json"
-	return None
+	if (d := _config_dir(env)) is None:
+		return None
+	plain = d / "config.json"
+	return plain if plain.is_file() and not (d / "config.jsonc").exists() else d / "config.jsonc"
 
 
 def strip_comments(text: str) -> str:

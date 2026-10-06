@@ -88,7 +88,7 @@ containing `smart-commit-guard: allow` is not scanned (sensitive file names are 
   Target median hook time <= 1 s with a local model.
 
 ### Configuration
-The same settings can live in the user's `~/.config/smart-commit-guard/config.json` (JSON with `//` comments; keys `base_url`, `model`, `api_key`, `api_key_env`, `timeout`, `allow_hosted`, `hosted_scope`, `budget`, `block_at`, `warn_at`). Precedence per setting: environment variable, then that file, then the repo's `[model]` table (name and thresholds only), then the default. Only the user file and the environment may choose a server or key. A `.env` file is never read.
+The same settings can live in the user's `~/.config/smart-commit-guard/config.jsonc` (JSON with `//` comments; keys `base_url`, `model`, `api_key`, `api_key_env`, `timeout`, `allow_hosted`, `hosted_scope`, `budget`, `block_at`, `warn_at`). Precedence per setting: environment variable, then that file, then the repo's `[model]` table (name and thresholds only), then the default. Only the user file and the environment may choose a server or key. A `.env` file is never read.
 
 Env vars: `SECRET_GUARD_BASE_URL`, `SECRET_GUARD_MODEL`, `SECRET_GUARD_API_KEY` (only if the server wants one),
 `SECRET_GUARD_TIMEOUT`, `SECRET_GUARD_ALLOW_HOSTED`, `SECRET_GUARD_ALLOW_INSECURE`, `SECRET_GUARD_HOSTED_SCOPE`,

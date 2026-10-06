@@ -201,7 +201,7 @@ crash is also `2`, with the details on stderr when `SMART_COMMIT_GUARD_DEBUG=1`)
 
 ## Choosing a model: your settings file
 
-Run `smart-commit-guard config init` once. It writes `~/.config/smart-commit-guard/config.json` (`$XDG_CONFIG_HOME` is honoured;
+Run `smart-commit-guard config init` once. It writes `~/.config/smart-commit-guard/config.jsonc` (`$XDG_CONFIG_HOME` is honoured; an existing `config.json` is read too;
 `%APPDATA%` on Windows; `SECRET_GUARD_CONFIG` names another path) with the default, a local `jevk5:4b`, and the settings for a
 hosted model as comments (`//` and `/* */` are allowed in the file). The keys are `base_url`, `model`, `api_key`, `api_key_env`
 (the name of an environment variable that holds the key, so the key stays out of the file), `timeout`, `allow_hosted`,

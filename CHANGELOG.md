@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- Per-user settings file `~/.config/smart-commit-guard/config.json` (comments allowed): choose the model server, model, key (or `api_key_env`), thresholds and hosted opt-in once for every repo. `smart-commit-guard config init` writes a commented template with `jevk5:4b` as the default and hosted-model instructions. Environment variables still win; `doctor` reports the file.
+- Per-user settings file `~/.config/smart-commit-guard/config.jsonc` (JSON with comments): choose the model server, model, key (or `api_key_env`), thresholds and hosted opt-in once for every repo. `smart-commit-guard config init` writes a commented template with `jevk5:4b` as the default and hosted-model instructions. Environment variables still win; `doctor` reports the file.
 - Stripe publishable keys (`pk_live_...`, `pk_test_...`) are public identifiers and are no longer flagged. Secret and restricted keys (`sk_`, `rk_`) still block.
 - Evals: generated and open-source case sets, `compare_models.py` (AUC, bootstrap intervals, latency, GPU memory), `experiments.py` (prompt variants), per-model `evals/thresholds.json`. `.env` is gitignored.
 

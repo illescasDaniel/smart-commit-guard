@@ -51,7 +51,7 @@ sets).
   per call (`MODEL_COMPARISON.md`). A hosted model still needs its own thresholds if used for blocking at scale.
 
 ## Decisions worth remembering
-- Model choice lives in `~/.config/smart-commit-guard/config.json` (user-owned, may name a server and key); the repo file may only narrow;
+- Model choice lives in `~/.config/smart-commit-guard/config.jsonc` (user-owned, may name a server and key); the repo file may only narrow;
   a `.env` is never read by the tool.
 - A hosted backend receives the candidate line unmasked (the model must see the value); output stays masked. `hosted_scope = "ci"`
   keeps a hosted model out of the commit hook.

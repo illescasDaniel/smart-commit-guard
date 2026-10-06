@@ -1,4 +1,4 @@
-"""Configuration: SECRET_GUARD_* environment variables, the user's `config.json` (user_config.py) and the repo's `.secret-guard.toml`."""
+"""Configuration: SECRET_GUARD_* environment variables, the user's `config.jsonc` (user_config.py) and the repo's `.secret-guard.toml`."""
 from __future__ import annotations
 
 import tomllib
