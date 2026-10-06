@@ -135,7 +135,7 @@ def test_given_a_file_name_git_quotes_when_scanning_staged_then_the_finding_has_
 
 
 def test_given_a_skip_glob_and_a_non_ascii_name_when_scanning_staged_then_the_glob_matches(repo, capsys):
-	(repo / ".secret-guard.toml").write_text('skip = ["café*"]\n')
+	(repo / ".secret-guard.toml").write_text('skip = ["café*"]\n', encoding="utf-8")
 	stage(repo, "café.py")
 	assert scan_staged(capsys)[0] == 0
 
