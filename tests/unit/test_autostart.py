@@ -11,13 +11,15 @@ URL = "http://localhost:11435"
 class Server:
 	"""A fake machine: `up` says whether something listens, `spawn` can bring it up."""
 
-	def __init__(self, up=False, comes_up=True, exe="/usr/bin/ollaya"):
-		self.up, self.comes_up, self.exe, self.spawned, self.now = up, comes_up, exe, [], 0.0
+	def __init__(self, up=False, comes_up=True, exe="/usr/bin/ollaya", spawn_error=None):
+		self.up, self.comes_up, self.exe, self.spawn_error, self.spawned, self.now = up, comes_up, exe, spawn_error, [], 0.0
 
 	def which(self, name):
 		return self.exe if name == "ollaya" else None
 
 	def spawn(self, exe):
+		if self.spawn_error:
+			raise self.spawn_error
 		self.spawned.append(exe)
 		if self.comes_up:
 			self.up = True
@@ -77,10 +79,8 @@ def test_given_another_local_port_when_ensuring_then_nothing_is_started():
 
 
 def test_given_a_spawn_failure_when_ensuring_then_it_is_unavailable():
-	s = Server()
-	s.spawn = lambda exe: (_ for _ in ()).throw(PermissionError("denied"))
 	with pytest.raises(DeciderUnavailable, match="cannot run"):
-		ensure(s)
+		ensure(Server(spawn_error=PermissionError("denied")))
 
 
 class Inner:
