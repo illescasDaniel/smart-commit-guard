@@ -1,7 +1,9 @@
 # Changelog
 
-## Unreleased
+## 0.3.0 - 2026-10-08
 
+- Opt-in `autostart` (`"autostart": true` in your settings file, or `SECRET_GUARD_AUTOSTART=1`): when nothing listens at the local model URL, the first candidate line that needs the model starts `ollaya serve` (detached, left running afterwards) and waits up to 20 s for it, instead of falling back to a warning. Local `http://localhost:11435` only; never settable from `.secret-guard.toml`, so a pull request cannot make a hook launch a program. Commits with no ambiguous line never start it.
+- `doctor` warns when a shared hook is committed without the executable bit (git then ignores it, typically after adding it on Windows): the commit-message scan silently did not run in other clones.
 - Per-user settings file `~/.config/smart-commit-guard/config.jsonc` (JSON with comments): choose the model server, model, key (or `api_key_env`), thresholds and hosted opt-in once for every repo. `smart-commit-guard config init` writes a commented template with `jevk5:4b` as the default and hosted-model instructions. Environment variables still win; `doctor` reports the file.
 - Stripe publishable keys (`pk_live_...`, `pk_test_...`) are public identifiers and are no longer flagged. Secret and restricted keys (`sk_`, `rk_`) still block.
 - Evals: generated and open-source case sets, `compare_models.py` (AUC, bootstrap intervals, latency, GPU memory), `experiments.py` (prompt variants), per-model `evals/thresholds.json`. `.env` is gitignored.

@@ -148,6 +148,7 @@ class Config:
 	timeout: float = 10.0
 	allow_hosted: bool = False
 	hosted_scope: str = "all"
+	autostart: bool = False   # user settings only: start a local `ollaya serve` when nothing listens (autostart.py)
 	budget: float | None = None   # total seconds of model time per scan; None: the caller's default for the scan mode
 	block_at: float = 0.5   # calibrated for jevk5:4b (evals/); rerun the eval before using another model
 	warn_at: float = 0.4
@@ -174,6 +175,7 @@ class Config:
 			timeout=_float(env, "SECRET_GUARD_TIMEOUT", d.timeout),
 			allow_hosted=env.get("SECRET_GUARD_ALLOW_HOSTED") == "1",
 			hosted_scope=scope,
+			autostart=env.get("SECRET_GUARD_AUTOSTART") == "1",
 			budget=budget,
 			block_at=_float(env, "SECRET_GUARD_BLOCK_AT", repo.block_at if repo and repo.block_at is not None else d.block_at),
 			warn_at=_float(env, "SECRET_GUARD_WARN_AT", repo.warn_at if repo and repo.warn_at is not None else d.warn_at),

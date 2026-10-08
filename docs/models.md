@@ -11,6 +11,11 @@ A decision model judges the ambiguous candidates (`DB_PASS = "Winter2026!Admin"`
    smart-commit-guard doctor   # "ok    model: jevk5:4b at http://localhost:11435"
    ```
 
+   To not keep the server running yourself, set `"autostart": true` in your settings file (below): the first commit that has an
+   ambiguous line then starts `ollaya serve` in the background and waits for it (a few seconds), and the server stays up afterwards.
+   Only a local server on ollaya's port 11435 is ever started, and only your own settings file or `SECRET_GUARD_AUTOSTART=1` can
+   turn it on, never `.secret-guard.toml`.
+
    It needs about 5.5 GB of GPU memory and answers in about 80 ms. Nothing leaves your machine. No settings file is needed for this.
 2. **A hosted model.** For example TypeSafe Jev: create a key at `console.typesafe.ai/settings/keys`, export it
    (`export TYPESAFE_API_KEY=...`), run `smart-commit-guard config init` and uncomment the hosted block in the file it writes

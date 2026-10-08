@@ -16,7 +16,7 @@ pre-commit hook and as a CI step. Zero runtime dependencies, Python 3.12+.
 Four steps. Steps 1 to 3 are once per machine; 3 is once per repository.
 
 **1. Pick a model.** The default is a **local** model, `jevk5:4b`, served by ollaya at `http://localhost:11435`: run
-`ollaya pull jevk5:4b` and `ollaya serve`, and nothing else is needed. You can use a **hosted** model instead (for example
+`ollaya pull jevk5:4b` and `ollaya serve`, and nothing else is needed (or set `"autostart": true` in your settings file and the hook starts `ollaya serve` itself when it needs the model). You can use a **hosted** model instead (for example
 TypeSafe Jev), or no model at all (rules only). How to set up each: [docs/models.md](docs/models.md).
 
 **2. Install the tool**, or run it without installing through [`uvx`](https://docs.astral.sh/uv/guides/tools/) (pin a range in hooks and CI,
@@ -24,7 +24,7 @@ since `uvx` caches releases):
 
 ```bash
 uv tool install smart-commit-guard      # or: pipx install smart-commit-guard
-uvx --from 'smart-commit-guard>=0.2,<0.3' smart-commit-guard doctor      # no install
+uvx --from 'smart-commit-guard>=0.3,<0.4' smart-commit-guard doctor      # no install
 ```
 
 **3. Write your settings file** (which model to use; it lives outside the repos, in `~/.config/smart-commit-guard/config.jsonc`),

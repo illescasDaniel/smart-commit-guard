@@ -18,6 +18,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 from . import __version__, git, report, user_config
+from .autostart import AutostartDecider, ensure_server
 from .config import CONFIG_NAME, Config, ConfigError, RepoSettings
 from .decider import Decider, DeciderUnavailable, HttpDecider
 from .diff import parse_added_lines
@@ -219,6 +220,14 @@ def _read_baseline(path: str) -> frozenset[str]:
 		raise ConfigError(f"{path} is not a smart-commit-guard baseline file ({type(e).__name__}: {e})") from e
 
 
+def _model_decider(cfg: Config, decider: Decider | None) -> Decider:
+	"""The injected decider (tests), or the HTTP one; with `autostart` it first makes sure a local server is listening."""
+	if decider is not None:
+		return decider
+	http = HttpDecider(cfg.base_url, cfg.model, cfg.timeout, cfg.api_key)
+	return AutostartDecider(http, lambda: ensure_server(cfg.base_url)) if cfg.autostart and not cfg.is_hosted else http
+
+
 def _execute(args: argparse.Namespace, env: Mapping[str, str], decider: Decider | None) -> ScanResult:
 	"""Read the input, apply the repo config and the baseline, and scan."""
 	root = git.repo_root() or Path.cwd()
@@ -242,7 +251,7 @@ def _execute(args: argparse.Namespace, env: Mapping[str, str], decider: Decider 
 		if cfg.is_hosted and cfg.hosted_scope == "ci" and args.staged:
 			decider, skipped_reason = None, "hosted_scope"   # CI is the backstop for what the hook cannot judge
 		else:
-			decider = decider or HttpDecider(cfg.base_url, cfg.model, cfg.timeout, cfg.api_key)
+			decider = _model_decider(cfg, decider)
 	budget = cfg.budget or (BUDGET_COMMIT if args.staged else BUDGET_CI)
 	allow = settings.fingerprints | (_read_baseline(args.baseline) if args.baseline else frozenset())
 	result = scan(lines, decider, block_at=cfg.block_at, warn_at=cfg.warn_at, allowlist=allow, allow_paths=settings.allow_paths,
@@ -435,6 +444,15 @@ def _user_config(action: str, force: bool, env: Mapping[str, str]) -> int:
 	return 0
 
 
+def _tracked_mode(path: Path) -> str | None:
+	"""The file mode git has in the index for `path` ('100755'), or None when it is not tracked."""
+	try:
+		out = git.run("ls-files", "-s", "--", path.name, cwd=path.parent).split()
+	except GitError:
+		return None
+	return out[0] if out else None
+
+
 def _doctor(env: Mapping[str, str], decider: Decider | None) -> int:
 	"""Check the whole chain: hook installed and wired, rules working, model reachable. Exit 1 only for real failures."""
 	failed = False
@@ -475,6 +493,10 @@ def _doctor(env: Mapping[str, str], decider: Decider | None) -> int:
 					if path.read_text(encoding="utf-8", errors="replace").replace("\r\n", "\n") != expected:
 						say("WARN", "shared hook", f"{path} differs from the template of smart-commit-guard {__version__}: it may be "
 												   "stale (run `smart-commit-guard install-hook --shared --force`, then commit it)")
+					if os.name == "posix" and (mode := _tracked_mode(path)) and mode != "100755":
+						say("WARN", "shared hook", f"{path} is committed with mode {mode}, so clones get a hook git ignores (typical "
+												   f"after adding it on Windows): run `git update-index --chmod=+x {path.name}` "
+												   "from its directory and commit")
 		msg_hook = hook.with_name("commit-msg")
 		if not msg_hook.is_file() or "scan --message" not in msg_hook.read_text(encoding="utf-8", errors="replace"):
 			say("WARN", "commit-msg hook", f"{msg_hook} is missing: commit messages are not scanned for secrets. Run "
@@ -499,7 +521,7 @@ def _doctor(env: Mapping[str, str], decider: Decider | None) -> int:
 			say("WARN", "model", f"hosted ({host}), {where}. Candidate lines are sent there unmasked, so only use a server you "
 								 "would trust with the secrets themselves")
 		if not (cfg.is_hosted and cfg.hosted_scope == "ci"):
-			(decider or HttpDecider(cfg.base_url, cfg.model, cfg.timeout, cfg.api_key)).judge([("doctor.py", 'password = "x"')])
+			_model_decider(cfg, decider).judge([("doctor.py", 'password = "x"')])
 			say("ok", "model", f"{cfg.model} at {cfg.base_url}")
 	except ConfigError as e:
 		say("FAIL", "config", str(e))

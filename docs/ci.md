@@ -22,10 +22,10 @@ jobs:
       - uses: astral-sh/setup-uv@v10
       - name: Scan the pull request's added lines
         if: github.event_name == 'pull_request'
-        run: uvx --from 'smart-commit-guard>=0.2,<0.3' smart-commit-guard scan --no-model --diff "origin/${{ github.base_ref }}...HEAD"
+        run: uvx --from 'smart-commit-guard>=0.3,<0.4' smart-commit-guard scan --no-model --diff "origin/${{ github.base_ref }}...HEAD"
       - name: Scan the whole tree
         if: github.event_name == 'push'
-        run: uvx --from 'smart-commit-guard>=0.2,<0.3' smart-commit-guard scan --no-model --all
+        run: uvx --from 'smart-commit-guard>=0.3,<0.4' smart-commit-guard scan --no-model --all
 ```
 
 CI can also use the SARIF format for GitHub code scanning, `--all` instead of
@@ -33,8 +33,8 @@ CI can also use the SARIF format for GitHub code scanning, `--all` instead of
 request cannot change its own skip list. A GitHub Actions run prints findings as inline annotations on its own.
 
 ```yaml
-      - run: uvx --from 'smart-commit-guard>=0.2,<0.3' smart-commit-guard scan --no-model --all
-      - run: uvx --from 'smart-commit-guard>=0.2,<0.3' smart-commit-guard scan --no-model --diff "origin/${{ github.base_ref }}...HEAD" --config-from "origin/${{ github.base_ref }}" --format sarif > results.sarif
+      - run: uvx --from 'smart-commit-guard>=0.3,<0.4' smart-commit-guard scan --no-model --all
+      - run: uvx --from 'smart-commit-guard>=0.3,<0.4' smart-commit-guard scan --no-model --diff "origin/${{ github.base_ref }}...HEAD" --config-from "origin/${{ github.base_ref }}" --format sarif > results.sarif
 ```
 
 ### Commit messages
@@ -45,9 +45,9 @@ scans the message of every commit in the range (it catches `--no-verify`, a hook
 GitHub builds for a squash merge):
 
 ```yaml
-      - run: uvx --from 'smart-commit-guard>=0.2,<0.3' smart-commit-guard scan --no-model --diff "origin/${{ github.base_ref }}...HEAD" --messages
+      - run: uvx --from 'smart-commit-guard>=0.3,<0.4' smart-commit-guard scan --no-model --diff "origin/${{ github.base_ref }}...HEAD" --messages
       # a pull request title and body are not commits: pipe them in
-      - run: printf '%s\n%s\n' "$TITLE" "$BODY" | uvx --from 'smart-commit-guard>=0.2,<0.3' smart-commit-guard scan --text -
+      - run: printf '%s\n%s\n' "$TITLE" "$BODY" | uvx --from 'smart-commit-guard>=0.3,<0.4' smart-commit-guard scan --text -
         env:
           TITLE: ${{ github.event.pull_request.title }}
           BODY: ${{ github.event.pull_request.body }}
@@ -79,7 +79,7 @@ it uses environment variables):
           SECRET_GUARD_BASE_URL: ${{ secrets.SECRET_GUARD_BASE_URL }}   # https only
           SECRET_GUARD_ALLOW_HOSTED: "1"
           SECRET_GUARD_API_KEY: ${{ secrets.SECRET_GUARD_API_KEY }}
-        run: uvx --from 'smart-commit-guard>=0.2,<0.3' smart-commit-guard scan --diff "origin/${{ github.base_ref }}...HEAD"
+        run: uvx --from 'smart-commit-guard>=0.3,<0.4' smart-commit-guard scan --diff "origin/${{ github.base_ref }}...HEAD"
 ```
 
 `scan --files` and `--all` count as CI too, even when run locally.
@@ -90,7 +90,7 @@ To scan what a push added instead of the whole tree, use the range from the even
 `before`; that is handled (the whole branch is scanned):
 
 ```yaml
-      - run: uvx --from 'smart-commit-guard>=0.2,<0.3' smart-commit-guard scan --no-model --diff "${{ github.event.before }}...${{ github.sha }}"
+      - run: uvx --from 'smart-commit-guard>=0.3,<0.4' smart-commit-guard scan --no-model --diff "${{ github.event.before }}...${{ github.sha }}"
 ```
 
 Check out with `fetch-depth: 0`. After a force-push the old `before` commit can be gone; scan the branch against its base then.

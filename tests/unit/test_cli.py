@@ -515,3 +515,16 @@ def test_given_a_missing_base_revision_when_scanning_a_diff_then_the_message_men
 	git(tmp_path, "commit", "-q", "-m", "x")
 	assert main(["scan", "--diff", "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef..HEAD", "--no-model"], env={}) == 2
 	assert "fetch-depth: 0" in capsys.readouterr().err
+
+
+@pytest.mark.skipif(sys.platform == "win32", reason="the executable bit is a POSIX concept")
+def test_given_a_shared_hook_committed_without_the_exec_bit_when_running_doctor_then_it_warns(tmp_path, monkeypatch, capsys):
+	git(tmp_path, "init", "-q")
+	monkeypatch.chdir(tmp_path)
+	main(["install-hook", "--shared"], env={})
+	git(tmp_path, "add", ".githooks")
+	main(["doctor"], env={}, decider=FakeDecider())
+	assert "committed with mode" not in capsys.readouterr().out
+	git(tmp_path, "update-index", "--chmod=-x", ".githooks/commit-msg")
+	main(["doctor"], env={}, decider=FakeDecider())
+	assert "commit-msg is committed with mode 100644" in capsys.readouterr().out

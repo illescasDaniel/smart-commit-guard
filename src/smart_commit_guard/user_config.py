@@ -16,6 +16,7 @@ _KEYS = {   # key -> (SECRET_GUARD_* variable, accepted types)
 	"base_url": ("SECRET_GUARD_BASE_URL", (str,)), "model": ("SECRET_GUARD_MODEL", (str,)),
 	"api_key": ("SECRET_GUARD_API_KEY", (str,)), "timeout": ("SECRET_GUARD_TIMEOUT", (int, float)),
 	"allow_hosted": ("SECRET_GUARD_ALLOW_HOSTED", (bool,)), "hosted_scope": ("SECRET_GUARD_HOSTED_SCOPE", (str,)),
+	"autostart": ("SECRET_GUARD_AUTOSTART", (bool,)),
 	"budget": ("SECRET_GUARD_BUDGET", (int, float)), "block_at": ("SECRET_GUARD_BLOCK_AT", (int, float)),
 	"warn_at": ("SECRET_GUARD_WARN_AT", (int, float)),
 }
@@ -28,6 +29,10 @@ TEMPLATE = """\
 	// The default: a local ollaya server and the model the thresholds were calibrated on. Nothing leaves your machine.
 	"base_url": "http://localhost:11435",
 	"model": "jevk5:4b"
+
+	// Start `ollaya serve` yourself when nothing is listening (the first commit that needs the model then waits for it to
+	// load; the server keeps running afterwards). Local servers only; off by default.
+	// "autostart": true,
 
 	// Another local model (it needs its own thresholds, see evals/thresholds.json for `jeb:4b` and `snap:2b`):
 	// "model": "jeb:4b", "block_at": 0.5, "warn_at": 0.4

@@ -6,7 +6,7 @@ if command -v smart-commit-guard >/dev/null 2>&1; then
 elif [ -x "$root/.venv/bin/smart-commit-guard" ]; then
 	exec "$root/.venv/bin/smart-commit-guard" scan --message "$1"
 elif command -v uvx >/dev/null 2>&1; then
-	exec uvx --from 'smart-commit-guard>=0.2,<0.3' smart-commit-guard scan --message "$1"
+	exec uvx --from 'smart-commit-guard>=0.3,<0.4' smart-commit-guard scan --message "$1"
 fi
 if [ "$SKIP_SECRET_GUARD" = "1" ]; then
 	echo "smart-commit-guard: SKIPPED (SKIP_SECRET_GUARD=1) and the tool is unavailable: this commit was not scanned or logged." >&2
